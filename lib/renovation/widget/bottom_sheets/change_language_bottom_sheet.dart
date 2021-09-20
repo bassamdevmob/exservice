@@ -1,0 +1,94 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:exservice/renovation/bloc/application_bloc/application_cubit.dart';
+import 'package:exservice/renovation/controller/data_store.dart';
+import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/styles/app_colors.dart';
+import 'package:exservice/renovation/utils/utils.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
+
+class ChangeLanguageBottomSheet extends StatelessWidget {
+  final Map<String, String> alternative = {
+    "ar": "العربية",
+    "en": "English",
+  };
+
+  Widget getLanguageButton(BuildContext context, String locale) {
+    var mediaQuery = MediaQuery.of(context);
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: mediaQuery.size.width * 0.03,
+        vertical: mediaQuery.size.width * 0.01,
+      ),
+      child: PhysicalModel(
+        elevation: 2,
+        borderRadius: BorderRadius.circular(Utils.cardBorderRadius(mediaQuery)),
+        color: AppColors.white,
+        child: ListTile(
+          title: Text(alternative[locale] ?? "Unknown"),
+          trailing: Icon(
+            Icons.circle,
+            color: DataStore.instance.lang == locale
+                ? AppColors.darkGreen
+                : AppColors.grayAccent,
+            size: Utils.iconSize(mediaQuery),
+          ),
+          onTap: () {
+            BlocProvider.of<ApplicationCubit>(context)
+                .changeLanguage(locale);
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              SizedBox(height: Utils.verticalSpace(MediaQuery.of(context))),
+              LineBottomSheetWidget(),
+              SizedBox(height: Utils.verticalSpace(MediaQuery.of(context))),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.05,
+                ),
+                child: Text(
+                  AppLocalization.of(context).trans("choose_language"),
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              )
+            ]),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                getLanguageButton(context, "ar"),
+                getLanguageButton(context, "en"),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+Future<dynamic> showChangeLanguageBottomSheet(BuildContext context) {
+  return showCupertinoModalBottomSheet(
+    expand: false,
+    context: context,
+    topRadius: Radius.circular(35),
+    backgroundColor: Colors.transparent,
+    builder: (context) => ChangeLanguageBottomSheet(),
+  );
+}

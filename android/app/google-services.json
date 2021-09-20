@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "340373748645",
+    "project_id": "exservice-35ebc",
+    "storage_bucket": "exservice-35ebc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340373748645:android:d2c4def5b0107e8177464c",
+        "android_client_info": {
+          "package_name": "com.bh.exservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340373748645-pdcebftc04h0ph53gm63jv9l5fvmufsu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPnAwMYXGTwMybnL41o32xazVLRyXMiPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340373748645-pdcebftc04h0ph53gm63jv9l5fvmufsu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
