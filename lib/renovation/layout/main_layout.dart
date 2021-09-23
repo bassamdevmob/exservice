@@ -4,6 +4,7 @@ import 'package:exservice/renovation/bloc/view/favorites_bloc/favorites_cubit.da
 import 'package:exservice/renovation/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/renovation/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
 import 'package:exservice/renovation/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
+import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/layout/drawer_layout.dart';
 import 'package:exservice/renovation/layout/view/account_layout.dart';
 import 'package:exservice/renovation/layout/view/favorites_layout.dart';
@@ -34,7 +35,10 @@ class _MainLayoutState extends State<MainLayout> {
       create: (context) => FavoritesCubit(),
       child: FavoritesLayout(),
     ),
-    PostAdLayout(),
+    BlocProvider(
+      create: (context) => PostAdBloc(),
+      child: PostAdLayout(),
+    ),
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ChatsListBloc()),
