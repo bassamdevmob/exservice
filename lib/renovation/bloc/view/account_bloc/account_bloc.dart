@@ -34,7 +34,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         yield AccountAwaitState();
         profile =
             await GetIt.I.get<ApiProviderDelegate>().fetchGetUserProfile();
-        yield AccountReceiveState();
+        yield AccountAccessibleState();
       } catch (e) {
         yield AccountErrorState("$e");
       }

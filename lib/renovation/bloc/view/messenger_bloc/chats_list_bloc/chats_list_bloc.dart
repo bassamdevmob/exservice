@@ -41,7 +41,7 @@ class ChatsListBloc extends Bloc<ChatsListEvent, ChatsListState> {
             await GetIt.I.get<ApiProviderDelegate>().fetchGetChatUsers();
         _chatters = response;
         chatters = List.of(_chatters);
-        yield ChatsListReceiveState();
+        yield ChatsListAccessibleState();
       } catch (e) {
         yield ChatsListErrorState("$e");
       }
@@ -53,7 +53,7 @@ class ChatsListBloc extends Bloc<ChatsListEvent, ChatsListState> {
         ),
       );
       chatters = List.of(filteredChatter);
-      yield ChatsListReceiveState();
+      yield ChatsListAccessibleState();
     }
   }
 }

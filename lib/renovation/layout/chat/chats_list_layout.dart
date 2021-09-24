@@ -32,7 +32,7 @@ class _ChatsListLayoutState extends State<ChatsListLayout> {
       buildWhen: (_, current) =>
           current is ChatsListErrorState ||
           current is ChatsListAwaitState ||
-          current is ChatsListReceiveState,
+          current is ChatsListAccessibleState,
       builder: (context, state) {
         if (state is ChatsListErrorState) {
           return Center(

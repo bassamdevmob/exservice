@@ -40,7 +40,7 @@ class _AccountLayoutState extends State<AccountLayout> {
       buildWhen: (_, current) =>
           current is AccountInitial ||
           current is AccountAwaitState ||
-          current is AccountReceiveState ||
+          current is AccountAccessibleState ||
           current is AccountErrorState,
       builder: (context, state) {
         if (state is AccountErrorState) {

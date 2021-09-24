@@ -67,7 +67,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (_, current) =>
           current is HomeAwaitState ||
-          current is HomeReceiveState ||
+          current is HomeAccessibleState ||
           current is HomeErrorAdsState,
       builder: (context, state) {
         if (state is HomeErrorAdsState) {

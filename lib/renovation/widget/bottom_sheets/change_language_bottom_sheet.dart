@@ -47,18 +47,19 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
     return Material(
       child: CustomScrollView(
         shrinkWrap: true,
         slivers: [
           SliverList(
             delegate: SliverChildListDelegate([
-              SizedBox(height: Utils.verticalSpace(MediaQuery.of(context))),
+              SizedBox(height: Utils.verticalSpace(mediaQuery)),
               LineBottomSheetWidget(),
-              SizedBox(height: Utils.verticalSpace(MediaQuery.of(context))),
+              SizedBox(height: Utils.verticalSpace(mediaQuery)),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.05,
+                  horizontal: mediaQuery.size.width * 0.05,
                 ),
                 child: Text(
                   AppLocalization.of(context).trans("choose_language"),
@@ -68,7 +69,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
             ]),
           ),
           SliverPadding(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+            padding: EdgeInsets.all(mediaQuery.size.width * 0.04),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 getLanguageButton(context, "ar"),

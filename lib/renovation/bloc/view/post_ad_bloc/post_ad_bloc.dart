@@ -25,8 +25,11 @@ const ratios = [
 
 class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   final ScrollController nestedScrollController = ScrollController();
+  final titleController = TextEditingController();
+  final detailsController = TextEditingController();
+  final List<AssetEntity> selectedEntities = [];
+
   List<AssetEntity> media;
-  List<AssetEntity> selectedEntities = [];
   AssetEntity placeholder;
 
   int aspectRatioIndex = 0;
@@ -41,11 +44,15 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
 
   @override
   Future<void> close() {
+    titleController.dispose();
+    detailsController.dispose();
     nestedScrollController.dispose();
     return super.close();
   }
 
   final _thumbnails = <AssetEntity, Uint8List>{};
+
+  Uint8List get thumbnail => _thumbnails[selectedEntities.first];
 
   Future<Uint8List> getThumbnail(AssetEntity entity) async {
     var thumb = _thumbnails[entity];
@@ -69,7 +76,7 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
         );
         media = await paths.first.assetList;
         selectedEntities.add(media.first);
-        yield PostAdReceiveState();
+        yield PostAdAccessibleState();
       } else {
         // add(FetchPostAdEvent());
       }

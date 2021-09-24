@@ -9,7 +9,7 @@ class AccountChangeTabState extends AccountState {}
 
 class AccountAwaitState extends AccountState {}
 
-class AccountReceiveState extends AccountState {}
+class AccountAccessibleState extends AccountState {}
 
 class AccountErrorState extends AccountState {
   final String message;

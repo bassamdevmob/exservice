@@ -10,7 +10,7 @@ import 'package:exservice/renovation/layout/view/account_layout.dart';
 import 'package:exservice/renovation/layout/view/favorites_layout.dart';
 import 'package:exservice/renovation/layout/view/home_layout.dart';
 import 'package:exservice/renovation/layout/view/messenger_layout.dart';
-import 'package:exservice/renovation/layout/view/post_ad_layout.dart';
+import 'package:exservice/renovation/layout/post/post_ad_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';

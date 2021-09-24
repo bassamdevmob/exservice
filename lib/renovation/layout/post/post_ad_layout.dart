@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
+import 'package:exservice/renovation/layout/post/post_ad_details_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_font_size.dart';
@@ -62,7 +63,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
         body: BlocBuilder<PostAdBloc, PostAdState>(
           buildWhen: (_, current) =>
               current is PostAdAwaitState ||
-              current is PostAdReceiveState ||
+              current is PostAdAccessibleState ||
               current is PostAdSelectMediaState ||
               current is PostAdErrorState,
           builder: (context, state) {
@@ -212,36 +213,39 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       buildWhen: (_, current) => current is PostAdChangeDisplayModeState,
       builder: (context, state) {
         var selected = _bloc.getSelectedMedias();
-        return Carousel(
-          boxFit: BoxFit.cover,
-          autoplay: false,
-          indicatorBgPadding: 10,
-          dotColor: Colors.grey,
-          dotIncreasedColor: AppColors.blue,
-          dotBgColor: Colors.transparent,
-          overlayShadowSize: 5.0,
-          dotSpacing: 8,
-          dotSize: 3.0,
-          images: List.generate(selected.length, (index) {
-            var entity = selected[index];
-            return FutureBuilder<Uint8List>(
-              future: _bloc.getThumbnail(entity),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CupertinoActivityIndicator());
-                }
-                return Center(
-                  child: AspectRatio(
-                    aspectRatio: _bloc.aspectRatio.value,
-                    child: Image.memory(
-                      snapshot.data,
-                      fit: BoxFit.cover,
+        return Hero(
+          tag: "thumbnail",
+          child: Carousel(
+            boxFit: BoxFit.cover,
+            autoplay: false,
+            indicatorBgPadding: 10,
+            dotColor: Colors.grey,
+            dotIncreasedColor: AppColors.blue,
+            dotBgColor: Colors.transparent,
+            overlayShadowSize: 5.0,
+            dotSpacing: 8,
+            dotSize: 3.0,
+            images: List.generate(selected.length, (index) {
+              var entity = selected[index];
+              return FutureBuilder<Uint8List>(
+                future: _bloc.getThumbnail(entity),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CupertinoActivityIndicator());
+                  }
+                  return Center(
+                    child: AspectRatio(
+                      aspectRatio: _bloc.aspectRatio.value,
+                      child: Image.memory(
+                        snapshot.data,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          }),
+                  );
+                },
+              );
+            }),
+          ),
         );
       },
     );
@@ -280,7 +284,9 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: BlocBuilder<PostAdBloc, PostAdState>(
-          buildWhen: (_, current) => current is PostAdSelectMediaState,
+          buildWhen: (_, current) =>
+              current is PostAdAccessibleState ||
+              current is PostAdSelectMediaState,
           builder: (context, state) {
             return Badge(
               position: BadgePosition.topEnd(top: -12),
@@ -302,7 +308,14 @@ class _PostAdLayoutState extends State<PostAdLayout> {
           Fluttertoast.showToast(
             msg: AppLocalization.of(context).trans("choose_one_media_at_least"),
           );
+          return;
         }
+        Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: _bloc,
+            child: PostAdDetailsLayout(),
+          ),
+        ));
       },
     );
   }

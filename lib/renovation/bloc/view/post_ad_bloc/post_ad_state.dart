@@ -5,7 +5,7 @@ abstract class PostAdState {}
 
 class PostAdAwaitState extends PostAdState {}
 
-class PostAdReceiveState extends PostAdState {}
+class PostAdAccessibleState extends PostAdState {}
 
 class PostAdErrorState extends PostAdState {}
 

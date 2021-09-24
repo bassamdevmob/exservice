@@ -438,5 +438,7 @@
   "update_mobile_number": "Change mobile number",
   "sp": "SYP",
   "reached_max_media_limits": "Sorry, you've reached your max media limit",
-  "choose_one_media_at_least": "Sorry, you've to choose one media at least"
+  "choose_one_media_at_least": "Sorry, you've to choose one media at least",
+  "enter_title": "Enter Title",
+  "enter_details": "Enter Details"
 }

@@ -5,7 +5,7 @@ abstract class HomeState {}
 
 abstract class HomeAwaitState extends HomeState {}
 
-abstract class HomeReceiveState extends HomeState {}
+abstract class HomeAccessibleState extends HomeState {}
 
 class HomeSelectCategoryState extends HomeState {}
 
@@ -13,7 +13,7 @@ class HomeSelectCategoryState extends HomeState {}
 
 class HomeAwaitCategoriesState extends HomeAwaitState {}
 
-class HomeReceiveCategoriesState extends HomeReceiveState {}
+class HomeReceiveCategoriesState extends HomeAccessibleState {}
 
 class HomeErrorCategoriesState extends HomeState {
   final String message;
@@ -24,7 +24,7 @@ class HomeErrorCategoriesState extends HomeState {
 /// ads
 class HomeAwaitAdsState extends HomeAwaitState {}
 
-class HomeReceiveAdsState extends HomeReceiveState {}
+class HomeReceiveAdsState extends HomeAccessibleState {}
 
 class HomeErrorAdsState extends HomeState {
   final String message;
