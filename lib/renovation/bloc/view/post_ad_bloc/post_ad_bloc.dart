@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -17,18 +19,23 @@ class AspectRatioSnapshot {
 }
 
 const ratios = [
+  AspectRatioSnapshot("WIDE", ASPECT_RATIO),
   AspectRatioSnapshot("TIGHT", 1.1),
-  AspectRatioSnapshot("WIDE", 0.9),
 ];
 
 class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   final ScrollController nestedScrollController = ScrollController();
   List<AssetEntity> media;
+  List<AssetEntity> selectedEntities = [];
+  AssetEntity placeholder;
 
-  int index = 0;
+  int aspectRatioIndex = 0;
 
-  AspectRatioSnapshot get aspectRatio => ratios[index];
-  List<AssetEntity> selectedEntities;
+  AspectRatioSnapshot get aspectRatio => ratios[aspectRatioIndex];
+
+  List<AssetEntity> getSelectedMedias() => selectedEntities.isNotEmpty
+      ? selectedEntities
+      : <AssetEntity>[placeholder];
 
   PostAdBloc() : super(PostAdAwaitState());
 
@@ -36,6 +43,17 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   Future<void> close() {
     nestedScrollController.dispose();
     return super.close();
+  }
+
+  final _thumbnails = <AssetEntity, Uint8List>{};
+
+  Future<Uint8List> getThumbnail(AssetEntity entity) async {
+    var thumb = _thumbnails[entity];
+    if (thumb == null) {
+      return _thumbnails[entity] = await entity.thumbDataWithSize(400, 400);
+    } else {
+      return thumb;
+    }
   }
 
   @override
@@ -46,7 +64,7 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
       var isGranted = await PhotoManager.requestPermission();
       if (isGranted) {
         var paths = await PhotoManager.getAssetPathList(
-          type: RequestType.image,
+          type: RequestType.common,
           onlyAll: true,
         );
         media = await paths.first.assetList;
@@ -58,18 +76,18 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
     } else if (event is SelectMediaPostAdEvent) {
       if (selectedEntities.contains(event.entity)) {
         selectedEntities.remove(event.entity);
+        placeholder = event.entity;
       } else {
+        if (selectedEntities.length >= 10) {
+          yield PostAdReachedMediaMaxLimitsErrorState();
+          return;
+        }
         selectedEntities.add(event.entity);
       }
-      nestedScrollController.animateTo(
-        0,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.ease,
-      );
       yield PostAdSelectMediaState();
     } else if (event is ChangeDisplayModePostAdEvent) {
-      index++;
-      if (index >= ratios.length) index = 0;
+      aspectRatioIndex++;
+      if (aspectRatioIndex >= ratios.length) aspectRatioIndex = 0;
       yield PostAdChangeDisplayModeState();
     }
   }

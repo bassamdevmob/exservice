@@ -35,10 +35,6 @@ class _MainLayoutState extends State<MainLayout> {
       create: (context) => FavoritesCubit(),
       child: FavoritesLayout(),
     ),
-    BlocProvider(
-      create: (context) => PostAdBloc(),
-      child: PostAdLayout(),
-    ),
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ChatsListBloc()),
@@ -119,9 +115,22 @@ class _MainLayoutState extends State<MainLayout> {
         ],
         initialActiveIndex: _index,
         onTap: (int i) {
-          setState(() {
-            _index = i;
-          });
+          if (i < 2) {
+            setState(() {
+              _index = i;
+            });
+          } else if (i == 2) {
+            Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) => BlocProvider(
+                create: (context) => PostAdBloc(),
+                child: PostAdLayout(),
+              ),
+            ));
+          } else {
+            setState(() {
+              _index = i - 1;
+            });
+          }
         },
       ),
     );

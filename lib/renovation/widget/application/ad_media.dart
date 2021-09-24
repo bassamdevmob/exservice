@@ -31,7 +31,6 @@ class AdGallery extends StatelessWidget {
           );
         }
         return Carousel(
-          boxFit: BoxFit.cover,
           images: List.generate(medias.length, (index) {
             if (medias[index].type == 2)
               return AppVideo.network('${medias[index].link}');
@@ -43,6 +42,7 @@ class AdGallery extends StatelessWidget {
                   Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
             );
           }),
+          boxFit: BoxFit.cover,
           autoplay: false,
           indicatorBgPadding: 10,
           dotColor: Colors.grey,

@@ -9,6 +9,8 @@ class PostAdReceiveState extends PostAdState {}
 
 class PostAdErrorState extends PostAdState {}
 
+class PostAdReachedMediaMaxLimitsErrorState extends PostAdState {}
+
 class PostAdSelectMediaState extends PostAdState {}
 
 class PostAdChangeDisplayModeState extends PostAdState {}

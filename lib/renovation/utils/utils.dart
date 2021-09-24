@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
+  static String formatDurationFromInt(int duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration ~/ 60);
+    String twoDigitSeconds = twoDigits(duration % 60);
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
   static String formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));

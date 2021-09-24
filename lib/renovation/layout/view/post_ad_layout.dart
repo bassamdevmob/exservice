@@ -1,13 +1,20 @@
-import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:badges/badges.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_font_size.dart';
+import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/animated_cross_icon.dart';
+import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class PostAdLayout extends StatefulWidget {
@@ -27,159 +34,275 @@ class _PostAdLayoutState extends State<PostAdLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostAdBloc, PostAdState>(
-      buildWhen: (_, current) =>
-          current is PostAdAwaitState ||
-          current is PostAdReceiveState ||
-          current is PostAdSelectMediaState ||
-          current is PostAdErrorState,
-      builder: (context, state) {
-        if (state is PostAdAwaitState) {
-          return Center(child: CupertinoActivityIndicator());
+    return BlocListener<PostAdBloc, PostAdState>(
+      listenWhen: (_, current) =>
+          current is PostAdReachedMediaMaxLimitsErrorState,
+      listener: (context, state) {
+        if (state is PostAdReachedMediaMaxLimitsErrorState) {
+          Fluttertoast.showToast(
+            msg: AppLocalization.of(context).trans("reached_max_media_limits"),
+          );
         }
-        return NestedScrollView(
-          controller: _bloc.nestedScrollController,
-          headerSliverBuilder: (context, _) {
-            return [
-              SliverStack(
-                children: [
-                  SliverToBoxAdapter(
-                    child: AspectRatio(
-                      aspectRatio: ratios.first.value,
-                      child: FutureBuilder<File>(
-                        future: _bloc.selectedEntities.first.file,
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(child: CupertinoActivityIndicator());
-                          }
-                          return BlocBuilder<PostAdBloc, PostAdState>(
-                            buildWhen: (_, current) =>
-                                current is PostAdChangeDisplayModeState,
-                            builder: (context, state) {
-                              return Center(
-                                child: AspectRatio(
-                                  aspectRatio: _bloc.aspectRatio.value,
-                                  child: Image.file(
-                                    snapshot.data,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  SliverPositioned.directional(
-                    bottom: 20,
-                    start: 20,
-                    textDirection: Directionality.of(context),
-                    child: BlocBuilder<PostAdBloc, PostAdState>(
-                      buildWhen: (_, current) =>
-                          current is PostAdChangeDisplayModeState,
-                      builder: (context, state) {
-                        print(_bloc.index);
-                        return GestureDetector(
-                          onTap: () {
-                            _bloc.add(ChangeDisplayModePostAdEvent());
-                          },
-                          child: AnimatedCrossIcon(
-                            startIcon: CupertinoIcons.viewfinder_circle,
-                            endIcon: CupertinoIcons.viewfinder_circle_fill,
-                            value: _bloc.index == 0,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SliverPinnedHeader(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.black.withOpacity(0.2),
-                  ),
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: AppColors.black.withOpacity(0.8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                AppLocalization.of(context).trans("next"),
-                              ),
-                              Icon(
-                                CupertinoIcons.chevron_right,
-                                color: AppColors.white,
-                                size: AppFontSize.MEDIUM,
-                              ),
-                            ],
-                          ),
-                          onPressed: () {},
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.white,
+          iconTheme: IconThemeData(color: AppColors.blue),
+          centerTitle: true,
+          title: Text(
+            AppLocalization.of(context).trans('app_name'),
+            style: AppTextStyle.largeBlack,
+          ),
+          actions: [
+            Center(
+              child: getNextButton(),
+            ),
+          ],
+        ),
+        body: BlocBuilder<PostAdBloc, PostAdState>(
+          buildWhen: (_, current) =>
+              current is PostAdAwaitState ||
+              current is PostAdReceiveState ||
+              current is PostAdSelectMediaState ||
+              current is PostAdErrorState,
+          builder: (context, state) {
+            if (state is PostAdAwaitState) {
+              return Center(child: CupertinoActivityIndicator());
+            }
+            return NestedScrollView(
+              controller: _bloc.nestedScrollController,
+              headerSliverBuilder: (context, _) {
+                return [
+                  SliverStack(
+                    children: [
+                      SliverToBoxAdapter(
+                        child: AspectRatio(
+                          aspectRatio: ratios.first.value,
+                          child: getSlider(),
                         ),
-                      ],
-                    ),
+                      ),
+                      SliverPositioned.directional(
+                        bottom: 20,
+                        start: 20,
+                        textDirection: Directionality.of(context),
+                        child: BlocBuilder<PostAdBloc, PostAdState>(
+                          buildWhen: (_, current) =>
+                              current is PostAdChangeDisplayModeState,
+                          builder: (context, state) {
+                            return GestureDetector(
+                              onTap: () {
+                                _bloc.add(ChangeDisplayModePostAdEvent());
+                              },
+                              child: AnimatedCrossIcon(
+                                startIcon: CupertinoIcons.viewfinder_circle,
+                                endIcon: CupertinoIcons.viewfinder_circle_fill,
+                                value: _bloc.aspectRatioIndex == 0,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
+                ];
+              },
+              body: GridView.builder(
+                padding: EdgeInsets.only(
+                  right: 2,
+                  left: 2,
+                  bottom: 30,
+                ),
+                itemCount: _bloc.media.length,
+                itemBuilder: (context, index) {
+                  return getImageWidget(_bloc.media[index]);
+                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 1,
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 2,
                 ),
               ),
-            ];
+            );
           },
-          body: GridView.builder(
-            padding: EdgeInsets.only(
-              right: 2,
-              left: 2,
-              bottom: 30,
-            ),
-            itemCount: _bloc.media.length,
-            itemBuilder: (context, index) {
-              return FutureBuilder<File>(
-                future: _bloc.media[index].file,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CupertinoActivityIndicator(),
-                    );
+        ),
+      ),
+    );
+  }
+
+  Widget getImageWidget(AssetEntity entity) {
+    var selected = _bloc.selectedEntities.contains(entity);
+    return FutureBuilder<Uint8List>(
+      future: _bloc.getThumbnail(entity),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CustomShimmer.normal();
+        }
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: AnimatedPadding(
+                padding: EdgeInsets.all(selected ? 10 : 0),
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                child: Builder(builder: (context) {
+                  var image = Image.memory(
+                    snapshot.data,
+                    fit: BoxFit.cover,
+                  );
+                  if (entity.type == AssetType.image) {
+                    return image;
                   }
-                  var selected = _bloc.selectedEntities.contains(
-                    _bloc.media[index],
-                  );
-                  return GestureDetector(
-                    onTap: () {
-                      _bloc.add(SelectMediaPostAdEvent(_bloc.media[index]));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(selected ? 4 : 0),
-                      child: Image.file(
-                        snapshot.data,
-                        fit: BoxFit.cover,
-                        colorBlendMode: BlendMode.darken,
-                        color:
-                            selected ? AppColors.black.withOpacity(0.5) : null,
+                  return Stack(
+                    children: [
+                      Positioned.fill(child: image),
+                      Positioned.directional(
+                        textDirection: Directionality.of(context),
+                        start: 5,
+                        bottom: 5,
+                        child: getVideoDurationThumbnail(entity.duration),
                       ),
-                    ),
+                    ],
                   );
-                },
-              );
-            },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 1,
-              crossAxisCount: 3,
-              mainAxisSpacing: 2,
-              crossAxisSpacing: 2,
+                }),
+              ),
             ),
-          ),
+            Positioned.directional(
+              top: 5,
+              end: 5,
+              textDirection: Directionality.of(context),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  _bloc.add(SelectMediaPostAdEvent(entity));
+                },
+                child: Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                    color: selected ? AppColors.blue : AppColors.transparent,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: selected ? AppColors.deepGray : AppColors.white,
+                    ),
+                  ),
+                  child: selected
+                      ? Center(
+                          child: Text(
+                            "${_bloc.selectedEntities.indexOf(entity) + 1}",
+                            style: AppTextStyle.smallWhite,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ],
         );
+      },
+    );
+  }
+
+  // Widget getThumbnail(AssetEntity entity){
+  //   if(entity)
+  // }
+
+  Widget getSlider() {
+    return BlocBuilder<PostAdBloc, PostAdState>(
+      buildWhen: (_, current) => current is PostAdChangeDisplayModeState,
+      builder: (context, state) {
+        var selected = _bloc.getSelectedMedias();
+        return Carousel(
+          boxFit: BoxFit.cover,
+          autoplay: false,
+          indicatorBgPadding: 10,
+          dotColor: Colors.grey,
+          dotIncreasedColor: AppColors.blue,
+          dotBgColor: Colors.transparent,
+          overlayShadowSize: 5.0,
+          dotSpacing: 8,
+          dotSize: 3.0,
+          images: List.generate(selected.length, (index) {
+            var entity = selected[index];
+            return FutureBuilder<Uint8List>(
+              future: _bloc.getThumbnail(entity),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CupertinoActivityIndicator());
+                }
+                return Center(
+                  child: AspectRatio(
+                    aspectRatio: _bloc.aspectRatio.value,
+                    child: Image.memory(
+                      snapshot.data,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
+        );
+      },
+    );
+  }
+
+  Widget getVideoDurationThumbnail(int duration) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.black.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 5,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              CupertinoIcons.play_arrow_solid,
+              color: AppColors.white,
+              size: AppFontSize.X_SMALL,
+            ),
+            SizedBox(width: 2),
+            Text(
+              "${Utils.formatDurationFromInt(duration)}",
+              style: AppTextStyle.thumbnail,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getNextButton() {
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: BlocBuilder<PostAdBloc, PostAdState>(
+          buildWhen: (_, current) => current is PostAdSelectMediaState,
+          builder: (context, state) {
+            return Badge(
+              position: BadgePosition.topEnd(top: -12),
+              badgeColor: AppColors.blue,
+              badgeContent: Text(
+                "${_bloc.selectedEntities.length}",
+                style: AppTextStyle.smallWhite,
+              ),
+              child: Text(
+                AppLocalization.of(context).trans("next"),
+                style: AppTextStyle.largeBlue,
+              ),
+            );
+          },
+        ),
+      ),
+      onTap: () {
+        if (_bloc.selectedEntities.length < 1) {
+          Fluttertoast.showToast(
+            msg: AppLocalization.of(context).trans("choose_one_media_at_least"),
+          );
+        }
       },
     );
   }

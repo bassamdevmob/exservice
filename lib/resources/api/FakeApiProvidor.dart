@@ -30,7 +30,7 @@ class FakeApiProvider extends ApiProviderDelegate {
 
   final random = Random();
   final video =
-      "https://firebasestorage.googleapis.com/v0/b/exservice-35ebc.appspot.com/o/rsv.mp4?alt=media&token=b29a83b1-68e1-4418-9875-d13bf343c8e1";
+      "https://mazwai.com/videvo_files/video/free/2016-04/small_watermarked/the_valley-graham_uheslki_preview.webm";
   final keys = [
     "real estate",
     "property",
@@ -165,7 +165,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   Media getRandomMedia() {
-    var num = faker.randomGenerator.integer(6, min: 0);
+    var num = faker.randomGenerator.integer(10, min: 0);
     if (num == 0) {
       return Media(
         id: faker.randomGenerator.integer(100),

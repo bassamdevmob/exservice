@@ -72,6 +72,13 @@ class AppTextStyle {
     color: Colors.white,
   );
 
+  static final thumbnail = GoogleFonts.cairo(
+    fontSize: AppFontSize.X_SMALL,
+    color: Colors.white,
+    height: 1.5,
+    fontWeight: FontWeight.w500,
+  );
+
   static final xSmallWhiteBold = GoogleFonts.cairo(
     fontSize: AppFontSize.X_SMALL,
     color: Colors.white,

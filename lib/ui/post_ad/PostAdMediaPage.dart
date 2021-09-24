@@ -32,38 +32,22 @@ class PostAdMediaPage extends StatefulWidget {
   _PostAdMediaPageState createState() => _PostAdMediaPageState();
 }
 
-class _PostAdMediaPageState extends State<PostAdMediaPage>
-    with WidgetsBindingObserver {
+class _PostAdMediaPageState extends State<PostAdMediaPage> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _mediaPusher = StatePusher<void>.behavior();
   final picker = ImagePicker();
-
-  //
-  // void refresh(){
-  //   setState(() {});
-  // }
 
   @override
   void initState() {
     if (widget.details.media == null) widget.details.media = [];
     _descriptionController.text = widget.details.description;
     _titleController.text = widget.details.title;
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      FocusScope.of(context).unfocus();
-    }
-  }
-
-  @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _mediaPusher.dispose();
     _titleController.dispose();
     _descriptionController.dispose();

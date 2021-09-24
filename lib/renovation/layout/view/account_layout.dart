@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
 
 class AccountLayout extends StatefulWidget {
+  static final name = "account";
   @override
   _AccountLayoutState createState() => _AccountLayoutState();
 }
