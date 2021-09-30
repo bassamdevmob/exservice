@@ -1,3 +1,4 @@
+import 'package:exservice/helper/AppConstant.dart';
 import 'package:exservice/helper/Enums.dart';
 import 'package:exservice/helper/Utils.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
@@ -8,17 +9,18 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/renovation/widget/cards/grid_ad_card.dart';
 import 'package:exservice/renovation/widget/cards/list_ad_card.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
-import 'package:exservice/widget/application/HelperWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -108,10 +110,16 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                 end: Alignment.bottomRight,
                               ),
                               child: ClipOval(
-                                child: constructImageProvider(
-                                  NetworkImage(
-                                      "${_bloc.publisher.user.profilePic}"),
-                                  key: Key(_bloc.publisher.user.profilePic),
+                                child: OctoImage(
+                                  fit: BoxFit.cover,
+                                  image:
+                                  NetworkImage(_bloc.publisher.user.profilePic),
+                                  progressIndicatorBuilder: (context, _) =>
+                                  simpleShimmer,
+                                  errorBuilder: (context, e, _) => Image.asset(
+                                    AppConstant.placeholder,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),

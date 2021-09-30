@@ -6,11 +6,12 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/extensions.dart';
 import 'package:exservice/renovation/utils/global.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
-import 'package:exservice/widget/application/HelperWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:octo_image/octo_image.dart';
 
 class NotificationsLayout extends StatefulWidget {
   @override
@@ -71,11 +72,12 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 radius: dimensions / 2,
                 strokeWidth: 1,
                 child: ClipOval(
-                  child: constructImageProvider(
-                    NetworkImage(
-                      "${model.ad.owner.profilePic}",
-                    ),
-                    placeholder: Container(
+                  child: OctoImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(model.ad.owner.profilePic),
+                    progressIndicatorBuilder: (context, progress) =>
+                        simpleShimmer,
+                    errorBuilder: (context, error, stacktrace) => Container(
                       color: AppColors.grayAccent,
                       child: Center(
                         child: Text(

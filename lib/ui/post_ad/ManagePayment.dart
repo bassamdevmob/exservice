@@ -6,10 +6,10 @@ import 'package:exservice/renovation/bloc/application_bloc/application_cubit.dar
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:exservice/ui/post_ad/PaymentWebView.dart';
-import 'package:exservice/widget/application/HelperWidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,12 +116,16 @@ class _ManagePaymentState extends State<ManagePayment> {
           stream: _model.notifier.stream,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return ReloadPlaceHolder(
-                color: AppColors.blue,
-                text: snapshot.error.toString(),
-                onTap: () {
-                  _model.fetchPaymentsOptions(context);
-                },
+              return Center(
+                child: ReloadWidget.error(
+                  content: Text(
+                    snapshot.error.toString(),
+                    textAlign: TextAlign.center,
+                  ),
+                  onPressed: () {
+                    _model.fetchPaymentsOptions(context);
+                  },
+                ),
               );
             }
             if (_model.loading) {
@@ -131,12 +135,16 @@ class _ManagePaymentState extends State<ManagePayment> {
             }
             if (_model.paymentOptions == null ||
                 _model.paymentOptions.isEmpty) {
-              return ReloadPlaceHolder(
-                color: AppColors.blue,
-                text: AppLocalization.of(context).trans('noData'),
-                onTap: () {
-                  _model.fetchPaymentsOptions(context);
-                },
+              return Center(
+                child: ReloadWidget.empty(
+                  content: Text(
+                    AppLocalization.of(context).trans('noData'),
+                    textAlign: TextAlign.center,
+                  ),
+                  onPressed: () {
+                    _model.fetchPaymentsOptions(context);
+                  },
+                ),
               );
             }
             return Column(
