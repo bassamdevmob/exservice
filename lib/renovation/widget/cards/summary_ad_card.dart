@@ -1,4 +1,5 @@
 import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/default/ads_list_bloc/ads_list_cubit.dart';
 import 'package:exservice/renovation/layout/ads_list_layout.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
@@ -60,7 +61,7 @@ class SummaryAdCard extends StatelessWidget {
                     progressIndicatorBuilder: (context, progress) =>
                         simpleShimmer,
                     errorBuilder: (context, error, stacktrace) =>
-                        Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
+                        Image.asset(PLACEHOLDER, fit: BoxFit.cover),
                   ),
                 ),
               ),
@@ -84,14 +85,14 @@ class SummaryAdCard extends StatelessWidget {
       image: NetworkImage(image),
       progressIndicatorBuilder: (context, progress) => simpleShimmer,
       errorBuilder: (context, error, stacktrace) =>
-          Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
+          Image.asset(PLACEHOLDER, fit: BoxFit.cover),
     );
   }
 
   Widget getContent(BuildContext context) {
     switch (images.length) {
       case 0:
-        return Image.asset(AppConstant.placeholder, fit: BoxFit.cover);
+        return Image.asset(PLACEHOLDER, fit: BoxFit.cover);
       case 1:
         return getImage(images[0]);
       case 2:

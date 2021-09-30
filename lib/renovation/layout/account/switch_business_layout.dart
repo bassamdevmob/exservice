@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/account/switch_business_bloc/switch_business_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/main_layout.dart';
@@ -100,7 +100,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                 progressIndicatorBuilder: (context, _) =>
                                     simpleShimmer,
                                 errorBuilder: (context, e, _) => Image.asset(
-                                  AppConstant.placeholder,
+                                  PLACEHOLDER,
                                   fit: BoxFit.cover,
                                 ),
                               ),

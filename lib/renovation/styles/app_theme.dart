@@ -3,13 +3,13 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 final ThemeData appTheme = ThemeData(
-  accentColor: AppColors.blue,
+  colorScheme: ColorScheme.light(
+    secondary: AppColors.blue,
+  ),
   appBarTheme: AppBarTheme(
     color: AppColors.white,
     elevation: 0,
-    textTheme: TextTheme(
-      headline6: AppTextStyle.xxxLargeBlack,
-    ),
+    titleTextStyle: AppTextStyle.xxxLargeBlack,
   ),
   iconTheme: IconThemeData(color: AppColors.black, size: 25),
   textTheme: TextTheme(

@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/GetChatUsersModel.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
@@ -34,7 +34,7 @@ class ChatCard extends StatelessWidget {
             image: NetworkImage(chatter.user.profilePic),
             progressIndicatorBuilder: (context, _) => simpleShimmer,
             errorBuilder: (context, e, _) => Image.asset(
-              AppConstant.placeholder,
+              PLACEHOLDER,
               fit: BoxFit.cover,
             ),
           ),

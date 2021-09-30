@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
@@ -52,7 +52,7 @@ class GridAdCard extends StatelessWidget {
                   image: NetworkImage(ad.firstImage),
                   progressIndicatorBuilder: (context, _) => simpleShimmer,
                   errorBuilder: (context, e, _) => Image.asset(
-                    AppConstant.placeholder,
+                    PLACEHOLDER,
                     fit: BoxFit.cover,
                   ),
                 ),

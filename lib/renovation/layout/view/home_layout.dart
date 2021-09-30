@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
@@ -183,7 +183,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                   image: NetworkImage(_bloc.categories[index].image),
                   progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                   errorBuilder: (ctx, e, _) =>
-                      Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
+                      Image.asset(PLACEHOLDER, fit: BoxFit.cover),
                 ),
                 onTap: () {
                   _bloc.add(HomeSelectCategoryEvent(

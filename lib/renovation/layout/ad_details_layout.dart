@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
@@ -92,7 +92,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                           progressIndicatorBuilder: (context, _) =>
                               simpleShimmer,
                           errorBuilder: (context, e, _) => Image.asset(
-                            AppConstant.placeholder,
+                            PLACEHOLDER,
                             fit: BoxFit.cover,
                           ),
                         );

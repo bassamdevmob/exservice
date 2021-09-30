@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/helper/Enums.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
 import 'package:exservice/renovation/bloc/default/publisher_bloc/publisher_cubit.dart';
@@ -117,7 +117,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                   progressIndicatorBuilder: (context, _) =>
                                   simpleShimmer,
                                   errorBuilder: (context, e, _) => Image.asset(
-                                    AppConstant.placeholder,
+                                    PLACEHOLDER,
                                     fit: BoxFit.cover,
                                   ),
                                 ),

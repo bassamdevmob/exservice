@@ -1,5 +1,5 @@
 import 'package:exservice/bloc/StatePusher.dart';
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/auth/Intro_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
@@ -94,7 +94,7 @@ class _BookMarkState extends State<BookMark> {
               });
             },
             child: SvgPicture.asset(
-              AppConstant.bookmarkSvg,
+              "assets/svg/bookmark.svg",
               semanticsLabel: 'bookmark',
               color: snapshot.data ? AppColors.black : null,
             ),

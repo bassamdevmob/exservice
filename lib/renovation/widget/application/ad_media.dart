@@ -1,5 +1,5 @@
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
@@ -39,7 +39,7 @@ class AdGallery extends StatelessWidget {
               image: NetworkImage(medias[index].link),
               progressIndicatorBuilder: (ctx, _) => simpleShimmer,
               errorBuilder: (context, e, _) =>
-                  Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
+                  Image.asset(PLACEHOLDER, fit: BoxFit.cover),
             );
           }),
           boxFit: BoxFit.cover,

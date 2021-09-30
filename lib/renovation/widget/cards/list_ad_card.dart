@@ -1,4 +1,4 @@
-import 'package:exservice/helper/AppConstant.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/default/publisher_bloc/publisher_cubit.dart';
@@ -58,7 +58,7 @@ class ListAdCard extends StatelessWidget {
                       image: NetworkImage(ad.owner.profilePic),
                       progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                       errorBuilder: (ctx, e, _) => Image.asset(
-                          AppConstant.placeholder,
+                          PLACEHOLDER,
                           fit: BoxFit.cover),
                     ),
                   ),
