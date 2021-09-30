@@ -2,12 +2,12 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_font_size.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 import '../../helper/AppConstant.dart';
-import '../component/AppShimmers.dart';
 
 Widget constructImageProvider(ImageProvider image,
     {Key key, Widget placeholder}) {
@@ -16,7 +16,7 @@ Widget constructImageProvider(ImageProvider image,
     fit: BoxFit.cover,
     image: image,
     progressIndicatorBuilder: (context, progress) {
-      return CustomShimmer.normal();
+      return simpleShimmer;
     },
     errorBuilder: (context, error, stacktrace) =>
         placeholder ??

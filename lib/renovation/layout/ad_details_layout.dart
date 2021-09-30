@@ -10,20 +10,20 @@ import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/utils/global.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
+import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
 import 'package:exservice/widget/application/BookMark.dart';
 import 'package:exservice/widget/application/MoreAdInfo.dart';
 import 'package:exservice/widget/application/OwnerAdHeader.dart';
-import 'package:exservice/renovation/widget/button/app_button.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
-import 'package:exservice/widget/component/ExpandableText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:readmore/readmore.dart';
 
 class AdDetailsLayout extends StatefulWidget {
   const AdDetailsLayout({Key key}) : super(key: key);
@@ -90,7 +90,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                           fit: BoxFit.cover,
                           image: NetworkImage(_bloc.details.media[index].link),
                           progressIndicatorBuilder: (context, _) =>
-                              CustomShimmer.normal(),
+                              simpleShimmer,
                           errorBuilder: (context, e, _) => Image.asset(
                             AppConstant.placeholder,
                             fit: BoxFit.cover,
@@ -143,7 +143,19 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         textAlign: TextAlign.left,
                         style: AppTextStyle.mediumBlueBold,
                       ),
-                      ExpandableText(_bloc.details.description),
+                      ReadMoreText(
+                        _bloc.details.description,
+                        style: AppTextStyle.largeBlack,
+                        lessStyle: AppTextStyle.smallBlue,
+                        moreStyle: AppTextStyle.smallBlue,
+                        trimLines: 2,
+                        colorClickableText: AppColors.blue,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText:
+                            AppLocalization.of(context).trans("more"),
+                        trimExpandedText:
+                            AppLocalization.of(context).trans("less"),
+                      ),
                       if (_bloc.details.town != null)
                         Text(
                           "${_bloc.details.town.country}, ${_bloc.details.town.name}",

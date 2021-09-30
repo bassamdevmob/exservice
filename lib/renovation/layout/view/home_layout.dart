@@ -4,14 +4,16 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/application/animated_avatar.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/cards/summary_ad_card.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeLayout extends StatefulWidget {
   @override
@@ -141,10 +143,18 @@ class _HomeLayoutState extends State<HomeLayout> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(2.5),
-                          child: CustomShimmer.circular(),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300],
+                            highlightColor: Colors.grey[100],
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
                       Text(
                         '${AppLocalization.of(context).trans('loading')} ..',
                         style: AppTextStyle.mediumGray,
@@ -171,7 +181,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                 image: OctoImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(_bloc.categories[index].image),
-                  progressIndicatorBuilder: (ctx, _) => CustomShimmer.normal(),
+                  progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                   errorBuilder: (ctx, e, _) =>
                       Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
                 ),

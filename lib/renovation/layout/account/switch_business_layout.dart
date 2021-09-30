@@ -5,8 +5,8 @@ import 'package:exservice/renovation/layout/main_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,7 +98,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                 image:
                                     NetworkImage(DataStore.instance.user.logo),
                                 progressIndicatorBuilder: (context, _) =>
-                                    CustomShimmer.normal(),
+                                    simpleShimmer,
                                 errorBuilder: (context, e, _) => Image.asset(
                                   AppConstant.placeholder,
                                   fit: BoxFit.cover,

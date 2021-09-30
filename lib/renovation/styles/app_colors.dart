@@ -28,7 +28,6 @@ class AppColors {
   static final lightGray = Color(0xFF999999);
   static final transparent = Color(0x00000000);
 
-
 //  static const none = Color(0x00000000);
 //   static const primaryBackground = Color.fromARGB(255, 255, 255, 255);
 //   static const primaryElement = Color.fromARGB(255, 130, 130, 129);

@@ -1,7 +1,6 @@
 import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
-import 'package:exservice/renovation/styles/app_font_size.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
@@ -93,97 +92,96 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
             ),
           ),
           SizedBox(height: size.height * 0.02),
-          getPicker(
-            onTap: () {
-              var mediaQuery = MediaQuery.of(context);
-              showCupertinoModalBottomSheet(
-                context: context,
-                topRadius: Radius.circular(20),
-                builder: (ctx) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: Utils.verticalSpace(mediaQuery)),
-                        LineBottomSheetWidget(),
-                        SizedBox(height: Utils.verticalSpace(mediaQuery)),
-                        Material(
-                          child: Wrap(
-                            children: [
-                              InputChip(label: Text("1 Room")),
-                              InputChip(label: Text("2 Room")),
-                              InputChip(label: Text("3 Room")),
-                              InputChip(label: Text("4 Room")),
-                              InputChip(label: Text("5 Room")),
-                              InputChip(label: Text("6 Room")),
-                              InputChip(label: Text("7 Room")),
-                              InputChip(label: Text("8 Room")),
-                              InputChip(label: Text("9 Room")),
-                              InputChip(label: Text("More")),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
+          Row(
+            children: [
+              Expanded(
+                child: getPicker(
+                  onTap: pick,
+                ),
+              ),
+              Expanded(
+                child: getPicker(
+                  onTap: pick,
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
+  pick() {
+    var mediaQuery = MediaQuery.of(context);
+    showCupertinoModalBottomSheet(
+      context: context,
+      topRadius: Radius.circular(20),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: Utils.verticalSpace(mediaQuery)),
+              LineBottomSheetWidget(),
+              SizedBox(height: Utils.verticalSpace(mediaQuery)),
+              Material(
+                child: Wrap(
+                  children: [
+                    InputChip(label: Text("1 Room")),
+                    InputChip(label: Text("2 Room")),
+                    InputChip(label: Text("3 Room")),
+                    InputChip(label: Text("4 Room")),
+                    InputChip(label: Text("5 Room")),
+                    InputChip(label: Text("6 Room")),
+                    InputChip(label: Text("7 Room")),
+                    InputChip(label: Text("8 Room")),
+                    InputChip(label: Text("9 Room")),
+                    InputChip(label: Text("More")),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget getPicker({VoidCallback onTap}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Material(
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(5),
-        elevation: 2,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalization.of(context).trans("rooms"),
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      Text(
-                        "5 rooms",
-                        style: AppTextStyle.mediumGray,
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  CupertinoIcons.chevron_right,
-                  color: AppColors.blue,
-                  size: AppFontSize.XXX_LARGE,
-                ),
-              ],
-            ),
+        shape: BoxShape.circle,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalization.of(context).trans("rooms"),
+                textAlign: TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              Text(
+                "5 rooms",
+                style: AppTextStyle.mediumGray,
+              ),
+            ],
           ),
         ),
       ),

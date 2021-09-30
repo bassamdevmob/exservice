@@ -5,15 +5,13 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/extensions.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:exservice/ui/personal_account/edit_property/EditBio.dart';
 import 'package:exservice/ui/personal_account/edit_property/EditEmail.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditLocation.dart';
 import 'package:exservice/ui/personal_account/edit_property/EditPassword.dart';
 import 'package:exservice/ui/personal_account/edit_property/EditPhoneNumber.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditType.dart';
 import 'package:exservice/ui/personal_account/edit_property/EditWebsite.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:exservice/widget/dialog/ConfirmDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +118,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                             fit: BoxFit.cover,
                             image: NetworkImage(user.profilePic),
                             progressIndicatorBuilder: (context, progress) {
-                              return CustomShimmer.normal();
+                              return simpleShimmer;
                             },
                             errorBuilder: (context, error, stacktrace) =>
                                 Container(
@@ -189,9 +187,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                   InkWell(
                     onTap: () {
                       //todo update
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => EditType(),
-                      ));
+                      // Navigator.of(context).push(CupertinoPageRoute(
+                      //   builder: (context) => EditType(),
+                      // ));
                     },
                     child: getInfoTile(
                       AppLocalization.of(context).trans('companyType'),
@@ -250,9 +248,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                 InkWell(
                   onTap: () {
                     //todo update
-                    Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => EditLocation(),
-                    ));
+                    // Navigator.of(context).push(CupertinoPageRoute(
+                    //   builder: (context) => EditLocation(),
+                    // ));
                   },
                   child: getInfoTile(
                     AppLocalization.of(context).trans('location'),

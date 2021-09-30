@@ -4,7 +4,7 @@ import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/global.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
@@ -32,7 +32,7 @@ class ChatCard extends StatelessWidget {
           child: OctoImage(
             fit: BoxFit.cover,
             image: NetworkImage(chatter.user.profilePic),
-            progressIndicatorBuilder: (context, _) => CustomShimmer.normal(),
+            progressIndicatorBuilder: (context, _) => simpleShimmer,
             errorBuilder: (context, e, _) => Image.asset(
               AppConstant.placeholder,
               fit: BoxFit.cover,

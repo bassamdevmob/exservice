@@ -5,8 +5,8 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/constant.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
@@ -37,7 +37,7 @@ class AdGallery extends StatelessWidget {
             return OctoImage(
               fit: BoxFit.cover,
               image: NetworkImage(medias[index].link),
-              progressIndicatorBuilder: (ctx, _) => CustomShimmer.normal(),
+              progressIndicatorBuilder: (ctx, _) => simpleShimmer,
               errorBuilder: (context, e, _) =>
                   Image.asset(AppConstant.placeholder, fit: BoxFit.cover),
             );

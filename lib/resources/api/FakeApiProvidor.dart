@@ -69,7 +69,7 @@ class FakeApiProvider extends ApiProviderDelegate {
       id: id ?? faker.randomGenerator.integer(100),
       appId: faker.randomGenerator.integer(10),
       title: faker.company.name(),
-      description: faker.lorem.sentence(),
+      description: faker.lorem.sentences(3).join(" "),
       isFree: faker.randomGenerator.integer(1),
       thumbnail: faker.image.image(
         keywords: keys,

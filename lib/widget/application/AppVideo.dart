@@ -6,7 +6,6 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_font_size.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
-import 'package:exservice/widget/buttons/CustomAppButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -204,15 +203,7 @@ class _VolumeButtonState extends AnimatedWidgetBaseState<VolumeButton> {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: _tween.evaluate(animation),
-      child: CustomAppButton(
-        key: ValueKey(_mute),
-        borderRadius: BorderRadius.circular(50),
-        color: AppColors.black.withOpacity(0.8),
-        child: Icon(
-          _mute ? Icons.volume_off : Icons.volume_up,
-          color: AppColors.white,
-          size: AppFontSize.LARGE,
-        ),
+      child: GestureDetector(
         onTap: _tween.evaluate(animation) != 1.0
             ? null
             : () {
@@ -226,6 +217,19 @@ class _VolumeButtonState extends AnimatedWidgetBaseState<VolumeButton> {
                   }
                 });
               },
+        child: Container(
+          key: ValueKey(_mute),
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: AppColors.black.withOpacity(0.8),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            _mute ? Icons.volume_off : Icons.volume_up,
+            color: AppColors.white,
+            size: AppFontSize.LARGE,
+          ),
+        ),
       ),
     );
   }

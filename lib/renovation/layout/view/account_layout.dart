@@ -12,8 +12,8 @@ import 'package:exservice/renovation/utils/extensions.dart';
 import 'package:exservice/renovation/widget/application/animated_avatar.dart';
 import 'package:exservice/renovation/widget/application/company_video.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +21,7 @@ import 'package:octo_image/octo_image.dart';
 
 class AccountLayout extends StatefulWidget {
   static final name = "account";
+
   @override
   _AccountLayoutState createState() => _AccountLayoutState();
 }
@@ -294,8 +295,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                     child: OctoImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(_bloc.profile.user.profilePic),
-                      progressIndicatorBuilder: (context, _) =>
-                          CustomShimmer.normal(),
+                      progressIndicatorBuilder: (context, _) => simpleShimmer,
                       errorBuilder: (context, e, _) => Container(
                         color: AppColors.grayAccent,
                         child: Center(

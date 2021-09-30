@@ -1,3 +1,4 @@
+import 'package:exservice/renovation/app.dart';
 import 'package:exservice/renovation/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
@@ -75,6 +76,7 @@ class _AppMaterialState extends State<AppMaterial> {
       child: BlocBuilder<ApplicationCubit, ApplicationState>(
         builder: (context, state) {
           return MaterialApp(
+            navigatorKey: Application.instance.globalKey,
             initialRoute: MainLayout.route,
             title: "ExService",
             routes: {

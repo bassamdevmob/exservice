@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/utils/utils.dart';
+import 'package:shimmer/shimmer.dart';
+
+final simpleShimmer = Shimmer.fromColors(
+  baseColor: Colors.grey[300],
+  highlightColor: Colors.grey[100],
+  child: ColoredBox(
+    color: Colors.white,
+  ),
+);
 
 class LineBottomSheetWidget extends StatelessWidget {
   @override

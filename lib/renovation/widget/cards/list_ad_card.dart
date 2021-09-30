@@ -10,8 +10,8 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/application/ad_details.dart';
 import 'package:exservice/renovation/widget/application/ad_media.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/BookMark.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,8 +56,7 @@ class ListAdCard extends StatelessWidget {
                     child: OctoImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(ad.owner.profilePic),
-                      progressIndicatorBuilder: (ctx, _) =>
-                          CustomShimmer.normal(),
+                      progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                       errorBuilder: (ctx, e, _) => Image.asset(
                           AppConstant.placeholder,
                           fit: BoxFit.cover),

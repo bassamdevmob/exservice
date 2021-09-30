@@ -8,7 +8,6 @@ import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part 'post_ad_event.dart';
-
 part 'post_ad_state.dart';
 
 class AspectRatioSnapshot {
@@ -24,7 +23,6 @@ const ratios = [
 ];
 
 class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
-  final ScrollController nestedScrollController = ScrollController();
   final titleController = TextEditingController();
   final detailsController = TextEditingController();
   final List<AssetEntity> selectedEntities = [];
@@ -46,7 +44,6 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   Future<void> close() {
     titleController.dispose();
     detailsController.dispose();
-    nestedScrollController.dispose();
     return super.close();
   }
 

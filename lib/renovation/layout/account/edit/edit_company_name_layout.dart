@@ -226,7 +226,7 @@ class _EditAccountFieldLayoutState extends State<EditAccountFieldLayout> {
                 builder: (context, state) {
                   return TextField(
                     // controller: _bloc.factory.controller,
-                    maxLines: 1,//todo fix every thing
+                    maxLines: 1, //todo fix every thing
                     decoration: InputDecoration(
                       // errorText: _bloc.errorMessage,
                       border: UnderlineInputBorder(

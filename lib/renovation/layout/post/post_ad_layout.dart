@@ -10,7 +10,7 @@ import 'package:exservice/renovation/styles/app_font_size.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/animated_cross_icon.dart';
-import 'package:exservice/widget/component/AppShimmers.dart';
+import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,7 +71,6 @@ class _PostAdLayoutState extends State<PostAdLayout> {
               return Center(child: CupertinoActivityIndicator());
             }
             return NestedScrollView(
-              controller: _bloc.nestedScrollController,
               headerSliverBuilder: (context, _) {
                 return [
                   SliverStack(
@@ -137,7 +136,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       future: _bloc.getThumbnail(entity),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CustomShimmer.normal();
+          return simpleShimmer;
         }
         return Stack(
           children: [
