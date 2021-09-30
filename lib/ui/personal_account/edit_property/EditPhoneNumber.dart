@@ -1,9 +1,9 @@
 import 'package:exservice/bloc/StatePusher.dart';
 import 'package:exservice/helper/AppConstant.dart';
-import 'package:exservice/helper/Utils.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/resources/AccountManager.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:exservice/ui/personal_account/edit_property/CompleteAccountUpdate.dart';

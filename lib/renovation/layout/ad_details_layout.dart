@@ -1,5 +1,4 @@
 import 'package:exservice/helper/AppConstant.dart';
-import 'package:exservice/helper/Utils.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/utils/global.dart';
+import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';

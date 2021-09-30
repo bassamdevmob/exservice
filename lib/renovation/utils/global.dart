@@ -8,3 +8,4 @@ final sqlFormatter = DateFormat("y-M-d");
 final dateFormatter = DateFormat("yyyy/MM/dd");
 final jmTimeFormatter = DateFormat.jm();
 final jmsTimeFormatter = DateFormat.jms();
+final phoneRegex = RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');

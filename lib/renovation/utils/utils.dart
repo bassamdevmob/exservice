@@ -1,7 +1,9 @@
+import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/utils/global.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class Utils {
+abstract class Utils {
   static String formatDurationFromInt(int duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     String twoDigitMinutes = twoDigits(duration ~/ 60);
@@ -16,61 +18,6 @@ class Utils {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  static EdgeInsets loginFormPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.height * (5 / 100),
-        top: mediaQuery.size.height * (10 / 100));
-  }
-
-  static EdgeInsets verificationPinCodePadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.height * (5 / 100),
-        top: mediaQuery.size.height * (10 / 100));
-  }
-
-  static EdgeInsets resetPasswordPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.height * (5 / 100),
-        top: mediaQuery.size.height * (2 / 100));
-  }
-
-  static EdgeInsets forgetPasswordPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.height * (5 / 100),
-        top: mediaQuery.size.height * (2 / 100));
-  }
-
-  static EdgeInsets verificationPinCodeBackButtonPadding(
-      MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-      left: 10,
-    );
-  }
-
-  static EdgeInsets paymentRequestPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100));
-  }
-
-  static EdgeInsets pendingCardMargin(MediaQueryData mediaQuery) {
-    return EdgeInsets.symmetric(
-        vertical: mediaQuery.size.width * (3 / 100),
-        horizontal: mediaQuery.size.width * (6 / 100));
-  }
-
-  static EdgeInsets pendingRequestPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.all(mediaQuery.size.width * (6 / 100));
-  }
-
   static EdgeInsets forgetPasswordBottomSheetPadding(
       MediaQueryData mediaQuery) {
     return EdgeInsets.only(
@@ -80,64 +27,16 @@ class Utils {
     );
   }
 
-  static EdgeInsets paymentRequestBottomSheetPadding(
-      MediaQueryData mediaQuery) {
-    return EdgeInsets.symmetric(
-      vertical: mediaQuery.size.height * (2 / 100),
-      horizontal: mediaQuery.size.width * (4 / 100),
-    );
-  }
-
-  static EdgeInsets aboutUsPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-      right: mediaQuery.size.width * (6 / 100),
-      left: mediaQuery.size.width * (6 / 100),
-      bottom: mediaQuery.size.width * (1.5 / 100),
-    );
-  }
-
-  static EdgeInsets contactUsPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.width * (6 / 100),
-        top: mediaQuery.size.width * (6 / 100));
-  }
-
   static double verticalSpace(MediaQueryData mediaQuery) {
     return mediaQuery.size.height * (2 / 100);
-  }
-
-  static double horizontalSpace(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (5 / 100);
   }
 
   static double iconSize(MediaQueryData mediaQuery) {
     return mediaQuery.size.width * (6 / 100);
   }
 
-  static double iconAppBarSize(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (7 / 100);
-  }
-
-  static double buttonBorderRadius(MediaQueryData mediaQuery) {
-    return mediaQuery.size.height * (1 / 100);
-  }
-
-  static EdgeInsets buttonContentPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.symmetric(vertical: mediaQuery.size.height * (2 / 100));
-  }
-
   static passwordValidatorWidth(MediaQueryData mediaQuery) {
     return mediaQuery.size.width * (15 / 100);
-  }
-
-  static profileFormPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (6 / 100),
-        left: mediaQuery.size.width * (6 / 100),
-        bottom: mediaQuery.size.height * (5 / 100),
-        top: mediaQuery.size.height * (1 / 100));
   }
 
   static BorderRadius bottomSheetBorderRadius(MediaQueryData mediaQuery) {
@@ -147,76 +46,42 @@ class Utils {
     );
   }
 
-  static double borderRadiusDropdownButton(MediaQueryData mediaQuery) {
-    return mediaQuery.size.height * (1 / 100);
-  }
-
-  static filterIconPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-        right: mediaQuery.size.width * (3 / 100),
-        left: mediaQuery.size.width * (3 / 100),
-        top: mediaQuery.size.width * (3 / 100),
-        bottom: mediaQuery.size.width * (3 / 100));
-  }
-
-  static double dayCardWidth(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (25 / 100);
-  }
-
-  static double dayCardHeight(MediaQueryData mediaQuery) {
-    return mediaQuery.size.height * (12.5 / 100);
-  }
-
-  static double dayBorderRadius(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (5 / 100);
-  }
-
-  static double pendingRadius(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (3 / 100);
-  }
-
-  static EdgeInsets dayCardMargin(MediaQueryData mediaQuery) {
-    return EdgeInsets.symmetric(
-        horizontal: mediaQuery.size.width * (2 / 100), vertical: 5);
-  }
-
-  static double iconBorderRadius(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (100 / 100);
-  }
-
-  static String formatDateTime(DateTime dateTime) {
-    final DateFormat formatter = DateFormat("dd/MM/yyyy");
-    return formatter.format(dateTime);
-  }
-
-  static String formatDateName(DateTime dateTime) {
-    final DateFormat formatter = DateFormat.yMMMMd('en_US');
-    return formatter.format(dateTime);
-  }
-
-  static String formatTime(DateTime dateTime) {
-    final DateFormat formatter = DateFormat.jm();
-    return formatter.format(dateTime);
-  }
-
   static double cardBorderRadius(mediaQuery) {
     return mediaQuery.size.height * (1.5 / 100);
   }
 
-  static double removeCardRadius(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (4 / 100);
+  static Future<void> launchWeb(BuildContext context, String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } else {
+      throw "${AppLocalization.of(context).trans("siteFailed")}: $url";
+    }
   }
 
-  static EdgeInsets appBarPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-      left: mediaQuery.size.width * (5 / 100),
-      right: mediaQuery.size.width * (5 / 100),
-      top: mediaQuery.size.height * (5 / 100),
-      bottom: mediaQuery.size.height * (2 / 100),
-    );
+  static Future<void> launchMail(BuildContext context, String mail) async {
+    final path =
+    Uri(scheme: 'mailto', path: mail, queryParameters: {'subject': 'hi '})
+        .toString();
+    if (await canLaunch(path)) {
+      await launch(path);
+    } else {
+      throw "${AppLocalization.of(context).trans("emailFailed")}: $mail";
+    }
   }
 
-  static EdgeInsets appBarHorizontalPadding(MediaQueryData mediaQuery) {
-    return EdgeInsets.symmetric(horizontal: mediaQuery.size.width * 0.05);
+  static Future<void> launchCall(BuildContext context, String number) async {
+    var path = "tel:$number";
+    if (await canLaunch(path)) {
+      await launch(path);
+    } else {
+      throw "${AppLocalization.of(context).trans("callFailed")}: $number";
+    }
   }
+
+  static bool isPhoneNumber(String value) =>
+      value != null && phoneRegex.hasMatch(value);
 }
