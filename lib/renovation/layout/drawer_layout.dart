@@ -3,6 +3,7 @@ import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/auth/Intro_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
+import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/change_language_bottom_sheet.dart';
 import 'package:exservice/renovation/widget/button/action_button.dart';
@@ -16,7 +17,12 @@ class DrawerLayout extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.white,
-        elevation: 0.0,
+        iconTheme: IconThemeData(color: AppColors.blue),
+        centerTitle: true,
+        title: Text(
+          AppLocalization.of(context).trans('app_name'),
+          style: AppTextStyle.largeBlack,
+        ),
       ),
       backgroundColor: AppColors.white,
       body: LayoutBuilder(

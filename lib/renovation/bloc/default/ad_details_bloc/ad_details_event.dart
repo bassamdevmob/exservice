@@ -4,3 +4,5 @@ part of 'ad_details_bloc.dart';
 abstract class AdDetailsEvent {}
 
 class FetchAdDetailsEvent extends AdDetailsEvent {}
+
+class SwitchSaveAdDetailsEvent extends AdDetailsEvent {}

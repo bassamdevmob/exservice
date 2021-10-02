@@ -1,10 +1,10 @@
-import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/account/switch_business_bloc/switch_business_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/main_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,33 +84,33 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                   buildWhen: (_, current) =>
                       current is SwitchBusinessValidationState,
                   builder: (context, state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        Center(
-                          child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: ClipOval(
-                              child: OctoImage(
-                                fit: BoxFit.cover,
-                                image:
-                                    NetworkImage(DataStore.instance.user.logo),
-                                progressIndicatorBuilder: (context, _) =>
-                                    simpleShimmer,
-                                errorBuilder: (context, e, _) => Image.asset(
-                                  PLACEHOLDER,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          Center(
+                            child: SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: ClipOval(
+                                child: OctoImage(
                                   fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      DataStore.instance.user.logo),
+                                  progressIndicatorBuilder: (context, _) =>
+                                      simpleShimmer,
+                                  errorBuilder: (context, e, _) => Image.asset(
+                                    PLACEHOLDER,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: TextField(
+                          SizedBox(height: 10),
+                          TextField(
                             controller: _bloc.companyNameController,
                             decoration: InputDecoration(
                               labelText: AppLocalization.of(context)
@@ -121,10 +121,8 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                               focusedBorder: focusedBorder,
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: TextField(
+                          SizedBox(height: 10),
+                          TextField(
                             controller: _bloc.websiteController,
                             keyboardType: TextInputType.url,
                             decoration: InputDecoration(
@@ -136,11 +134,8 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                               focusedBorder: focusedBorder,
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
-                          child: TextField(
+                          SizedBox(height: 10),
+                          TextField(
                             controller: _bloc.phoneNumberController,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
@@ -152,11 +147,8 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                               focusedBorder: focusedBorder,
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
-                          child: TextField(
+                          SizedBox(height: 10),
+                          TextField(
                             controller: _bloc.bioController,
                             decoration: InputDecoration(
                               labelText:
@@ -167,8 +159,8 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                               focusedBorder: focusedBorder,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   },
                 ),

@@ -491,7 +491,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchSaveAd(BuildContext context, int idId, bool checked) {
+  Future<void> fetchSaveAd(int id, bool value) {
     return Future.delayed(getDelayDuration());
   }
 

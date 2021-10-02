@@ -1,4 +1,3 @@
-import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
@@ -13,8 +12,8 @@ import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
+import 'package:exservice/renovation/widget/button/favorite_button.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
-import 'package:exservice/widget/application/BookMark.dart';
 import 'package:exservice/widget/application/MoreAdInfo.dart';
 import 'package:exservice/widget/application/OwnerAdHeader.dart';
 import 'package:flutter/cupertino.dart';
@@ -178,7 +177,19 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       Expanded(child: content),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: BookMark(_bloc.details.id, _bloc.details.saved),
+                        child: BlocBuilder<AdDetailsBloc, AdDetailsState>(
+                          buildWhen: (_, current) =>
+                              current is UpdateSaveAdDetailsState,
+                          builder: (context, state) {
+                            return FavoriteButton(
+                              active: _bloc.details.saved,
+                              onTap: () {
+                                _bloc.add(SwitchSaveAdDetailsEvent());
+                              },
+                            );
+                          },
+                        ),
+                        // child: BookMark(_bloc.details.id, _bloc.details.saved),
                       ),
                     ],
                   );

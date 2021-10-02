@@ -310,7 +310,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
   }
 
   Widget getBody() {
-    var profile = context.read<AccountBloc>().profile;
+    var profile = _bloc.publisher;
     switch (_bloc.format) {
       case DisplayFormat.grid:
         return GridView.count(

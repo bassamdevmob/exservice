@@ -7,6 +7,8 @@ class AdDetailsAwaitState extends AdDetailsState {}
 
 class AdDetailsReceivedState extends AdDetailsState {}
 
+class UpdateSaveAdDetailsState extends AdDetailsState {}
+
 class AdDetailsErrorState extends AdDetailsState {
   final String message;
 

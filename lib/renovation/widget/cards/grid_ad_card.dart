@@ -1,21 +1,37 @@
-import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/ad_details_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
-import 'package:exservice/widget/application/BookMark.dart';
+import 'package:exservice/renovation/widget/button/favorite_button.dart';
+import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:octo_image/octo_image.dart';
 
-class GridAdCard extends StatelessWidget {
+class GridAdCard extends StatefulWidget {
   final AdModel ad;
 
   const GridAdCard(this.ad, {Key key}) : super(key: key);
+
+  @override
+  State<GridAdCard> createState() => _GridAdCardState();
+}
+
+class _GridAdCardState extends State<GridAdCard> {
+  void onSave() {
+    setState(() {
+      widget.ad.saved = !widget.ad.saved;
+      GetIt.I
+          .get<ApiProviderDelegate>()
+          .fetchSaveAd(widget.ad.id, widget.ad.saved);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +41,7 @@ class GridAdCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => BlocProvider(
-              create: (context) => AdDetailsBloc(ad.id),
+              create: (context) => AdDetailsBloc(widget.ad.id),
               child: AdDetailsLayout(),
             ),
           ),
@@ -36,7 +52,7 @@ class GridAdCard extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Builder(builder: (context) {
-              String path = ad.firstImage;
+              String path = widget.ad.firstImage;
               if (path == null) {
                 return Center(
                   child: Text(
@@ -49,7 +65,7 @@ class GridAdCard extends StatelessWidget {
               return SizedBox.expand(
                 child: OctoImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(ad.firstImage),
+                  image: NetworkImage(widget.ad.firstImage),
                   progressIndicatorBuilder: (context, _) => simpleShimmer,
                   errorBuilder: (context, e, _) => Image.asset(
                     PLACEHOLDER,
@@ -71,24 +87,24 @@ class GridAdCard extends StatelessWidget {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${ad.attr.category.title}',
+                          text: '${widget.ad.attr.category.title}',
                           style: AppTextStyle.mediumBlackBold,
                         ),
                         TextSpan(
                           text:
-                              ' ${ad.attr.size} ${AppLocalization.of(context).trans("meter")}',
+                              ' ${widget.ad.attr.size} ${AppLocalization.of(context).trans("meter")}',
                           style: AppTextStyle.mediumBlack,
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    '${ad.attr.price} £',
+                    '${widget.ad.attr.price} £',
                     style: AppTextStyle.mediumBlueBold,
                   ),
                 ],
               );
-              if (DataStore.instance.user.id == ad.ownerId) {
+              if (DataStore.instance.user.id == widget.ad.ownerId) {
                 return body;
               }
               return Row(
@@ -97,7 +113,10 @@ class GridAdCard extends StatelessWidget {
                   Expanded(
                     child: body,
                   ),
-                  BookMark(ad.id, ad.saved),
+                  FavoriteButton(
+                    active: widget.ad.saved,
+                    onTap: onSave,
+                  ),
                 ],
               );
             }),

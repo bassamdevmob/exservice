@@ -1,4 +1,3 @@
-import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/default/publisher_bloc/publisher_cubit.dart';
@@ -7,20 +6,37 @@ import 'package:exservice/renovation/layout/ad_details_layout.dart';
 import 'package:exservice/renovation/layout/publisher_layout.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/widget/application/ad_details.dart';
 import 'package:exservice/renovation/widget/application/ad_media.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
-import 'package:exservice/widget/application/BookMark.dart';
+import 'package:exservice/renovation/widget/button/favorite_button.dart';
+import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:octo_image/octo_image.dart';
 
-class ListAdCard extends StatelessWidget {
+class ListAdCard extends StatefulWidget {
   final AdModel ad;
 
   const ListAdCard(this.ad, {Key key}) : super(key: key);
+
+  @override
+  State<ListAdCard> createState() => _ListAdCardState();
+}
+
+class _ListAdCardState extends State<ListAdCard> {
+  void onSave() {
+    setState(() {
+      widget.ad.saved = !widget.ad.saved;
+      GetIt.I
+          .get<ApiProviderDelegate>()
+          .fetchSaveAd(widget.ad.id, widget.ad.saved);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +49,7 @@ class ListAdCard extends StatelessWidget {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => PublisherCubit(ad.owner.id),
+                  create: (context) => PublisherCubit(widget.ad.owner.id),
                   child: PublisherLayout(),
                 ),
               ),
@@ -55,11 +71,10 @@ class ListAdCard extends StatelessWidget {
                   child: ClipOval(
                     child: OctoImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(ad.owner.profilePic),
+                      image: NetworkImage(widget.ad.owner.profilePic),
                       progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                      errorBuilder: (ctx, e, _) => Image.asset(
-                          PLACEHOLDER,
-                          fit: BoxFit.cover),
+                      errorBuilder: (ctx, e, _) =>
+                          Image.asset(PLACEHOLDER, fit: BoxFit.cover),
                     ),
                   ),
                 ),
@@ -69,11 +84,11 @@ class ListAdCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      ad.owner.name,
+                      widget.ad.owner.name,
                       style: AppTextStyle.largeBlackBold,
                     ),
                     Text(
-                      '${ad.owner.town.country}, ${ad.owner.town.name}',
+                      '${widget.ad.owner.town.country}, ${widget.ad.owner.town.name}',
                       style: AppTextStyle.largeBlack,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -90,27 +105,30 @@ class ListAdCard extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => AdDetailsBloc(ad.id),
+                  create: (context) => AdDetailsBloc(widget.ad.id),
                   child: AdDetailsLayout(),
                 ),
               ),
             );
           },
-          child: AdGallery(ad),
+          child: AdGallery(widget.ad),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Builder(builder: (context) {
-            if (DataStore.instance.user.id == ad.ownerId) {
-              return AdDetails(ad);
+            if (DataStore.instance.user.id == widget.ad.ownerId) {
+              return AdDetails(widget.ad);
             }
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Expanded(child: AdDetails(ad)),
+                Expanded(child: AdDetails(widget.ad)),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: BookMark(ad.id, ad.saved),
+                  child: FavoriteButton(
+                    active: widget.ad.saved,
+                    onTap: onSave,
+                  ),
                 ),
               ],
             );

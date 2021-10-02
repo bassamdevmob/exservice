@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
 part 'ad_details_event.dart';
+
 part 'ad_details_state.dart';
 
 class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
@@ -33,6 +34,12 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
       } catch (e) {
         yield AdDetailsErrorState("$e");
       }
+    } else if (event is SwitchSaveAdDetailsEvent) {
+      details.saved = !details.saved;
+      yield UpdateSaveAdDetailsState();
+      GetIt.I
+          .get<ApiProviderDelegate>()
+          .fetchSaveAd(details.id, details.saved);
     }
   }
 }
