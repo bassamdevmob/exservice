@@ -5,7 +5,6 @@ import 'package:exservice/models/GetChatUsersModel.dart';
 import 'package:exservice/models/GetUserProfileModel.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
-import 'package:exservice/models/ReviewModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/models/common/Media.dart';
@@ -18,7 +17,6 @@ import 'package:exservice/models/options/GetOptionsModel.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/models/category.dart';
 import 'package:exservice/renovation/utils/enums.dart';
-import 'package:exservice/resources/ApiConstant.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
@@ -226,12 +224,6 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchAddInterest(
-      BuildContext context, NotificationValuesModel ad) {
-    return Future.delayed(getDelayDuration());
-  }
-
-  @override
   Future<bool> fetchCheckAccount(account) {
     return Future.delayed(
       getDelayDuration(),
@@ -259,11 +251,6 @@ class FakeApiProvider extends ApiProviderDelegate {
 
   @override
   Future<void> fetchDeleteAd(int adId) {
-    return Future.delayed(getDelayDuration());
-  }
-
-  @override
-  Future<void> fetchDeleteInterest(BuildContext context, id) {
     return Future.delayed(getDelayDuration());
   }
 
@@ -326,24 +313,6 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<List<Option>> fetchGetNumericalOptions(
-      BuildContext context, ConstOptions type) {
-    return Future.delayed(
-      getDelayDuration(),
-      () => List.generate(10, (index) => getRandomOption(numeric: true)),
-    );
-  }
-
-  @override
-  Future<List<Option>> fetchGetOptions(BuildContext context, ConstOptions type,
-      [int parentId]) {
-    return Future.delayed(
-      getDelayDuration(),
-      () => List.generate(10, (index) => getRandomOption()),
-    );
-  }
-
-  @override
   Future<List<Category>> fetchCategories() {
     return Future.delayed(
       getDelayDuration(),
@@ -360,15 +329,6 @@ class FakeApiProvider extends ApiProviderDelegate {
           ),
         ),
       ),
-    );
-  }
-
-  @override
-  Future<List<Option>> fetchGetTypesOptions(
-      BuildContext context, ConstOptions type) {
-    return Future.delayed(
-      getDelayDuration(),
-      () => List.generate(10, (index) => getRandomOption()),
     );
   }
 
@@ -510,8 +470,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<PostAdModel> fetchStoreAd(
-      BuildContext context, ReviewModel ad, bool isFree) {
+  Future<PostAdModel> fetchStoreAd(BuildContext context, bool isFree) {
     return Future.delayed(getDelayDuration(), () {
       return PostAdModel(
         code: 200,
@@ -568,8 +527,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<SimpleResponseModel> fetchUploadAdMedia(
-      int adId, ReviewMedia media, int isLast, progressCallback) {
+  Future<SimpleResponseModel> fetchUploadAdMedia(int adId, progressCallback) {
     int _current = 0;
     int _total = 100000;
     const oneSec = const Duration(milliseconds: 100);

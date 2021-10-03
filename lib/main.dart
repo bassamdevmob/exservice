@@ -7,7 +7,6 @@ import 'package:exservice/renovation/layout/auth/Intro_layout.dart';
 import 'package:exservice/renovation/layout/main_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_theme.dart';
-import 'package:exservice/resources/AccountManager.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:exservice/resources/api/FakeApiProvidor.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,6 @@ Future<void> initialize() async {
   await FirebaseMessagingHandler.instance.initialize();
   GetIt.I.allowReassignment = true;
   GetIt.I.registerSingleton<ApiProviderDelegate>(FakeApiProvider());
-  GetIt.I.registerSingleton<AccountManager>(AccountManager());
 }
 
 void main() async {

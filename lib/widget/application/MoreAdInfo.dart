@@ -1,32 +1,15 @@
 import 'dart:async';
 
 import 'package:expandable/expandable.dart';
-import 'package:exservice/models/ReviewModel.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/global.dart';
-import 'package:exservice/resources/ApiConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MoreAdInfo extends StatelessWidget {
-  MoreAdInfo.fromReviewModel(ReviewModel model, LatLng position)
-      : _option = model.choices[ConstOptions.options]?.title,
-        _type = (model.choices[ConstOptions.residential] ??
-                model.choices[ConstOptions.commercial])
-            ?.title,
-        _furniture = model.choices[ConstOptions.furniture]?.title,
-        _balcony = model.choices[ConstOptions.balcony]?.title,
-        _security = model.choices[ConstOptions.security]?.title,
-        _garage = model.choices[ConstOptions.garage]?.title,
-        _terrace = model.choices[ConstOptions.terrace]?.title,
-        _gym = model.choices[ConstOptions.gym]?.title,
-        _available = model.date,
-        _createdAt = DateTime.now(),
-        _position = position;
-
   MoreAdInfo.fromAdAttribute(AdModel ad, LatLng position)
       : _option = ad.attr.option.title,
         _type = ad.attr.category.title,
@@ -64,7 +47,7 @@ class MoreAdInfo extends StatelessWidget {
             header: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Text(
-                AppLocalization.of(context).trans('moreInfo'),
+                AppLocalization.of(context).trans('specifications'),
                 style: AppTextStyle.mediumBlack,
               ),
             ),
@@ -195,7 +178,7 @@ class MoreAdInfo extends StatelessWidget {
                   height: 100,
                   child: Center(
                     child: Text(
-                      AppLocalization.of(context).trans("noLocation"),
+                      AppLocalization.of(context).trans("location_not_available"),
                       style: AppTextStyle.largeBlack,
                     ),
                   ),

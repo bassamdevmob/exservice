@@ -15,7 +15,6 @@ import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/renovation/widget/button/favorite_button.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
 import 'package:exservice/widget/application/MoreAdInfo.dart';
-import 'package:exservice/widget/application/OwnerAdHeader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,37 +73,35 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
           }
           return ListView(
             children: <Widget>[
-              OwnerAdHeader(_bloc.details),
-              if (_bloc.details.media.isNotEmpty)
-                AspectRatio(
-                  aspectRatio: ASPECT_RATIO,
-                  child: Swiper(
-                    itemCount: _bloc.details.media.length,
-                    loop: false,
-                    curve: Curves.linear,
-                    pagination: SwiperPagination(),
-                    itemBuilder: (BuildContext context, index) {
-                      if (_bloc.details.media[index].type == 1) {
-                        return OctoImage(
+              getOwnerHeader(),
+              AspectRatio(
+                aspectRatio: ASPECT_RATIO,
+                child: Swiper(
+                  itemCount: _bloc.details.media.length,
+                  loop: false,
+                  curve: Curves.linear,
+                  pagination: SwiperPagination(),
+                  itemBuilder: (BuildContext context, index) {
+                    if (_bloc.details.media[index].type == 1) {
+                      return OctoImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(_bloc.details.media[index].link),
+                        progressIndicatorBuilder: (context, _) => simpleShimmer,
+                        errorBuilder: (context, e, _) => Image.asset(
+                          PLACEHOLDER,
                           fit: BoxFit.cover,
-                          image: NetworkImage(_bloc.details.media[index].link),
-                          progressIndicatorBuilder: (context, _) =>
-                              simpleShimmer,
-                          errorBuilder: (context, e, _) => Image.asset(
-                            PLACEHOLDER,
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: AppVideo.network(
-                            '${_bloc.details.media[index].link}',
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: AppVideo.network(
+                          '${_bloc.details.media[index].link}',
+                        ),
+                      );
+                    }
+                  },
                 ),
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                 child: Builder(builder: (context) {
@@ -254,6 +251,82 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget getOwnerHeader(){
+    double width = 50;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(left: 15, top: 10, bottom: 10, right: 10),
+            width: width,
+            height: width,
+            decoration: BoxDecoration(
+              border: Border.fromBorderSide(
+                BorderSide(
+                  color: AppColors.blue, // temp condition
+                  width: 2,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  "${_bloc.details.owner.profilePic}",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _bloc.details.owner.username,
+                  textAlign: TextAlign.left,
+                  style: AppTextStyle.largeBlackBold,
+                ),
+                if (_bloc.details.owner.town != null)
+                  Text(
+                    "${_bloc.details.owner.town.country}, ${_bloc.details.owner.town.name}",
+                    textAlign: TextAlign.left,
+                    style: AppTextStyle.largeBlack,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  "${_bloc.details.totalViews}",
+                  style: AppTextStyle.largeBlackBold,
+                ),
+                Text(
+                  AppLocalization.of(context).trans('views'),
+                  style: AppTextStyle.largeBlack,
+                ),
+              ],
+            ),
+          ),
+          //image slider
         ],
       ),
     );

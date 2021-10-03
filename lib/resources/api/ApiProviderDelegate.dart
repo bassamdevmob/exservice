@@ -5,7 +5,6 @@ import 'package:exservice/models/GetChatUsersModel.dart';
 import 'package:exservice/models/GetUserProfileModel.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
-import 'package:exservice/models/ReviewModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/models/common/SimpleResponseModel.dart';
@@ -13,14 +12,11 @@ import 'package:exservice/models/common/Town.dart';
 import 'package:exservice/models/common/User.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
-import 'package:exservice/models/options/GetOptionsModel.dart';
 import 'package:exservice/renovation/models/category.dart';
-import 'package:exservice/resources/ApiConstant.dart';
 import 'package:flutter/material.dart';
 
 abstract class ApiProviderDelegate {
-  Future<PostAdModel> fetchStoreAd(
-      BuildContext context, ReviewModel ad, bool isFree);
+  Future<PostAdModel> fetchStoreAd(BuildContext context, bool isFree);
 
   Future<AdModel> fetchGetAdDetails(int id);
 
@@ -30,9 +26,7 @@ abstract class ApiProviderDelegate {
 
   Future<SimpleResponseModel> fetchUploadAdMedia(
     int adId,
-    ReviewMedia media,
-    int isLast,
-    ProgressCallback progressCallback,
+    ProgressCallback cb,
   );
 
   Future<String> fetchPayment(
@@ -46,11 +40,6 @@ abstract class ApiProviderDelegate {
       BuildContext context, code, account, type);
 
   Future<void> fetchUpdateEmailPhone(BuildContext context, account, type);
-
-  Future<void> fetchAddInterest(
-      BuildContext context, NotificationValuesModel ad);
-
-  Future<void> fetchDeleteInterest(BuildContext context, id);
 
   Future<void> fetchSwitchToBusiness(username, website, bio);
 
@@ -76,7 +65,7 @@ abstract class ApiProviderDelegate {
     typeId,
   });
 
-  Future<void> fetchUpdatePassword( oldWord, newWord, confirm);
+  Future<void> fetchUpdatePassword(oldWord, newWord, confirm);
 
   Future<List<Chatter>> fetchGetChatUsers();
 
@@ -102,16 +91,7 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchResendVerificationCode(account);
 
-  Future<List<Option>> fetchGetNumericalOptions(
-      BuildContext context, ConstOptions type);
-
-  Future<List<Option>> fetchGetOptions(BuildContext context, ConstOptions type,
-      [int parentId]);
-
   Future<List<Category>> fetchCategories();
-
-  Future<List<Option>> fetchGetTypesOptions(
-      BuildContext context, ConstOptions type);
 
   Future<List<AdModel>> fetchGetAdsList(
     offset, {
