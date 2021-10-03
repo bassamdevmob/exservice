@@ -136,19 +136,6 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                           ),
                           SizedBox(height: 10),
                           TextField(
-                            controller: _bloc.phoneNumberController,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              labelText: AppLocalization.of(context)
-                                  .trans("phone_number"),
-                              labelStyle: AppTextStyle.largeBlue,
-                              errorText: _bloc.phoneNumberErrorMessage,
-                              border: border,
-                              focusedBorder: focusedBorder,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          TextField(
                             controller: _bloc.bioController,
                             decoration: InputDecoration(
                               labelText:

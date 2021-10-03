@@ -47,7 +47,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                   color: AppColors.white,
                   child: Center(
                     child: Text(
-                      _bloc.chatter.name.camelCase,
+                      _bloc.chatter.username.camelCase,
                       style: AppTextStyle.xxLargeBlack,
                     ),
                   ),
@@ -56,7 +56,7 @@ class _ChatLayoutState extends State<ChatLayout> {
             ),
             SizedBox(width: 10),
             Text(
-              _bloc.chatter.name,
+              _bloc.chatter.username,
               maxLines: 1,
               style: AppTextStyle.mediumBlueBold,
             ),

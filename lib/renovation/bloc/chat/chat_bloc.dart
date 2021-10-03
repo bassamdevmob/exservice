@@ -59,7 +59,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         timestamp: DateTime.now().millisecondsSinceEpoch,
         content: controller.text.trim(),
         senderId: user.id,
-        senderName: user.name,
+        senderName: user.username,
       ));
       controller.clear();
     }

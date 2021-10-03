@@ -32,7 +32,7 @@ void main() async {
     if (!DataStore.instance.hasUser) {
       print('there is no session');
     } else {
-      print('user loaded is : ${DataStore.instance.user.name}');
+      print('user loaded is : ${DataStore.instance.user.username}');
       print('user session is : ${DataStore.instance.user.apiToken}');
     }
   } finally {

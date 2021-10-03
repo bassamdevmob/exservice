@@ -130,7 +130,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 Text(
-                                  _bloc.publisher.user.name,
+                                  _bloc.publisher.user.username,
                                   style: AppTextStyle.largeBlack,
                                   maxLines: 1,
                                 ),

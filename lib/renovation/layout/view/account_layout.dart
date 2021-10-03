@@ -183,7 +183,7 @@ class _AccountLayoutState extends State<AccountLayout> {
       children: <Widget>[
         getInfoTile(
           AppLocalization.of(context).trans("username"),
-          _bloc.profile.user.name,
+          _bloc.profile.user.username,
         ),
         getInfoTile(
           AppLocalization.of(context).trans("email2"),
@@ -300,7 +300,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                         color: AppColors.grayAccent,
                         child: Center(
                           child: Text(
-                            _bloc.profile.user.name.camelCase,
+                            _bloc.profile.user.username.camelCase,
                             style: AppTextStyle.xxLargeBlack,
                           ),
                         ),
@@ -309,7 +309,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                   ),
                 ),
                 Text(
-                  _bloc.profile.user.name,
+                  _bloc.profile.user.username,
                   style: AppTextStyle.largeBlack,
                   textAlign: TextAlign.center,
                   maxLines: 2,

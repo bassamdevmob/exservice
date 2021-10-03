@@ -28,7 +28,7 @@ class WelcomeLayout extends StatelessWidget {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        DataStore.instance.user.name,
+                        DataStore.instance.user.username,
                         style: AppTextStyle.largeBlackBold,
                       ),
                     ),

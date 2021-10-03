@@ -81,7 +81,7 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                       color: AppColors.grayAccent,
                       child: Center(
                         child: Text(
-                          model.ad.owner.name.camelCase,
+                          model.ad.owner.username.camelCase,
                           style: AppTextStyle.xxLargeBlack,
                         ),
                       ),
@@ -90,7 +90,7 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 ),
               ),
               title: Text(
-                model.ad.owner.companyName ?? model.ad.owner.name,
+                model.ad.owner.companyName ?? model.ad.owner.username,
                 style: AppTextStyle.largeBlackBold,
               ),
               subtitle: Text(

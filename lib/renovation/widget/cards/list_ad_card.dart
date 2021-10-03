@@ -84,7 +84,7 @@ class _ListAdCardState extends State<ListAdCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.ad.owner.name,
+                      widget.ad.owner.username,
                       style: AppTextStyle.largeBlackBold,
                     ),
                     Text(

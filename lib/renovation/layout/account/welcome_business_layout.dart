@@ -53,7 +53,7 @@ class WelcomeBusinessLayout extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "${AppLocalization.of(context).trans('welcomeToBusiness')}, ${user.name}",
+                    "${AppLocalization.of(context).trans('welcomeToBusiness')}, ${user.username}",
                     style: AppTextStyle.xxLargeBlack,
                     textAlign: TextAlign.center,
                   ),

@@ -140,7 +140,7 @@ class UserModel {
 class User {
   User({
     this.id,
-    this.name,
+    this.username,
     this.companyName,
     this.email,
     this.phoneNumber,
@@ -158,7 +158,7 @@ class User {
   });
 
   int id;
-  String name;
+  String username;
   String companyName;
   String email;
   String phoneNumber;
@@ -176,7 +176,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"] == null ? null : json["id"],
-        name: json["name"] == null ? null : json["name"],
+        username: json["name"] == null ? null : json["name"],
         companyName: json["username"],
         email: json["email"] == null ? null : json["email"],
         phoneNumber: json["phone_number"],
@@ -195,7 +195,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "name": name == null ? null : name,
+        "name": username == null ? null : username,
         "username": companyName,
         "email": email == null ? null : email,
         "phone_number": phoneNumber,

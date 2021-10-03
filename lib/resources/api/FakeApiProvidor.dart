@@ -123,7 +123,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   User getRandomUser({int id, int type}) {
     return User(
       id: id ?? faker.randomGenerator.integer(100),
-      name: faker.person.name(),
+      username: faker.person.name(),
       town: getRandomTown(),
       logo: faker.image.image(
         keywords: keys,
@@ -273,16 +273,17 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchEditProfile(BuildContext context,
-      {name,
-      email,
-      townId,
-      bio,
-      website,
-      phoneNumber,
-      publicPhone,
-      companyName,
-      typeId}) {
+  Future<void> fetchEditProfile({
+    name,
+    email,
+    townId,
+    bio,
+    website,
+    phoneNumber,
+    publicPhone,
+    companyName,
+    typeId,
+  }) {
     return Future.delayed(getDelayDuration());
   }
 
@@ -429,7 +430,7 @@ class FakeApiProvider extends ApiProviderDelegate {
           message: MessageModel(
             content: faker.lorem.sentence(),
             senderId: 123,
-            senderName: user.name,
+            senderName: user.username,
             timestamp: faker.date
                 .dateTime(minYear: 1999, maxYear: 2021)
                 .millisecondsSinceEpoch,
@@ -523,7 +524,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchSwitchToBusiness(username, website, publicPhone, bio) {
+  Future<void> fetchSwitchToBusiness(username, website, bio) {
     return Future.delayed(getDelayDuration());
   }
 
@@ -547,8 +548,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchUpdatePassword(
-      BuildContext context, oldWord, newWord, confirm) {
+  Future<void> fetchUpdatePassword(oldWord, newWord, confirm) {
     return Future.delayed(getDelayDuration());
   }
 

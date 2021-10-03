@@ -12,7 +12,7 @@ class OwnerAdHeader extends StatelessWidget {
   Widget _getInfoWidget() {
     final children = [
       Text(
-        ad.owner.name,
+        ad.owner.username,
         textAlign: TextAlign.left,
         style: AppTextStyle.largeBlackBold,
       ),

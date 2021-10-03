@@ -48,7 +48,7 @@ class ChatsListBloc extends Bloc<ChatsListEvent, ChatsListState> {
     } else if (event is ChatsListFilterEvent) {
       filterChatterName = event.substring;
       var filteredChatter = _chatters.where(
-        (chatter) => chatter.user.name.contains(
+        (chatter) => chatter.user.username.contains(
           RegExp(filterChatterName, caseSensitive: false),
         ),
       );

@@ -52,7 +52,7 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchDeleteInterest(BuildContext context, id);
 
-  Future<void> fetchSwitchToBusiness(username, website, publicPhone, bio);
+  Future<void> fetchSwitchToBusiness(username, website, bio);
 
   Future<UserProfile> fetchGetUserAccount(int id);
 
@@ -64,8 +64,7 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchUpdateFirebaseToken(token);
 
-  Future<void> fetchEditProfile(
-    BuildContext context, {
+  Future<void> fetchEditProfile({
     name,
     email,
     townId,
@@ -77,8 +76,7 @@ abstract class ApiProviderDelegate {
     typeId,
   });
 
-  Future<void> fetchUpdatePassword(
-      BuildContext context, oldWord, newWord, confirm);
+  Future<void> fetchUpdatePassword( oldWord, newWord, confirm);
 
   Future<List<Chatter>> fetchGetChatUsers();
 

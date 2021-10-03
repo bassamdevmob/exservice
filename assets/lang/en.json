@@ -168,6 +168,11 @@
   "bio": "About the company",
   "website": "Website",
   "username": "Username",
+  "business_info": "Business info",
+  "business_info_desc": "Manage your business info",
+  "password_desc": "Change your account password",
+  "contact_info": "Contact info",
+  "contact_info_desc": "Manage your phone number and email address",
   "companyName": "Company Name",
   "continue": "Continue",
   "welcomeToBusiness": "Welcome To 4000Cars Business Tools",
@@ -281,7 +286,7 @@
   "yourComfort": "Your Comfort",
   "date": "Date Available",
   "notExists": "Account not exists",
-  "reset": "Reset Password",
+  "reset": "Reset",
   "failToSaveInterests": "Fail to save interests",
   "interestsSavedSuccessfully": "Interests saved successfully",
   "posting": "Posting",
@@ -441,5 +446,6 @@
   "reached_max_media_limits": "Sorry, you've reached your max media limit",
   "choose_one_media_at_least": "Sorry, you've to choose one media at least",
   "enter_title": "Enter Title",
-  "enter_details": "Enter Details"
+  "enter_details": "Enter Details",
+  "password_updated": "Password Updated"
 }

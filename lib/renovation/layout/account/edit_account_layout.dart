@@ -1,17 +1,16 @@
-import 'package:exservice/renovation/bloc/account/edit_account_bloc/edit_account_cubit.dart';
+import 'package:exservice/renovation/bloc/account/business_info_bloc/business_info_bloc.dart';
+import 'package:exservice/renovation/bloc/account/change_password_bloc/change_password_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
-import 'package:exservice/renovation/layout/account/edit/edit_company_name_layout.dart';
+import 'package:exservice/renovation/layout/account/edit/change_password_layout.dart';
+import 'package:exservice/renovation/layout/account/edit/edit_business_info_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/extensions.dart';
+import 'package:exservice/renovation/widget/application/dotted_container.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditBio.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditEmail.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditPassword.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditPhoneNumber.dart';
-import 'package:exservice/ui/personal_account/edit_property/EditWebsite.dart';
+import 'package:exservice/renovation/widget/button/action_button.dart';
 import 'package:exservice/widget/dialog/ConfirmDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,177 +98,137 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
             return ListView(
               padding: EdgeInsets.symmetric(vertical: 20),
               children: <Widget>[
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        padding: EdgeInsets.all(3),
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.blue),
-                        ),
-                        child: ClipOval(
-                          child: OctoImage(
-                            key: ValueKey(user.profilePic),
-                            fit: BoxFit.cover,
-                            image: NetworkImage(user.profilePic),
-                            progressIndicatorBuilder: (context, progress) {
-                              return simpleShimmer;
-                            },
-                            errorBuilder: (context, error, stacktrace) =>
-                                Container(
-                              color: AppColors.grayAccent,
-                              child: Center(
-                                child: Text(
-                                  user.name.camelCase,
-                                  style: AppTextStyle.xxLargeBlack,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OutlineContainer(
+                            dimension: 80,
+                            radius: 40,
+                            strokeWidth: 1,
+                            gradient: LinearGradient(
+                              colors: [AppColors.blue, AppColors.deepPurple],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            child: ClipOval(
+                              child: OctoImage(
+                                key: ValueKey(user.profilePic),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(user.profilePic),
+                                progressIndicatorBuilder: (context, progress) {
+                                  return simpleShimmer;
+                                },
+                                errorBuilder: (context, e, _) => Container(
+                                  alignment: Alignment.center,
+                                  color: AppColors.grayAccent,
+                                  child: Text(
+                                    user.username.camelCase,
+                                    style: AppTextStyle.xxLargeBlack,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Text(
-                        user.name,
-                        style: AppTextStyle.largeBlack,
-                      ),
-                      SizedBox(height: 10),
-                      BlocBuilder<AccountBloc, AccountState>(
-                        buildWhen: (_, current) =>
-                            current is AccountImageState ||
-                            current is AccountAwaitImageUploadState ||
-                            current is AccountErrorImageUploadState,
-                        builder: (context, state) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            child: Text(
-                              AppLocalization.of(context)
-                                  .trans("changeProfilePic"),
-                              style: state is AccountAwaitImageUploadState
-                                  ? AppTextStyle.largeGray
-                                  : AppTextStyle.largeBlue,
-                            ),
-                            onTap: state is AccountAwaitImageUploadState
-                                ? null
-                                : changeProfilePic,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                        Positioned.directional(
+                          start: 0,
+                          bottom: 0,
+                          textDirection: Directionality.of(context),
+                          child: BlocBuilder<AccountBloc, AccountState>(
+                            buildWhen: (_, current) =>
+                                current is AccountImageState ||
+                                current is AccountAwaitImageUploadState ||
+                                current is AccountErrorImageUploadState,
+                            builder: (context, state) {
+                              return MaterialButton(
+                                color: state is AccountAwaitImageUploadState
+                                    ? AppColors.gray
+                                    : AppColors.blue,
+                                minWidth: 0,
+                                padding: EdgeInsets.all(5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: AppColors.white,
+                                ),
+                                onPressed: state is AccountAwaitImageUploadState
+                                    ? null
+                                    : changeProfilePic,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      user.username,
+                      style: AppTextStyle.largeBlack,
+                    ),
+                    Divider(),
+                  ],
                 ),
-                getInfoTile(
-                  AppLocalization.of(context).trans('username'),
-                  user.name,
+                ActionButton(
+                  AppLocalization.of(context).trans("contact_info"),
+                  AppLocalization.of(context).trans("contact_info_desc"),
+                  () {
+                    //                InkWell(
+                    //                   onTap: () {
+                    //                     //todo update
+                    //                     Navigator.of(context).push(CupertinoPageRoute(
+                    //                       builder: (context) => EditEmail(),
+                    //                     ));
+                    //                   },
+                    //                   child: getInfoTile(
+                    //                     AppLocalization.of(context).trans('email2'),
+                    //                     user.email,
+                    //                   ),
+                    //                 ),
+                    //                 InkWell(
+                    //                   onTap: () {
+                    //                     //todo update
+                    //                     Navigator.of(context).push(CupertinoPageRoute(
+                    //                       builder: (context) => EditPhoneNumber(),
+                    //                     ));
+                    //                   },
+                    //                   child: getInfoTile(
+                    //                     AppLocalization.of(context).trans('phoneNumber'),
+                    //                     user.phoneNumber,
+                    //                   ),
+                    //                 ),
+                  },
                 ),
-                if (user.type.isCompany) ...[
-                  InkWell(
-                    onTap: () {
-                      //todo update
+                if (user.type.isCompany)
+                  ActionButton(
+                    AppLocalization.of(context).trans("business_info"),
+                    AppLocalization.of(context).trans("business_info_desc"),
+                    () {
                       Navigator.of(context).push(CupertinoPageRoute(
                         builder: (context) => BlocProvider(
-                          create: (context) => EditAccountCubit(
-                            EditAccountCompanyFactory(context),
-                          ),
-                          child: EditAccountFieldLayout(),
+                          create: (context) => BusinessInfoBloc(context),
+                          child: EditBusinessInfoLayout(),
                         ),
                       ));
                     },
-                    child: getInfoTile(
-                      AppLocalization.of(context).trans('companyName'),
-                      user.companyName,
-                    ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      //todo update
-                      // Navigator.of(context).push(CupertinoPageRoute(
-                      //   builder: (context) => EditType(),
-                      // ));
-                    },
-                    child: getInfoTile(
-                      AppLocalization.of(context).trans('companyType'),
-                      user.type.title,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      //todo update
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => EditBio(),
-                      ));
-                    },
-                    child: getInfoTile(
-                      AppLocalization.of(context).trans('bio'),
-                      user.bio,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      //todo update
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => EditWebsite(),
-                      ));
-                    },
-                    child: getInfoTile(
-                      AppLocalization.of(context).trans('website'),
-                      user.website,
-                    ),
-                  ),
-                ],
-                InkWell(
-                  onTap: () {
-                    //todo update
+                ActionButton(
+                  AppLocalization.of(context).trans("password"),
+                  AppLocalization.of(context).trans("password_desc"),
+                  () {
                     Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => EditEmail(),
+                      builder: (context) => BlocProvider(
+                        create: (context) => ChangePasswordBloc(context),
+                        child: ChangePasswordLayout(),
+                      ),
                     ));
                   },
-                  child: getInfoTile(
-                    AppLocalization.of(context).trans('email2'),
-                    user.email,
-                  ),
                 ),
-                InkWell(
-                  onTap: () {
-                    //todo update
-                    Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => EditPhoneNumber(),
-                    ));
-                  },
-                  child: getInfoTile(
-                    AppLocalization.of(context).trans('phoneNumber'),
-                    user.phoneNumber,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    //todo update
-                    // Navigator.of(context).push(CupertinoPageRoute(
-                    //   builder: (context) => EditLocation(),
-                    // ));
-                  },
-                  child: getInfoTile(
-                    AppLocalization.of(context).trans('location'),
-                    user.town?.name,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    //todo update
-                    Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => EditPassword(),
-                    ));
-                  },
-                  child: getInfoTile(
-                    AppLocalization.of(context).trans('password'),
-                    "********",
-                  ),
-                ),
-              ].withDivider(Divider()),
+              ],
             );
           },
         ),

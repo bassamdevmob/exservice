@@ -2,19 +2,17 @@ import 'dart:async';
 
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
-import 'package:exservice/renovation/utils/enums.dart';
-import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:string_validator/string_validator.dart' as validator;
 
-part 'switch_business_event.dart';
-part 'switch_business_state.dart';
+part 'business_info_event.dart';
 
-class SwitchBusinessBloc
-    extends Bloc<SwitchBusinessEvent, SwitchBusinessState> {
+part 'business_info_state.dart';
+
+class BusinessInfoBloc extends Bloc<BusinessInfoEvent, BusinessInfoState> {
   final companyNameController = TextEditingController();
   final websiteController = TextEditingController();
   final bioController = TextEditingController();
@@ -23,8 +21,6 @@ class SwitchBusinessBloc
   String companyNameErrorMessage;
   String websiteErrorMessage;
   String bioErrorMessage;
-
-  SwitchBusinessBloc(this.context) : super(SwitchBusinessInitial());
 
   @override
   Future<void> close() {
@@ -48,7 +44,6 @@ class SwitchBusinessBloc
         ? AppLocalization.of(context).trans("filed_required")
         : null;
 
-
     if (website.isEmpty) {
       websiteErrorMessage = AppLocalization.of(context).trans("filed_required");
     } else if (!validator.isURL(website)) {
@@ -62,34 +57,42 @@ class SwitchBusinessBloc
         : null;
   }
 
-  @override
-  Stream<SwitchBusinessState> mapEventToState(
-    SwitchBusinessEvent event,
-  ) async* {
-    if (event is SwitchBusinessCommitEvent) {
-      try {
-        _validate();
-        yield SwitchBusinessValidationState();
-        if (valid) {
-          yield SwitchBusinessAwaitState();
-          String companyName = companyNameController.text.trim();
-          String website = websiteController.text.trim();
-          String bio = bioController.text.trim();
-          await GetIt.I
-              .get<ApiProviderDelegate>()
-              .fetchSwitchToBusiness(companyName, website, bio);
-          var _accountBloc = context.read<AccountBloc>();
-          _accountBloc.profile.user
-            ..companyName = companyName
-            ..website = website
-            ..bio = bio
-            ..type.id = AccountType.company.id;
-          _accountBloc.add(AccountRefreshEvent());
-          yield SwitchBusinessCommittedState();
+  BusinessInfoBloc(this.context) : super(BusinessInfoInitial()) {
+    var _accountBloc = BlocProvider.of<AccountBloc>(context);
+    companyNameController.text = _accountBloc.profile.user.companyName;
+    websiteController.text = _accountBloc.profile.user.website;
+    bioController.text = _accountBloc.profile.user.bio;
+    on<BusinessInfoEvent>((event, emit) async {
+      if (event is ResetBusinessInfoEvent) {
+        companyNameController.text = _accountBloc.profile.user.companyName;
+        websiteController.text = _accountBloc.profile.user.website;
+        bioController.text = _accountBloc.profile.user.bio;
+        emit(BusinessInfoResetState());
+      } else if (event is UpdateBusinessInfoEvent) {
+        try {
+          _validate();
+          emit(BusinessInfoValidateState());
+          if (valid) {
+            emit(BusinessInfoAwaitState());
+            String companyName = companyNameController.text.trim();
+            String website = websiteController.text.trim();
+            String bio = bioController.text.trim();
+            await GetIt.I.get<ApiProviderDelegate>().fetchEditProfile(
+                  companyName: companyName,
+                  website: website,
+                  bio: bio,
+                );
+            _accountBloc.profile.user
+              ..companyName = companyName
+              ..website = website
+              ..bio = bio;
+            _accountBloc.add(AccountRefreshEvent());
+            emit(BusinessInfoCommittedState());
+          }
+        } catch (e) {
+          emit(BusinessInfoErrorState("$e"));
         }
-      } catch (e) {
-        yield SwitchBusinessErrorState("$e");
       }
-    }
+    });
   }
 }

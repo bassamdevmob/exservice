@@ -41,7 +41,7 @@ class ChatCard extends StatelessWidget {
         ),
       ),
       title: Text(
-        chatter.user.name,
+        chatter.user.username,
         style: AppTextStyle.largeBlackBold,
       ),
       subtitle: Text(
