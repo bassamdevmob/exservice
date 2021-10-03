@@ -5,6 +5,8 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/constant.dart';
+import 'package:exservice/renovation/utils/utils.dart';
+import 'package:exservice/renovation/widget/application/directional_text_field.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,6 +79,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
       child: Scaffold(
         body: SafeArea(
           child: LayoutBuilder(builder: (context, constraints) {
+            var _mediaQuery = MediaQuery.of(context);
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -87,65 +90,106 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           SizedBox(height: 10),
-                          Center(
-                            child: SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: ClipOval(
-                                child: OctoImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      DataStore.instance.user.logo),
-                                  progressIndicatorBuilder: (context, _) =>
-                                      simpleShimmer,
-                                  errorBuilder: (context, e, _) => Image.asset(
-                                    PLACEHOLDER,
-                                    fit: BoxFit.cover,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Center(
+                                child: SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: ClipOval(
+                                    child: OctoImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          DataStore.instance.user.logo),
+                                      progressIndicatorBuilder: (context, _) =>
+                                          simpleShimmer,
+                                      errorBuilder: (context, e, _) =>
+                                          Image.asset(
+                                        PLACEHOLDER,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(height: 10),
+                              Text(
+                                "${AppLocalization.of(context).trans("companyName")}*",
+                              ),
+                              DirectionalTextField(
+                                controller: _bloc.companyNameController,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: AppLocalization.of(context)
+                                      .trans("companyName"),
+                                  errorText: _bloc.companyNameErrorMessage,
+                                ),
+                              ),
+                              SizedBox(
+                                height: Utils.verticalSpace(_mediaQuery) * 2,
+                              ),
+                              Text(
+                                "${AppLocalization.of(context).trans("website")}*",
+                              ),
+                              DirectionalTextField(
+                                controller: _bloc.websiteController,
+                                keyboardType: TextInputType.url,
+                                decoration: InputDecoration(
+                                  hintText: AppLocalization.of(context)
+                                      .trans("website"),
+                                  errorText: _bloc.websiteErrorMessage,
+                                ),
+                              ),
+                              SizedBox(
+                                height: Utils.verticalSpace(_mediaQuery) * 2,
+                              ),
+                              Text(
+                                "${AppLocalization.of(context).trans("bio")}*",
+                              ),
+                              DirectionalTextField(
+                                controller: _bloc.bioController,
+                                decoration: InputDecoration(
+                                  hintText:
+                                      AppLocalization.of(context).trans("bio"),
+                                  errorText: _bloc.bioErrorMessage,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 10),
-                          TextField(
-                            controller: _bloc.companyNameController,
-                            decoration: InputDecoration(
-                              labelText: AppLocalization.of(context)
-                                  .trans("companyName"),
-                              labelStyle: AppTextStyle.largeBlue,
-                              errorText: _bloc.companyNameErrorMessage,
-                              border: border,
-                              focusedBorder: focusedBorder,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          TextField(
-                            controller: _bloc.websiteController,
-                            keyboardType: TextInputType.url,
-                            decoration: InputDecoration(
-                              labelText:
-                                  AppLocalization.of(context).trans("website"),
-                              labelStyle: AppTextStyle.largeBlue,
-                              errorText: _bloc.websiteErrorMessage,
-                              border: border,
-                              focusedBorder: focusedBorder,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          TextField(
-                            controller: _bloc.bioController,
-                            decoration: InputDecoration(
-                              labelText:
-                                  AppLocalization.of(context).trans("bio"),
-                              labelStyle: AppTextStyle.largeBlue,
-                              errorText: _bloc.bioErrorMessage,
-                              border: border,
-                              focusedBorder: focusedBorder,
-                            ),
-                          ),
+                          BlocBuilder<SwitchBusinessBloc, SwitchBusinessState>(
+                            buildWhen: (_, current) =>
+                                current is SwitchBusinessAwaitState ||
+                                current is SwitchBusinessErrorState ||
+                                current is SwitchBusinessCommittedState,
+                            builder: (context, state) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.all(12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: state is SwitchBusinessAwaitState
+                                      ? CupertinoActivityIndicator()
+                                      : Text(
+                                          AppLocalization.of(context)
+                                              .trans('switch'),
+                                          style: AppTextStyle.mediumWhite,
+                                        ),
+                                  onPressed: state is SwitchBusinessAwaitState
+                                      ? null
+                                      : _switchToBusiness,
+                                ),
+                              );
+                            },
+                          )
                         ],
                       ),
                     );
@@ -154,33 +198,6 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
               ),
             );
           }),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: BlocBuilder<SwitchBusinessBloc, SwitchBusinessState>(
-            buildWhen: (_, current) =>
-                current is SwitchBusinessAwaitState ||
-                current is SwitchBusinessErrorState ||
-                current is SwitchBusinessCommittedState,
-            builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: state is SwitchBusinessAwaitState
-                        ? CupertinoActivityIndicator()
-                        : Text(
-                            AppLocalization.of(context).trans('switch'),
-                            style: AppTextStyle.mediumWhite,
-                          ),
-                  ),
-                  onPressed: state is SwitchBusinessAwaitState
-                      ? null
-                      : _switchToBusiness,
-                ),
-              );
-            },
-          ),
         ),
       ),
     );
