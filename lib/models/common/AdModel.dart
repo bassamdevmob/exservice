@@ -128,19 +128,8 @@ class Attributes {
   Attributes({
     this.id,
     this.adId,
-    this.categoryId,
-    this.optionId,
     this.price,
-    this.priceOptionId,
     this.size,
-    this.sizeUnitId,
-    this.roomNumberId,
-    this.garageNumberId,
-    this.furnitureTypeId,
-    this.bathNumberId,
-    this.balconyNumberId,
-    this.period,
-    this.monthlyPrice,
     this.terrace,
     this.gym,
     this.security,
@@ -157,22 +146,11 @@ class Attributes {
 
   int id;
   int adId;
-  int categoryId;
-  int optionId;
   int price;
-  int priceOptionId;
-  String size;
-  int sizeUnitId;
-  int roomNumberId;
-  int garageNumberId;
-  int furnitureTypeId;
-  int bathNumberId;
-  int balconyNumberId;
-  int period;
-  String monthlyPrice;
-  String terrace;
-  String gym;
-  String security;
+  int size;
+  Option terrace;
+  Option gym;
+  Option security;
   Option category;
   Option option;
   Option sizeUnit;
@@ -186,28 +164,8 @@ class Attributes {
   factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
         id: json["id"] == null ? null : json["id"],
         adId: json["ad_id"] == null ? null : json["ad_id"],
-        categoryId: json["category_id"] == null ? null : json["category_id"],
-        optionId: json["option_id"] == null ? null : json["option_id"],
         price: json["price"] == null ? null : json["price"],
-        priceOptionId:
-            json["price_option_id"] == null ? null : json["price_option_id"],
         size: json["size"] == null ? null : json["size"],
-        sizeUnitId: json["size_unit_id"] == null ? null : json["size_unit_id"],
-        roomNumberId:
-            json["room_number_id"] == null ? null : json["room_number_id"],
-        garageNumberId:
-            json["garage_number_id"] == null ? null : json["garage_number_id"],
-        furnitureTypeId: json["furniture_type_id"] == null
-            ? null
-            : json["furniture_type_id"],
-        bathNumberId:
-            json["bath_number_id"] == null ? null : json["bath_number_id"],
-        balconyNumberId: json["balcony_number_id"] == null
-            ? null
-            : json["balcony_number_id"],
-        period: json["period"] == null ? null : json["period"],
-        monthlyPrice:
-            json["monthly_price"] == null ? null : json["monthly_price"],
         terrace: json["terrace"] == null ? null : json["terrace"],
         gym: json["gym"] == null ? null : json["gym"],
         security: json["security"],
@@ -241,19 +199,8 @@ class Attributes {
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "ad_id": adId == null ? null : adId,
-        "category_id": categoryId == null ? null : categoryId,
-        "option_id": optionId == null ? null : optionId,
         "price": price == null ? null : price,
-        "price_option_id": priceOptionId == null ? null : priceOptionId,
         "size": size == null ? null : size,
-        "size_unit_id": sizeUnitId == null ? null : sizeUnitId,
-        "room_number_id": roomNumberId == null ? null : roomNumberId,
-        "garage_number_id": garageNumberId == null ? null : garageNumberId,
-        "furniture_type_id": furnitureTypeId == null ? null : furnitureTypeId,
-        "bath_number_id": bathNumberId == null ? null : bathNumberId,
-        "balcony_number_id": balconyNumberId == null ? null : balconyNumberId,
-        "period": period == null ? null : period,
-        "monthly_price": monthlyPrice == null ? null : monthlyPrice,
         "terrace": terrace == null ? null : terrace,
         "gym": gym == null ? null : gym,
         "security": security,

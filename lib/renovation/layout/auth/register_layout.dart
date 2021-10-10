@@ -1,4 +1,3 @@
-import 'package:exservice/helper/AppConstant.dart';
 import 'package:exservice/renovation/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/renovation/bloc/auth/register_bloc/register_bloc.dart';
 import 'package:exservice/renovation/layout/auth/complete_register_layout.dart';
@@ -101,7 +100,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                   child: LoginLayout(),
                                 ),
                               ),
-                              ModalRoute.withName(AppConstant.markerPage),
+                              (route) => false,
                             );
                           },
                           child: Row(

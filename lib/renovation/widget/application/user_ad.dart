@@ -1,8 +1,10 @@
 import 'package:exservice/models/common/AdModel.dart';
 import 'package:exservice/renovation/bloc/account/account_ads_bloc/account_ads_cubit.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/renovation/bloc/default/edit_ad_bloc/edit_ad_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/layout/ad_details_layout.dart';
+import 'package:exservice/renovation/layout/edit_ad_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
@@ -10,9 +12,8 @@ import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/renovation/widget/application/ad_details.dart';
 import 'package:exservice/renovation/widget/application/ad_media.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
-import 'package:exservice/ui/EditAd.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
-import 'package:exservice/widget/dialog/ConfirmDialog.dart';
+import 'package:exservice/renovation/widget/dialogs/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -46,7 +47,7 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        description: AppLocalization.of(context).trans("confirmDelete"),
+        text: AppLocalization.of(context).trans("confirmDelete"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => deleteLoading = true);
@@ -69,7 +70,7 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        description: AppLocalization.of(context).trans("confirmActivate"),
+        text: AppLocalization.of(context).trans("confirmActivate"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
@@ -95,7 +96,7 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        description: AppLocalization.of(context).trans("confirmPause"),
+        text: AppLocalization.of(context).trans("confirmPause"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
@@ -151,10 +152,16 @@ class _UserAdState extends State<UserAd> {
                   style: AppTextStyle.largeBlack,
                 ),
                 onTap: () {
-                  //todo refresh
-                  Navigator.of(context).push(CupertinoPageRoute(
-                    builder: (context) => EditAd(widget.ad),
-                  ));
+                  Navigator.of(context)
+                      .push(CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => EditAdBloc(context, widget.ad),
+                      child: EditAdLayout(),
+                    ),
+                  ))
+                      .whenComplete(() {
+                    setState(() {});
+                  });
                 },
               ),
               Builder(

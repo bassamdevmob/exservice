@@ -11,7 +11,7 @@ import 'package:exservice/renovation/widget/application/dotted_container.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:exservice/renovation/widget/button/action_button.dart';
-import 'package:exservice/widget/dialog/ConfirmDialog.dart';
+import 'package:exservice/renovation/widget/dialogs/confirm_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
         context: context,
         builder: (dialogContext) => ConfirmDialog(
           mediaPath: file.path,
-          description: AppLocalization.of(dialogContext).trans("changeImage"),
+          text: AppLocalization.of(dialogContext).trans("changeImage"),
           onTap: () {
             Navigator.of(dialogContext).pop();
             _bloc.add(AccountChangeProfileImageEvent(file.path));

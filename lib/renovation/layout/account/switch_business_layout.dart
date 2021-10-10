@@ -93,7 +93,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          SizedBox(height: 10),
+                          SizedBox(),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -168,7 +168,9 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                 current is SwitchBusinessCommittedState,
                             builder: (context, state) {
                               return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: _mediaQuery.size.height * 0.04,
+                                ),
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.all(12),

@@ -3,36 +3,21 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:flutter/material.dart';
 
-class NoteDialog extends StatelessWidget {
+class ErrorDialog extends StatelessWidget {
   final String text;
-  final Function() onTap;
-  final bool _isError;
 
-  const NoteDialog(
+  const ErrorDialog(
     this.text, {
     Key key,
-    @required this.onTap,
-  })  : _isError = false,
-        super(key: key);
-
-  const NoteDialog.error(
-    this.text, {
-    Key key,
-    @required this.onTap,
-  })  : _isError = true,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: _isError
-          ? Text(
-              AppLocalization.of(context).trans('err'),
-              style: AppTextStyle.mediumRed,
-            )
-          : Text(
-              AppLocalization.of(context).trans('note'),
-            ),
+      title: Text(
+        AppLocalization.of(context).trans('error'),
+        style: AppTextStyle.mediumRed,
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -47,7 +32,9 @@ class NoteDialog extends StatelessWidget {
               AppLocalization.of(context).trans('ok'),
               style: AppTextStyle.largeBlack,
             ),
-            onTap: onTap,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),

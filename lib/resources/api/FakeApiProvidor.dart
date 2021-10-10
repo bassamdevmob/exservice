@@ -96,21 +96,11 @@ class FakeApiProvider extends ApiProviderDelegate {
         priceOption: getRandomOption(),
         rooms: getRandomOption(numeric: true),
         sizeUnit: getRandomOption(numeric: true),
-        balconyNumberId: faker.randomGenerator.integer(100),
-        bathNumberId: faker.randomGenerator.integer(100),
-        categoryId: faker.randomGenerator.integer(100),
-        furnitureTypeId: faker.randomGenerator.integer(100),
-        garageNumberId: faker.randomGenerator.integer(100),
-        gym: faker.lorem.word(),
+        gym: getRandomOption(),
         price: faker.randomGenerator.integer(1000) * 1000,
-        monthlyPrice: faker.randomGenerator.integer(100000).toString(),
-        security: faker.randomGenerator.integer(1).toString(),
-        optionId: faker.randomGenerator.integer(100),
-        period: faker.randomGenerator.integer(100),
-        priceOptionId: faker.randomGenerator.integer(100),
-        roomNumberId: faker.randomGenerator.integer(100),
-        terrace: faker.randomGenerator.integer(1).toString(),
-        size: faker.randomGenerator.integer(100).toString(),
+        security: getRandomOption(),
+        terrace: getRandomOption(),
+        size: faker.randomGenerator.integer(100),
       ),
       media: List.generate(random.nextInt(4) + 1, (index) => getRandomMedia()),
       owner: getRandomUser(id: id),
@@ -255,7 +245,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchEditAd(BuildContext context, adId, title, description) {
+  Future<void> fetchEditAd(adId, title, description) {
     return Future.delayed(getDelayDuration());
   }
 

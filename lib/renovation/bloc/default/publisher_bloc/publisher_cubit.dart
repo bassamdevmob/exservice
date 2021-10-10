@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:exservice/helper/Enums.dart';
 import 'package:exservice/models/GetUserProfileModel.dart';
+import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';

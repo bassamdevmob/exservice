@@ -1,4 +1,3 @@
-import 'package:exservice/helper/AppConstant.dart';
 import 'package:exservice/renovation/bloc/auth/register_bloc/register_bloc.dart';
 import 'package:exservice/renovation/bloc/auth/verification_bloc/verification_bloc.dart';
 import 'package:exservice/renovation/layout/auth/verification_layout.dart';
@@ -51,8 +50,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
       listener: (context, state) {
         if (state is RegisterCommittedState) {
           var account = _bloc.accountController.text.trim();
-          Navigator.pushAndRemoveUntil(
-            context,
+          Navigator.of(context).pushAndRemoveUntil(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => VerificationBloc(
@@ -63,7 +61,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
                 child: VerificationLayout(),
               ),
             ),
-            ModalRoute.withName(AppConstant.markerPage),
+            (route) => false,
           );
         }
       },

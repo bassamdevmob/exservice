@@ -1,8 +1,7 @@
-import 'package:exservice/helper/AppConstant.dart';
-import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/bloc/default/ads_list_bloc/ads_list_cubit.dart';
 import 'package:exservice/renovation/layout/ads_list_layout.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,15 +22,13 @@ class SummaryAdCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        await Navigator.push(
-          context,
+      onTap: () {
+        Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => AdsListCubit(),
               child: AdsListLayout(),
             ),
-            settings: RouteSettings(name: AppConstant.markerPage),
           ),
         );
       },

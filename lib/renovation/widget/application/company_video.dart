@@ -1,9 +1,9 @@
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/widget/dialogs/confirm_dialog.dart';
+import 'package:exservice/renovation/widget/dialogs/error_dialog.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
-import 'package:exservice/widget/dialog/ConfirmDialog.dart';
-import 'package:exservice/widget/dialog/NoteDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,10 +19,7 @@ class CompanyVideo extends StatelessWidget {
         if (state is AccountErrorVideoUploadState) {
           showDialog(
             context: context,
-            builder: (context) => NoteDialog.error(
-              state.message,
-              onTap: () => Navigator.of(context).pop(),
-            ),
+            builder: (context) => ErrorDialog(state.message),
           );
         }
       },
@@ -69,7 +66,7 @@ class CompanyVideo extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => ConfirmDialog(
-        description: AppLocalization.of(dialogContext).trans("change_video"),
+        text: AppLocalization.of(dialogContext).trans("change_video"),
         onTap: () async {
           Navigator.of(dialogContext).pop();
           _bloc.add(AccountUploadVideoEvent(file.path));

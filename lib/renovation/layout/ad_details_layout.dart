@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:expandable/expandable.dart';
 import 'package:exservice/renovation/bloc/chat/chat_bloc.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
@@ -14,12 +17,12 @@ import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/renovation/widget/button/favorite_button.dart';
 import 'package:exservice/widget/application/AppVideo.dart';
-import 'package:exservice/widget/application/MoreAdInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:readmore/readmore.dart';
 
@@ -31,6 +34,7 @@ class AdDetailsLayout extends StatefulWidget {
 }
 
 class _AdDetailsLayoutState extends State<AdDetailsLayout> {
+  final Completer<GoogleMapController> _controller = Completer();
   AdDetailsBloc _bloc;
 
   @override
@@ -192,7 +196,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   );
                 }),
               ),
-              MoreAdInfo.fromAdAttribute(_bloc.details, _bloc.position),
+              _getExpandableInfo(),
               if (DataStore.instance.user.id == _bloc.details.owner.id)
                 getContactToolbar(),
               SizedBox(height: 10),
@@ -256,8 +260,166 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
     );
   }
 
+  Widget _getExpandableInfo() {
+    var details = _bloc.details;
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ExpandablePanel(
+            collapsed: SizedBox(),
+            header: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Text(
+                AppLocalization.of(context).trans('specifications'),
+                style: AppTextStyle.mediumBlack,
+              ),
+            ),
+            expanded: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Builder(builder: (context) {
+                final children = <Widget>[
+                  Divider(
+                    height: 5,
+                    color: AppColors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  if (details.attr.option != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('option'),
+                      details.attr.option.title,
+                    ),
+                  if (details.attr.category != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('type'),
+                      details.attr.category.title,
+                    ),
+                  if (details.attr.furniture != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('furniture'),
+                      details.attr.furniture.title,
+                    ),
+                  if (details.attr.balcony != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('balcony'),
+                      details.attr.balcony.title,
+                    ),
+                  if (details.attr.garage != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('garage'),
+                      details.attr.garage.title,
+                    ),
+                  if (details.attr.terrace != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('terrace'),
+                      details.attr.terrace.title,
+                    ),
+                  if (details.attr.gym != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('gym'),
+                      details.attr.gym.title,
+                    ),
+                  if (details.attr.security != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('security'),
+                      details.attr.security.title,
+                    ),
+                  if (details.createdAt != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('createdAt'),
+                      isoFormatter.format(details.createdAt),
+                    ),
+                  if (details.validtyDate != null)
+                    _getFeature(
+                      AppLocalization.of(context).trans('date'),
+                      isoFormatter.format(details.validtyDate),
+                    ),
+                ];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: children,
+                );
+              }),
+            ),
+          ),
+          Divider(
+            height: 1,
+            color: AppColors.black,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          ExpandablePanel(
+            collapsed: SizedBox(),
+            header: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Text(
+                AppLocalization.of(context).trans('location'),
+                style: AppTextStyle.mediumBlack,
+              ),
+            ),
+            expanded: Builder(builder: (context) {
+              if (_bloc.position == null) {
+                return SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: Text(
+                      AppLocalization.of(context)
+                          .trans("location_not_available"),
+                      style: AppTextStyle.largeBlack,
+                    ),
+                  ),
+                );
+              }
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: 170,
+                child: GoogleMap(
+                  key: UniqueKey(),
+                  rotateGesturesEnabled: false,
+                  scrollGesturesEnabled: false,
+                  zoomGesturesEnabled: false,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                  initialCameraPosition: CameraPosition(
+                    target: _bloc.position,
+                    zoom: 12.0,
+                  ),
+                  mapType: MapType.normal,
+                  markers: Set.from([
+                    Marker(
+                      markerId: MarkerId('0'),
+                      position: _bloc.position,
+                    ),
+                  ]),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget getOwnerHeader(){
+  Widget _getFeature(String field, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          field,
+          style: AppTextStyle.mediumBlack,
+        ),
+        Text(
+          value,
+          style: AppTextStyle.mediumBlack,
+        )
+      ],
+    );
+  }
+
+  Widget getOwnerHeader() {
     double width = 50;
     return Padding(
       padding: const EdgeInsets.all(8.0),

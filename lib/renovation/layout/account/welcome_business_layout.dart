@@ -11,31 +11,8 @@ class WelcomeBusinessLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<AccountBloc>().profile.user;
+    var _mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                AppLocalization.of(context).trans('continue'),
-                style: AppTextStyle.mediumWhite,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => SwitchBusinessBloc(context),
-                    child: SwitchBusinessLayout(),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
       body: LayoutBuilder(builder: (context, constraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -43,19 +20,53 @@ class WelcomeBusinessLayout extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Center(
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage('assets/images/ic_user.png'),
-                    ),
+                  SizedBox(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Colors.white,
+                          backgroundImage:
+                              AssetImage('assets/images/ic_user.png'),
+                        ),
+                      ),
+                      SizedBox(height: _mediaQuery.size.height * 0.06),
+                      Text(
+                        "${AppLocalization.of(context).trans('welcomeToBusiness')}, ${user.username}",
+                        style: AppTextStyle.xxLargeBlack,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  Text(
-                    "${AppLocalization.of(context).trans('welcomeToBusiness')}, ${user.username}",
-                    style: AppTextStyle.xxLargeBlack,
-                    textAlign: TextAlign.center,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: _mediaQuery.size.height * 0.04,
+                    ),
+                    child: ElevatedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          AppLocalization.of(context).trans('continue'),
+                          style: AppTextStyle.mediumWhite,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => SwitchBusinessBloc(context),
+                              child: SwitchBusinessLayout(),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

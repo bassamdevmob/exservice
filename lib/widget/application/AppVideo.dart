@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:exservice/bloc/StatePusher.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_font_size.dart';
@@ -12,19 +10,13 @@ import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class AppVideo extends StatefulWidget {
-  final dynamic dataSource;
+  final String link;
   final bool fit;
   final bool enablePause;
 
-  const AppVideo.network(String url,
+  const AppVideo.network(this.link,
       {Key key, this.enablePause = false, this.fit = true})
-      : dataSource = url,
-        super(key: key);
-
-  const AppVideo.file(File file,
-      {Key key, this.enablePause = false, this.fit = true})
-      : dataSource = file,
-        super(key: key);
+      : super(key: key);
 
   @override
   _AppVideoState createState() => _AppVideoState();
@@ -33,18 +25,14 @@ class AppVideo extends StatefulWidget {
 class _AppVideoState extends State<AppVideo>
     with AutomaticKeepAliveClientMixin {
   VideoPlayerController _controller;
-  final _pusher = StatePusher<bool>.behavior();
   Timer _debounce;
   Duration _debounceDuration = Duration(seconds: 3);
   bool _paused = false;
+  bool showVolume = true;
 
   @override
   void initState() {
-    if (widget.dataSource is String) {
-      _controller = VideoPlayerController.network(widget.dataSource);
-    } else {
-      _controller = VideoPlayerController.file(widget.dataSource);
-    }
+    _controller = VideoPlayerController.network(widget.link);
     _controller.initialize().then((_) {
       setState(() {
         _controller.setVolume(0.0);
@@ -62,7 +50,6 @@ class _AppVideoState extends State<AppVideo>
   @override
   void dispose() {
     _controller.dispose();
-    _pusher.dispose();
     super.dispose();
   }
 
@@ -136,25 +123,23 @@ class _AppVideoState extends State<AppVideo>
                     }
                   },
                   onTap: () {
-                    _pusher.push(false);
+                    setState(() {
+                      showVolume = false;
+                    });
                     if (_debounce != null && _debounce.isActive)
                       _debounce.cancel();
                     _debounce = Timer(_debounceDuration, () {
                       if (!mounted) return;
-                      _pusher.push(true);
+                      setState(() {
+                        showVolume = true;
+                      });
                     });
                   },
                 ),
                 Positioned(
                   bottom: 20,
                   right: 20,
-                  child: StreamBuilder<bool>(
-                    stream: _pusher.stream,
-                    initialData: true,
-                    builder: (context, snapshot) {
-                      return VolumeButton(_controller, snapshot.data);
-                    },
-                  ),
+                  child: VolumeButton(_controller, showVolume),
                 ),
               ],
             ),

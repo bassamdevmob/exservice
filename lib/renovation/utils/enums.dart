@@ -20,3 +20,13 @@ class AdStatus {
   static final AdStatus paused = AdStatus._(2);
   static final AdStatus expired = AdStatus._(3);
 }
+
+enum AccountTab {
+  details,
+  advertisements,
+}
+
+enum DisplayFormat {
+  list,
+  grid,
+}

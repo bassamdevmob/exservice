@@ -34,7 +34,7 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchChangeAdStatus(int adId, int status);
 
-  Future<void> fetchEditAd(BuildContext context, adId, title, description);
+  Future<void> fetchEditAd(adId, title, description);
 
   Future<void> fetchCompleteUpdateEmailPhone(
       BuildContext context, code, account, type);

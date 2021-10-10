@@ -67,7 +67,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                       style: AppTextStyle.mediumBlack,
                     ),
                     SizedBox(height: 10),
-                    RaisedButton(
+                    ElevatedButton(
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text(
@@ -75,7 +75,6 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                           style: AppTextStyle.mediumWhite,
                         ),
                       ),
-                      color: AppColors.blue,
                       onPressed: () {
                         BlocProvider.of<ApplicationCubit>(context).refresh();
                       },
