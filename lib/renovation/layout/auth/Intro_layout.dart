@@ -29,13 +29,10 @@ class IntroLayout extends StatelessWidget {
                 style: AppTextStyle.xxxxLargeBlackSatisfy,
               ),
               ElevatedButton(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    AppLocalization.of(context)
-                        .trans('register_email _or_phone_number'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
+                child: Text(
+                  AppLocalization.of(context)
+                      .trans('register_email _or_phone_number'),
+                  style: AppTextStyle.mediumWhite,
                 ),
                 onPressed: () {
                   Navigator.push(

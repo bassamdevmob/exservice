@@ -13,6 +13,7 @@ import 'package:exservice/models/common/User.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
 import 'package:exservice/renovation/models/category.dart';
+import 'package:exservice/renovation/models/responses/session_response.dart';
 import 'package:flutter/material.dart';
 
 abstract class ApiProviderDelegate {
@@ -36,10 +37,11 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchEditAd(adId, title, description);
 
-  Future<void> fetchCompleteUpdateEmailPhone(
-      BuildContext context, code, account, type);
+  Future<void> fetchVerifyPin(String session, String pin);
 
-  Future<void> fetchUpdateEmailPhone(BuildContext context, account, type);
+  Future<SessionResponse> fetchManageEmailAddress(String email, String password);
+
+  Future<SessionResponse> fetchUpdatePhoneNumber(String phoneNumber, String password);
 
   Future<void> fetchSwitchToBusiness(username, website, bio);
 
@@ -79,15 +81,15 @@ abstract class ApiProviderDelegate {
 
   Future<User> login(account, password);
 
-  Future<void> fetchSignUp(name, account, password);
+  Future<SessionResponse> fetchSignUp(name, account, password);
 
-  Future<void> fetchForgetPassword(account);
+  Future<SessionResponse> fetchForgetPassword(account);
 
   Future<void> fetchResetPassword(code, password, confirm);
 
   Future<bool> fetchCheckAccount(account);
 
-  Future<User> fetchVerifyUser(account, code);
+  Future<User> fetchVerifyUser(String session, String code);
 
   Future<void> fetchResendVerificationCode(account);
 

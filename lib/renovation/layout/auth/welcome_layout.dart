@@ -34,12 +34,9 @@ class WelcomeLayout extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          AppLocalization.of(context).trans('next'),
-                          style: AppTextStyle.mediumWhite,
-                        ),
+                      child: Text(
+                        AppLocalization.of(context).trans('next'),
+                        style: AppTextStyle.mediumWhite,
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(

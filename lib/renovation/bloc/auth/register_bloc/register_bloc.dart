@@ -91,13 +91,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           var account = accountController.text.trim();
           var password = passwordController.text.trim();
           var username = usernameController.text.trim();
-          await GetIt.I
+          var response = await GetIt.I
               .get<ApiProviderDelegate>()
               .fetchSignUp(username, account, password);
           try {
             await DataStore.instance.setAccount(account, password);
           } finally {
-            yield RegisterCommittedState();
+            yield RegisterCommittedState(response.data.session);
           }
         } catch (e) {
           yield RegisterErrorState("$e");

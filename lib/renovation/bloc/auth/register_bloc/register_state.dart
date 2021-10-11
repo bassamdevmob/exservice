@@ -9,7 +9,11 @@ class RegisterValidationState extends RegisterState {}
 
 class RegisterAwaitState extends RegisterState {}
 
-class RegisterCommittedState extends RegisterState {}
+class RegisterCommittedState extends RegisterState {
+  final String session;
+
+  RegisterCommittedState(this.session);
+}
 
 class RegisterAwaitCheckAccountState extends RegisterState {}
 

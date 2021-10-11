@@ -55,8 +55,8 @@ class ForgotPasswordBloc
         yield ForgotPasswordAwaitState();
         try {
           var account = accountController.text.trim();
-          await GetIt.I.get<ApiProviderDelegate>().fetchForgetPassword(account);
-          yield ForgotPasswordCommittedState();
+          var response = await GetIt.I.get<ApiProviderDelegate>().fetchForgetPassword(account);
+          yield ForgotPasswordCommittedState(response.data.session);
         } catch (e) {
           yield ForgotPasswordErrorState("$e");
         }

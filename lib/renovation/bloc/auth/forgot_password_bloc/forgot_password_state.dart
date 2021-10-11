@@ -9,7 +9,11 @@ class ForgotPasswordValidationState extends ForgotPasswordState {}
 
 class ForgotPasswordAwaitState extends ForgotPasswordState {}
 
-class ForgotPasswordCommittedState extends ForgotPasswordState {}
+class ForgotPasswordCommittedState extends ForgotPasswordState {
+  final String session;
+
+  ForgotPasswordCommittedState(this.session);
+}
 
 class ForgotPasswordErrorState extends ForgotPasswordState {
   final String message;

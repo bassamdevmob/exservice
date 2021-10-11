@@ -16,6 +16,7 @@ import 'package:exservice/models/options/GetCountriesListModel.dart';
 import 'package:exservice/models/options/GetOptionsModel.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/models/category.dart';
+import 'package:exservice/renovation/models/responses/session_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:faker/faker.dart';
@@ -230,8 +231,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchCompleteUpdateEmailPhone(
-      BuildContext context, code, account, type) {
+  Future<void> fetchVerifyPin(String session, String pin) {
     return Future.delayed(getDelayDuration());
   }
 
@@ -273,8 +273,10 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchForgetPassword(account) {
-    return Future.delayed(getDelayDuration());
+  Future<SessionResponse> fetchForgetPassword(account) {
+    return Future.delayed(getDelayDuration(), () {
+      return getRandomSession();
+    });
   }
 
   @override
@@ -463,8 +465,10 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<void> fetchSignUp(name, account, password) {
-    return Future.delayed(getDelayDuration());
+  Future<SessionResponse> fetchSignUp(name, account, password) {
+    return Future.delayed(getDelayDuration(), () {
+      return getRandomSession();
+    });
   }
 
   @override
@@ -492,11 +496,6 @@ class FakeApiProvider extends ApiProviderDelegate {
         return getRandomTown();
       });
     });
-  }
-
-  @override
-  Future<void> fetchUpdateEmailPhone(BuildContext context, account, type) {
-    return Future.delayed(getDelayDuration());
   }
 
   @override
@@ -555,9 +554,35 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<User> fetchVerifyUser(account, code) {
+  Future<User> fetchVerifyUser(String session, String code) {
     return Future.delayed(getDelayDuration(), () {
       return getRandomUser();
+    });
+  }
+
+  SessionResponse getRandomSession(){
+    return SessionResponse(
+      message: faker.lorem.sentence(),
+      code: 200,
+      data: Data(
+        session: faker.guid.guid(),
+      ),
+    );
+  }
+
+  @override
+  Future<SessionResponse> fetchManageEmailAddress(
+      String email, String password) {
+    return Future.delayed(getDelayDuration(), () {
+      return getRandomSession();
+    });
+  }
+
+  @override
+  Future<SessionResponse> fetchUpdatePhoneNumber(
+      String phoneNumber, String password) {
+    return Future.delayed(getDelayDuration(), () {
+      return getRandomSession();
     });
   }
 }

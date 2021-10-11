@@ -1,5 +1,5 @@
 import 'package:exservice/renovation/app.dart';
-import 'package:exservice/renovation/bloc/application_bloc/application_cubit.dart';
+import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/controller/firebase_messaging_handler.dart';
@@ -74,6 +74,7 @@ class _AppMaterialState extends State<AppMaterial> {
       child: BlocBuilder<ApplicationCubit, ApplicationState>(
         builder: (context, state) {
           return MaterialApp(
+            key: _appBloc.key,
             navigatorKey: Application.instance.globalKey,
             initialRoute: MainLayout.route,
             title: "ExService",

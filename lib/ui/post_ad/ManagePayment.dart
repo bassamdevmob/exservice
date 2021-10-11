@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:exservice/bloc/StatePusher.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
-import 'package:exservice/renovation/bloc/application_bloc/application_cubit.dart';
+import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';

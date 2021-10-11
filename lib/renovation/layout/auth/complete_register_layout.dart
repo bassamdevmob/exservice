@@ -49,14 +49,12 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
       listenWhen: (_, current) => current is RegisterCommittedState,
       listener: (context, state) {
         if (state is RegisterCommittedState) {
-          var account = _bloc.accountController.text.trim();
           Navigator.of(context).pushAndRemoveUntil(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => VerificationBloc(
                   context,
-                  account,
-                  VerificationOnAuthFactory(account),
+                  VerificationOnAuthFactory(state.session),
                 ),
                 child: VerificationLayout(),
               ),
@@ -71,7 +69,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Padding(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -170,15 +168,12 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
           current is RegisterErrorState,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: state is RegisterAwaitState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('next'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is RegisterAwaitState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('next'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is RegisterAwaitState ? null : _register,
         );
       },

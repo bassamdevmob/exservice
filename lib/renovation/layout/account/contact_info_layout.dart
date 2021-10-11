@@ -1,4 +1,8 @@
+import 'package:exservice/renovation/bloc/account/manage_email_address_bloc/manage_email_address_bloc.dart';
+import 'package:exservice/renovation/bloc/account/manage_phone_number_bloc/manage_phone_number_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/renovation/layout/account/edit/manage_email_address_layout.dart';
+import 'package:exservice/renovation/layout/account/edit/manage_phone_number_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
@@ -63,7 +67,14 @@ class ContactInfoLayout extends StatelessWidget {
               size: Utils.iconSize(mediaQuery),
               color: AppColors.blue,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => ManageEmailAddressBloc(context),
+                  child: ManageEmailAddressLayout(),
+                ),
+              ));
+            },
           ),
           Divider(color: AppColors.deepGray, endIndent: 20, indent: 20),
           ListTile(
@@ -84,7 +95,9 @@ class ContactInfoLayout extends StatelessWidget {
               future: Utils.formatPhoneNumber(user.phoneNumber),
               builder: (context, snapshot) {
                 return Text(
-                  snapshot.hasData ? snapshot.data.international : user.phoneNumber,
+                  snapshot.hasData
+                      ? snapshot.data.international
+                      : user.phoneNumber,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
@@ -108,7 +121,14 @@ class ContactInfoLayout extends StatelessWidget {
               size: Utils.iconSize(mediaQuery),
               color: AppColors.blue,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => ManagePhoneNumberBloc(context),
+                  child: ManagePhoneNumberLayout(),
+                ),
+              ));
+            },
           ),
         ],
       ),

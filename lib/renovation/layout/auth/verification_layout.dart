@@ -120,15 +120,12 @@ class _VerificationLayoutState extends State<VerificationLayout> {
           current is VerificationAwaitState,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: state is VerificationAwaitState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('next'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is VerificationAwaitState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('next'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is VerificationAwaitState ? null : _verify,
         );
       },

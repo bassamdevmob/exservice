@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:exservice/renovation/bloc/auth/reset_password_bloc/reset_password_bloc.dart';
+import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/auth/reset_password_layout.dart';
 import 'package:exservice/renovation/layout/auth/welcome_layout.dart';
@@ -21,7 +22,6 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   final pinController = TextEditingController();
   final VerificationFactory factory;
   final BuildContext context;
-  final String account;
 
   bool obscurePassword = true;
 
@@ -31,7 +31,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   int _multi = 1;
   int _count = 1;
 
-  VerificationBloc(this.context, this.account, this.factory)
+  VerificationBloc(this.context, this.factory)
       : super(VerificationInitial());
 
   bool get valid => pinErrorMessage == null;

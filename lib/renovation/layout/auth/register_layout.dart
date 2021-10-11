@@ -208,15 +208,12 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           current is RegisterInitial,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: state is RegisterAwaitCheckAccountState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('next'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is RegisterAwaitCheckAccountState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('next'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is RegisterAwaitCheckAccountState ? null : _register,
         );
       },

@@ -36,14 +36,12 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
         if (state is ForgotPasswordErrorState) {
           Fluttertoast.showToast(msg: state.message);
         } else if (state is ForgotPasswordCommittedState) {
-          var account = _bloc.accountController.text.trim();
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => VerificationBloc(
                   context,
-                  account,
-                  VerificationOnChangePasswordFactory(account),
+                  VerificationOnChangePasswordFactory(state.session),
                 ),
                 child: VerificationLayout(),
               ),

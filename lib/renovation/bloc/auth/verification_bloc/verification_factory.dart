@@ -1,6 +1,10 @@
 part of 'verification_bloc.dart';
 
 abstract class VerificationFactory {
+  final String session;
+
+  VerificationFactory(this.session);
+
   Future<void> onResend();
 
   Future<void> onVerify(String code);
@@ -9,15 +13,13 @@ abstract class VerificationFactory {
 }
 
 class VerificationOnAuthFactory extends VerificationFactory {
-  final String account;
-
-  VerificationOnAuthFactory(this.account);
+  VerificationOnAuthFactory(String session) : super(session);
 
   @override
   Future<void> onResend() {
     return GetIt.I
         .get<ApiProviderDelegate>()
-        .fetchResendVerificationCode(account);
+        .fetchResendVerificationCode(session);
   }
 
   @override
@@ -32,28 +34,29 @@ class VerificationOnAuthFactory extends VerificationFactory {
   @override
   Future<void> onVerify(String code) async {
     var response =
-        await GetIt.I.get<ApiProviderDelegate>().fetchVerifyUser(account, code);
+        await GetIt.I.get<ApiProviderDelegate>().fetchVerifyUser(session, code);
     DataStore.instance.user = response;
     print(DataStore.instance.user.toJson());
   }
 }
 
 class VerificationOnChangePasswordFactory extends VerificationFactory {
-  final String account;
   String _code;
 
-  VerificationOnChangePasswordFactory(this.account);
+  VerificationOnChangePasswordFactory(String session) : super(session);
 
   @override
   Future<void> onResend() {
-    return GetIt.I.get<ApiProviderDelegate>().fetchForgetPassword(account);
+    return GetIt.I
+        .get<ApiProviderDelegate>()
+        .fetchResendVerificationCode(session);
   }
 
   @override
   void afterVerified(BuildContext context) {
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) => ResetPasswordBloc(context, account, _code),
+        create: (context) => ResetPasswordBloc(context, session, _code),
         child: ResetPasswordLayout(),
       ),
     ));
@@ -62,8 +65,53 @@ class VerificationOnChangePasswordFactory extends VerificationFactory {
   @override
   Future<void> onVerify(String code) async {
     var response =
-        await GetIt.I.get<ApiProviderDelegate>().fetchVerifyUser(account, code);
+        await GetIt.I.get<ApiProviderDelegate>().fetchVerifyUser(session, code);
     _code = code;
     DataStore.instance.user = response;
+  }
+}
+
+class VerificationOnChangePhoneNumberFactory extends VerificationFactory {
+  VerificationOnChangePhoneNumberFactory(String session) : super(session);
+
+  @override
+  void afterVerified(BuildContext context) {
+    DataStore.instance.deleteUser();
+    BlocProvider.of<ApplicationCubit>(context).refresh();
+  }
+
+  @override
+  Future<void> onResend() {
+    return GetIt.I
+        .get<ApiProviderDelegate>()
+        .fetchResendVerificationCode(session);
+  }
+
+  @override
+  Future<void> onVerify(String code) {
+    return GetIt.I.get<ApiProviderDelegate>().fetchVerifyPin(session, code);
+  }
+}
+
+
+class VerificationOnChangeEmailAddressFactory extends VerificationFactory {
+  VerificationOnChangeEmailAddressFactory(String session) : super(session);
+
+  @override
+  void afterVerified(BuildContext context) {
+    DataStore.instance.deleteUser();
+    BlocProvider.of<ApplicationCubit>(context).refresh();
+  }
+
+  @override
+  Future<void> onResend() {
+    return GetIt.I
+        .get<ApiProviderDelegate>()
+        .fetchResendVerificationCode(session);
+  }
+
+  @override
+  Future<void> onVerify(String code) {
+    return GetIt.I.get<ApiProviderDelegate>().fetchVerifyPin(session, code);
   }
 }
