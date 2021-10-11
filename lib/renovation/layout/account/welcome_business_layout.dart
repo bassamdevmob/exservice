@@ -49,12 +49,9 @@ class WelcomeBusinessLayout extends StatelessWidget {
                       vertical: _mediaQuery.size.height * 0.04,
                     ),
                     child: ElevatedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          AppLocalization.of(context).trans('continue'),
-                          style: AppTextStyle.mediumWhite,
-                        ),
+                      child: Text(
+                        AppLocalization.of(context).trans('continue'),
+                        style: AppTextStyle.mediumWhite,
                       ),
                       onPressed: () {
                         Navigator.of(context).push(

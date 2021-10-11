@@ -68,12 +68,9 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                     ),
                     SizedBox(height: 10),
                     ElevatedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          AppLocalization.of(context).trans('ok'),
-                          style: AppTextStyle.mediumWhite,
-                        ),
+                      child: Text(
+                        AppLocalization.of(context).trans('ok'),
+                        style: AppTextStyle.mediumWhite,
                       ),
                       onPressed: () {
                         BlocProvider.of<ApplicationCubit>(context).refresh();

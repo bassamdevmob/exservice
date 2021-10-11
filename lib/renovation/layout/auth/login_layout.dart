@@ -150,15 +150,12 @@ class _LoginLayoutState extends State<LoginLayout> {
           current is LoginErrorState,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: state is LoginAwaitState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('login'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is LoginAwaitState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('login'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is LoginAwaitState ? null : _login,
         );
       },

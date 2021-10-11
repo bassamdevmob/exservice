@@ -141,15 +141,12 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
           current is ResetPasswordErrorState,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: state is ResetPasswordAwaitState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('next'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is ResetPasswordAwaitState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('next'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is ResetPasswordAwaitState ? null : _resetPassword,
         );
       },

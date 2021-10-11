@@ -121,15 +121,12 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
           current is ForgotPasswordAwaitState,
       builder: (context, state) {
         return ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: state is ForgotPasswordAwaitState
-                ? CupertinoActivityIndicator()
-                : Text(
-                    AppLocalization.of(context).trans('send_code'),
-                    style: AppTextStyle.mediumWhite,
-                  ),
-          ),
+          child: state is ForgotPasswordAwaitState
+              ? CupertinoActivityIndicator()
+              : Text(
+                  AppLocalization.of(context).trans('send_code'),
+                  style: AppTextStyle.mediumWhite,
+                ),
           onPressed: state is ForgotPasswordAwaitState ? null : _sendCode,
         );
       },

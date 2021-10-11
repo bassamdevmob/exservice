@@ -224,12 +224,9 @@ class _AccountLayoutState extends State<AccountLayout> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  AppLocalization.of(context).trans('edit'),
-                  style: AppTextStyle.mediumWhite,
-                ),
+              child: Text(
+                AppLocalization.of(context).trans('edit'),
+                style: AppTextStyle.mediumWhite,
               ),
               onPressed: () {
                 //todo refresh page
