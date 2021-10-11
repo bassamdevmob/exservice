@@ -97,11 +97,6 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
                                 : () {
                                     _bloc.add(OnChangePasswordEvent());
                                   },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
                             child: state is ChangePasswordAwaitState
                                 ? CupertinoActivityIndicator()
                                 : Text(

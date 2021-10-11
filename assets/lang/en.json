@@ -170,6 +170,8 @@
   "username": "Username",
   "business_info": "Business info",
   "business_info_desc": "Manage your business info",
+  "email_desc": "Change your email address",
+  "phone_desc": "Change your phone number",
   "password_desc": "Change your account password",
   "contact_info": "Contact info",
   "contact_info_desc": "Manage your phone number and email address",

@@ -125,10 +125,6 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                             },
                             style: ElevatedButton.styleFrom(
                               primary: AppColors.white,
-                              padding: EdgeInsets.all(12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
                             ),
                             child: Text(
                               AppLocalization.of(context).trans("reset"),
@@ -147,12 +143,6 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                                     : () {
                                         _bloc.add(UpdateBusinessInfoEvent());
                                       },
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.all(12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
                                 child: state is BusinessInfoAwaitState
                                     ? CupertinoActivityIndicator()
                                     : Text(

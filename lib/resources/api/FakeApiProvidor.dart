@@ -108,6 +108,14 @@ class FakeApiProvider extends ApiProviderDelegate {
     );
   }
 
+  String getMobileNumber() {
+    var number = "";
+    for (int i = 0; i < 7; i++) {
+      number += random.nextInt(10).toString();
+    }
+    return "+9714$number";
+  }
+
   User getRandomUser({int id, int type}) {
     return User(
       id: id ?? faker.randomGenerator.integer(100),
@@ -126,7 +134,7 @@ class FakeApiProvider extends ApiProviderDelegate {
       apiToken: faker.guid.guid(),
       bio: faker.lorem.sentence(),
       companyName: faker.person.firstName(),
-      phoneNumber: faker.randomGenerator.integer(100000000).toString(),
+      phoneNumber: getMobileNumber(),
       profilePic: faker.image.image(
         keywords: keys,
         width: 100,

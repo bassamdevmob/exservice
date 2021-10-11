@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/utils/global.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class Utils {
+  static final _phoneNumberUtil = PhoneNumberUtil();
 
 
   static double estimateBruteforceStrength(String password) {
@@ -34,6 +36,10 @@ abstract class Utils {
     };
 
     return curve(password.length * charsetBonus);
+  }
+
+  static Future<PhoneNumber> formatPhoneNumber(String number) {
+    return _phoneNumberUtil.parse(number);
   }
 
   static String formatDurationFromInt(int duration) {

@@ -2,6 +2,7 @@ import 'package:exservice/renovation/bloc/account/business_info_bloc/business_in
 import 'package:exservice/renovation/bloc/account/change_password_bloc/change_password_bloc.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/layout/account/edit/change_password_layout.dart';
+import 'package:exservice/renovation/layout/account/contact_info_layout.dart';
 import 'package:exservice/renovation/layout/account/edit/edit_business_info_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
@@ -177,6 +178,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                   AppLocalization.of(context).trans("contact_info"),
                   AppLocalization.of(context).trans("contact_info_desc"),
                   () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => ContactInfoLayout(),
+                    ));
                     //                InkWell(
                     //                   onTap: () {
                     //                     //todo update

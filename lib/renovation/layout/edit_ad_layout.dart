@@ -109,12 +109,6 @@ class _EditAdLayoutState extends State<EditAdLayout> {
                             vertical: _mediaQuery.size.height * 0.04,
                           ),
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
                             child: state is EditAdAwaitState
                                 ? CupertinoActivityIndicator()
                                 : Text(
