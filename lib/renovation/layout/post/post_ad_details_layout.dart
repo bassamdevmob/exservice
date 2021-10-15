@@ -2,12 +2,11 @@ import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
-import 'package:exservice/renovation/utils/utils.dart';
-import 'package:exservice/renovation/widget/application/global_widgets.dart';
+import 'package:exservice/renovation/widget/bottom_sheets/post_ad/option_picker_bottom_sheet.dart';
+import 'package:exservice/renovation/widget/bottom_sheets/post_ad/polar_question_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostAdDetailsLayout extends StatefulWidget {
   @override
@@ -21,6 +20,12 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
   void initState() {
     _bloc = BlocProvider.of<PostAdBloc>(context);
     super.initState();
+  }
+
+  String getPolarValue(bool value) {
+    if (value == null) return AppLocalization.of(context).trans("unknown");
+    if (value) return AppLocalization.of(context).trans("yes");
+    return AppLocalization.of(context).trans("no");
   }
 
   @override
@@ -92,71 +97,74 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
             ),
           ),
           SizedBox(height: size.height * 0.02),
-          Row(
-            children: [
-              Expanded(
-                child: getPicker(
-                  onTap: pick,
-                ),
-              ),
-              Expanded(
-                child: getPicker(
-                  onTap: pick,
-                ),
-              ),
-            ],
+          BlocBuilder<PostAdBloc, PostAdState>(
+            buildWhen: (_, current) => current is PostAdChangeOptionState,
+            builder: (context, state) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: getPicker(
+                      icon: Icons.bed,
+                      title: AppLocalization.of(context).trans("rooms"),
+                      value: "5 Rooms",
+                      onTap: () {},
+                      color: Colors.primaries[0],
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: getPicker(
+                      icon: Icons.chair,
+                      title: AppLocalization.of(context).trans("furniture"),
+                      value: "5 Rooms",
+                      onTap: () {
+                        OptionPickerBottomSheet.show(
+                          context,
+                          elements: ["more"],
+                          textBuilder: (e) => e,
+                        );
+                      },
+                      color: Colors.primaries[1],
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: getPicker(
+                      icon: Icons.garage,
+                      title: AppLocalization.of(context).trans("garage"),
+                      value: getPolarValue(_bloc.snapshot.garage),
+                      color: Colors.primaries[2],
+                      onTap: () {
+                        PolarQuestionBottomSheet.show(context).then((value) {
+                          if (value != null) {
+                            _bloc.add(ChangeGaragePostAdEvent(value));
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
+          SizedBox(height: 5),
         ],
       ),
     );
   }
 
-  pick() {
-    var mediaQuery = MediaQuery.of(context);
-    showCupertinoModalBottomSheet(
-      context: context,
-      topRadius: Radius.circular(20),
-      builder: (ctx) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 20,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: Utils.verticalSpace(mediaQuery)),
-              LineBottomSheetWidget(),
-              SizedBox(height: Utils.verticalSpace(mediaQuery)),
-              Material(
-                child: Wrap(
-                  children: [
-                    InputChip(label: Text("1 Room")),
-                    InputChip(label: Text("2 Room")),
-                    InputChip(label: Text("3 Room")),
-                    InputChip(label: Text("4 Room")),
-                    InputChip(label: Text("5 Room")),
-                    InputChip(label: Text("6 Room")),
-                    InputChip(label: Text("7 Room")),
-                    InputChip(label: Text("8 Room")),
-                    InputChip(label: Text("9 Room")),
-                    InputChip(label: Text("More")),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget getPicker({VoidCallback onTap}) {
+  Widget getPicker({
+    IconData icon,
+    String title,
+    String value,
+    Color color,
+    VoidCallback onTap,
+  }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        shape: BoxShape.circle,
+        color: color.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(5),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -168,18 +176,22 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Icon(
+                icon,
+                color: AppColors.white,
+              ),
               Text(
-                AppLocalization.of(context).trans("rooms"),
+                title,
                 textAlign: TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: AppTextStyle.largeWhiteBold,
               ),
               Text(
-                "5 rooms",
-                style: AppTextStyle.mediumGray,
+                value,
+                style: AppTextStyle.mediumWhite,
               ),
             ],
           ),

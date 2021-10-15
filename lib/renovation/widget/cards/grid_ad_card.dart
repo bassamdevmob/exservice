@@ -104,7 +104,7 @@ class _GridAdCardState extends State<GridAdCard> {
                   ),
                 ],
               );
-              if (DataStore.instance.user.id == widget.ad.ownerId) {
+              if (DataStore.instance.user.id == widget.ad.owner.id) {
                 return body;
               }
               return Row(

@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part 'post_ad_event.dart';
+
 part 'post_ad_state.dart';
 
 class AspectRatioSnapshot {
@@ -15,6 +16,12 @@ class AspectRatioSnapshot {
   final double value;
 
   const AspectRatioSnapshot(this.id, this.value);
+}
+
+class PostAdAttributes {
+  bool garage;
+  bool terrace;
+  bool gym;
 }
 
 const ratios = [
@@ -26,6 +33,7 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   final titleController = TextEditingController();
   final detailsController = TextEditingController();
   final List<AssetEntity> selectedEntities = [];
+  final PostAdAttributes snapshot = PostAdAttributes();
 
   List<AssetEntity> media;
   AssetEntity placeholder;
@@ -93,6 +101,15 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
       aspectRatioIndex++;
       if (aspectRatioIndex >= ratios.length) aspectRatioIndex = 0;
       yield PostAdChangeDisplayModeState();
+    } else if (event is ChangeGaragePostAdEvent) {
+      snapshot.garage = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeGymPostAdEvent) {
+      snapshot.gym = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeTerracePostAdEvent) {
+      snapshot.terrace = event.value;
+      yield PostAdChangeOptionState();
     }
   }
 }

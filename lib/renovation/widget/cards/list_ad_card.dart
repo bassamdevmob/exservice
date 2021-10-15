@@ -116,7 +116,7 @@ class _ListAdCardState extends State<ListAdCard> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Builder(builder: (context) {
-            if (DataStore.instance.user.id == widget.ad.ownerId) {
+            if (DataStore.instance.user.id == widget.ad.owner.id) {
               return AdDetails(widget.ad);
             }
             return Row(

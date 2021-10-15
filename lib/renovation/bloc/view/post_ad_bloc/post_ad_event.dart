@@ -12,3 +12,22 @@ class SelectMediaPostAdEvent extends PostAdEvent {
 
   SelectMediaPostAdEvent(this.entity);
 }
+
+/// polar options
+class PolarOptionPostAdEvent extends PostAdEvent {
+  final bool value;
+
+  PolarOptionPostAdEvent(this.value);
+}
+
+class ChangeGaragePostAdEvent extends PolarOptionPostAdEvent {
+  ChangeGaragePostAdEvent(bool value) : super(value);
+}
+
+class ChangeTerracePostAdEvent extends PolarOptionPostAdEvent {
+  ChangeTerracePostAdEvent(bool value) : super(value);
+}
+
+class ChangeGymPostAdEvent extends PolarOptionPostAdEvent {
+  ChangeGymPostAdEvent(bool value) : super(value);
+}

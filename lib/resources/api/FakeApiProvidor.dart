@@ -66,24 +66,15 @@ class FakeApiProvider extends ApiProviderDelegate {
   AdModel getRandomAdModel({int id}) {
     return AdModel(
       id: id ?? faker.randomGenerator.integer(100),
-      appId: faker.randomGenerator.integer(10),
       title: faker.company.name(),
       description: faker.lorem.sentences(3).join(" "),
       isFree: faker.randomGenerator.integer(1),
-      thumbnail: faker.image.image(
-        keywords: keys,
-        width: 100,
-        height: 100,
-        random: true,
-      ),
+      createdAt: DateTime.now(),
       latitude: faker.randomGenerator.decimal(scale: 90),
       longitude: faker.randomGenerator.decimal(scale: 90),
-      ownerId: faker.randomGenerator.integer(100),
-      detailedLocation: faker.lorem.sentence(),
       saved: faker.randomGenerator.boolean(),
       status: faker.randomGenerator.integer(2),
       totalViews: faker.randomGenerator.integer(100),
-      townId: faker.randomGenerator.integer(100),
       town: getRandomTown(),
       attr: Attributes(
         id: id ?? faker.randomGenerator.integer(100),
@@ -105,7 +96,7 @@ class FakeApiProvider extends ApiProviderDelegate {
       ),
       media: List.generate(random.nextInt(4) + 1, (index) => getRandomMedia()),
       owner: getRandomUser(id: id),
-      validtyDate: getFakeDate(),
+      date: getFakeDate(),
     );
   }
 

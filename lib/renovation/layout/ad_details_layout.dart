@@ -169,7 +169,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       ),
                     ],
                   );
-                  if (DataStore.instance.user.id == _bloc.details.ownerId) {
+                  if (DataStore.instance.user.id == _bloc.details.owner.id) {
                     return content;
                   }
                   return Row(
@@ -330,10 +330,10 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       AppLocalization.of(context).trans('createdAt'),
                       isoFormatter.format(details.createdAt),
                     ),
-                  if (details.validtyDate != null)
+                  if (details.date != null)
                     _getFeature(
                       AppLocalization.of(context).trans('date'),
-                      isoFormatter.format(details.validtyDate),
+                      isoFormatter.format(details.date),
                     ),
                 ];
                 return Column(

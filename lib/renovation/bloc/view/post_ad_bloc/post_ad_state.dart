@@ -14,3 +14,6 @@ class PostAdReachedMediaMaxLimitsErrorState extends PostAdState {}
 class PostAdSelectMediaState extends PostAdState {}
 
 class PostAdChangeDisplayModeState extends PostAdState {}
+
+/// details
+class PostAdChangeOptionState extends PostAdState {}
