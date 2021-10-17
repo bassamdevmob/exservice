@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:exservice/models/common/Settings.dart';
-import 'package:exservice/models/common/User.dart';
+import 'package:exservice/renovation/models/common/settings_model.dart';
+import 'package:exservice/renovation/models/common/user_model.dart';
 
 class DataStore {
   static final DataStore _instance = DataStore._internal();
@@ -17,10 +17,10 @@ class DataStore {
 
   Box _box;
 
-  User _user;
+  UserModel _user;
   String _lang;
   String _fcmToken;
-  Settings _settings;
+  SettingsModel _settings;
 
   Future<void> init() async {
     Directory dir = await getApplicationDocumentsDirectory();
@@ -28,11 +28,11 @@ class DataStore {
     _box = await Hive.openBox(DEFAULT_TAG);
 
     var storedUser = _box.get("user");
-    _user = storedUser == null ? null : User.fromJson(jsonDecode(storedUser));
+    _user = storedUser == null ? null : UserModel.fromJson(jsonDecode(storedUser));
     var storedSettings = _box.get("settings");
     _settings = storedSettings == null
-        ? Settings()
-        : Settings.fromJson(jsonDecode(storedSettings));
+        ? SettingsModel()
+        : SettingsModel.fromJson(jsonDecode(storedSettings));
 
     _lang = _box.get("lang", defaultValue: "en");
     _fcmToken = _box.get("fcm_token");
@@ -41,7 +41,7 @@ class DataStore {
 
   bool get hasUser => _user != null;
 
-  User get user => _user;
+  UserModel get user => _user;
 
   String get session => _user == null ? null : "Bearer ${_user.apiToken}";
 
@@ -49,9 +49,9 @@ class DataStore {
 
   String get fcmToken => _fcmToken;
 
-  Settings get settings => _settings;
+  SettingsModel get settings => _settings;
 
-  set user(User value) =>
+  set user(UserModel value) =>
       _box.put("user", jsonEncode((_user = value).toJson()));
 
   set lang(String value) => _box.put("lang", _lang = value);

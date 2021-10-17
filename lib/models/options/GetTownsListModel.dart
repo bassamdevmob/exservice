@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:exservice/models/common/Town.dart';
+import 'package:exservice/renovation/models/common/town_model.dart';
 
 GetTownsListModel getTownsListModelFromJson(String str) =>
     GetTownsListModel.fromJson(json.decode(str));
@@ -20,7 +20,7 @@ class GetTownsListModel {
   });
 
   String message;
-  List<Town> data;
+  List<TownModel> data;
   int code;
 
   factory GetTownsListModel.fromJson(Map<String, dynamic> json) =>
@@ -28,7 +28,7 @@ class GetTownsListModel {
         message: json["message"] == null ? null : json["message"],
         data: json["data"] == null
             ? null
-            : List<Town>.from(json["data"].map((x) => Town.fromJson(x))),
+            : List<TownModel>.from(json["data"].map((x) => TownModel.fromJson(x))),
         code: json["code"] == null ? null : json["code"],
       );
 

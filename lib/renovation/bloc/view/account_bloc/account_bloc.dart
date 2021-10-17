@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/models/GetUserProfileModel.dart';
+import 'package:exservice/renovation/models/responses/user_profile_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +14,7 @@ part 'account_state.dart';
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final ScrollController scrollController = ScrollController();
 
-  UserProfile profile;
+  UserProfileModel profile;
   AccountTab currentTab = AccountTab.details;
 
   AccountBloc() : super(AccountAwaitState());

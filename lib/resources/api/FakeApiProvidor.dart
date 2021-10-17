@@ -2,20 +2,20 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:exservice/models/GetChatUsersModel.dart';
-import 'package:exservice/models/GetUserProfileModel.dart';
+import 'package:exservice/renovation/models/responses/user_profile_response.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
-import 'package:exservice/models/common/AdModel.dart';
-import 'package:exservice/models/common/Media.dart';
-import 'package:exservice/models/common/SimpleResponseModel.dart';
-import 'package:exservice/models/common/Town.dart';
-import 'package:exservice/models/common/User.dart';
+import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/common/media_model.dart';
+import 'package:exservice/renovation/models/responses/general_response.dart';
+import 'package:exservice/renovation/models/common/town_model.dart';
+import 'package:exservice/renovation/models/common/user_model.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
 import 'package:exservice/models/options/GetOptionsModel.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
-import 'package:exservice/renovation/models/category.dart';
+import 'package:exservice/renovation/models/common/category.dart';
 import 'package:exservice/renovation/models/responses/session_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
@@ -47,8 +47,8 @@ class FakeApiProvider extends ApiProviderDelegate {
     return Duration(seconds: random.nextInt(2) + 1);
   }
 
-  Town getRandomTown({int id}) {
-    return Town(
+  TownModel getRandomTown({int id}) {
+    return TownModel(
       id: id ?? faker.randomGenerator.integer(100),
       country: faker.address.country(),
       name: faker.address.country(),
@@ -108,8 +108,8 @@ class FakeApiProvider extends ApiProviderDelegate {
     return "+9714$number";
   }
 
-  User getRandomUser({int id, int type}) {
-    return User(
+  UserModel getRandomUser({int id, int type}) {
+    return UserModel(
       id: id ?? faker.randomGenerator.integer(100),
       username: faker.person.name(),
       town: getRandomTown(),
@@ -142,8 +142,8 @@ class FakeApiProvider extends ApiProviderDelegate {
     );
   }
 
-  UserProfile getRandomUserProfile({int type}) {
-    return UserProfile(
+  UserProfileModel getRandomUserProfile({int type}) {
+    return UserProfileModel(
       user: getRandomUser(type: type),
       ads: List.generate(activeAdsNumber, (index) => getRandomAdModel()),
       activeCount: activeAdsNumber,
@@ -152,17 +152,17 @@ class FakeApiProvider extends ApiProviderDelegate {
     );
   }
 
-  Media getRandomMedia() {
+  MediaModel getRandomMedia() {
     var num = faker.randomGenerator.integer(10, min: 0);
     if (num == 0) {
-      return Media(
+      return MediaModel(
         id: faker.randomGenerator.integer(100),
         adId: faker.randomGenerator.integer(100),
         link: video,
         type: 2,
       );
     } else {
-      return Media(
+      return MediaModel(
         id: faker.randomGenerator.integer(100),
         adId: faker.randomGenerator.integer(100),
         link: faker.image.image(
@@ -324,7 +324,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<UserProfile> fetchGetUserAccount(int id) {
+  Future<UserProfileModel> fetchGetUserAccount(int id) {
     return Future.delayed(
       getDelayDuration(),
       () => getRandomUserProfile(type: AccountType.company.id),
@@ -342,7 +342,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<UserProfile> fetchGetUserProfile() {
+  Future<UserProfileModel> fetchGetUserProfile() {
     return Future.delayed(getDelayDuration(), () {
       var profile = getRandomUserProfile();
       _id = profile.user.id;
@@ -395,7 +395,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<User> login(account, password) {
+  Future<UserModel> login(account, password) {
     return Future.delayed(getDelayDuration(), () async {
       return getRandomUser();
     });
@@ -481,7 +481,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<List<Town>> fetchTownsList(BuildContext context, int countryId) {
+  Future<List<TownModel>> fetchTownsList(BuildContext context, int countryId) {
     return Future.delayed(getDelayDuration(), () {
       return List.generate(10, (index) {
         return getRandomTown();
@@ -515,7 +515,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<SimpleResponseModel> fetchUploadAdMedia(int adId, progressCallback) {
+  Future<GeneralResponse> fetchUploadAdMedia(int adId, progressCallback) {
     int _current = 0;
     int _total = 100000;
     const oneSec = const Duration(milliseconds: 100);
@@ -528,7 +528,7 @@ class FakeApiProvider extends ApiProviderDelegate {
       }
     });
     return Future.delayed(getDelayDuration(), () {
-      return SimpleResponseModel(data: null, message: "success", code: 200);
+      return GeneralResponse(data: null, message: "success", code: 200);
     });
   }
 
@@ -545,7 +545,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<User> fetchVerifyUser(String session, String code) {
+  Future<UserModel> fetchVerifyUser(String session, String code) {
     return Future.delayed(getDelayDuration(), () {
       return getRandomUser();
     });

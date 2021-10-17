@@ -14,7 +14,7 @@ class SelectMediaPostAdEvent extends PostAdEvent {
 }
 
 /// polar options
-class PolarOptionPostAdEvent extends PostAdEvent {
+abstract class PolarOptionPostAdEvent extends PostAdEvent {
   final bool value;
 
   PolarOptionPostAdEvent(this.value);
@@ -30,4 +30,27 @@ class ChangeTerracePostAdEvent extends PolarOptionPostAdEvent {
 
 class ChangeGymPostAdEvent extends PolarOptionPostAdEvent {
   ChangeGymPostAdEvent(bool value) : super(value);
+}
+
+/// polar options
+abstract class SingleOptionPostAdEvent extends PostAdEvent {
+  final OptionModel value;
+
+  SingleOptionPostAdEvent(this.value);
+}
+
+class ChangeTypePostAdEvent extends SingleOptionPostAdEvent {
+  ChangeTypePostAdEvent(OptionModel value) : super(value);
+}
+
+class ChangeRoomPostAdEvent extends SingleOptionPostAdEvent {
+  ChangeRoomPostAdEvent(OptionModel value) : super(value);
+}
+
+class ChangeBathPostAdEvent extends SingleOptionPostAdEvent {
+  ChangeBathPostAdEvent(OptionModel value) : super(value);
+}
+
+class ChangeFurniturePostAdEvent extends SingleOptionPostAdEvent {
+  ChangeFurniturePostAdEvent(OptionModel value) : super(value);
 }

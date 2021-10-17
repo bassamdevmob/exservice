@@ -1,4 +1,4 @@
-import 'package:exservice/models/common/AdModel.dart';
+import 'package:exservice/renovation/models/common/ad_model.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/global.dart';

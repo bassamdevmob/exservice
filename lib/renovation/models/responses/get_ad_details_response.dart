@@ -1,19 +1,8 @@
-// To parse this JSON data, do
-//
-//     final getAdDetailsModel = getAdDetailsModelFromJson(jsonString);
 
-import 'dart:convert';
+import 'package:exservice/renovation/models/common/ad_model.dart';
 
-import 'common/AdModel.dart';
-
-GetAdDetailsModel getAdDetailsModelFromJson(String str) =>
-    GetAdDetailsModel.fromJson(json.decode(str));
-
-String getAdDetailsModelToJson(GetAdDetailsModel data) =>
-    json.encode(data.toJson());
-
-class GetAdDetailsModel {
-  GetAdDetailsModel({
+class GetAdDetailsResponse {
+  GetAdDetailsResponse({
     this.message,
     this.data,
     this.code,
@@ -23,8 +12,8 @@ class GetAdDetailsModel {
   AdModel data;
   int code;
 
-  factory GetAdDetailsModel.fromJson(Map<String, dynamic> json) =>
-      GetAdDetailsModel(
+  factory GetAdDetailsResponse.fromJson(Map<String, dynamic> json) =>
+      GetAdDetailsResponse(
         message: json["message"] == null ? null : json["message"],
         data: json["data"] == null ? null : AdModel.fromJson(json["data"]),
         code: json["code"] == null ? null : json["code"],

@@ -1,15 +1,5 @@
-// To parse this JSON data, do
-//
-//     final settings = settingsFromJson(jsonString);
-
-import 'dart:convert';
-
-Settings settingsFromJson(String str) => Settings.fromJson(json.decode(str));
-
-String settingsToJson(Settings data) => json.encode(data.toJson());
-
-class Settings {
-  Settings({
+class SettingsModel {
+  SettingsModel({
     this.account,
     this.password,
     this.savePassword = false,
@@ -19,11 +9,10 @@ class Settings {
   String password;
   bool savePassword;
 
-  factory Settings.fromJson(Map<String, dynamic> json) => Settings(
+  factory SettingsModel.fromJson(Map<String, dynamic> json) => SettingsModel(
         account: json["account"] == null ? null : json["account"],
         password: json["password"] == null ? null : json["password"],
-        savePassword:
-            json["save_password"] == null ? null : json["save_password"],
+        savePassword: json["save_password"] == null ? null : json["save_password"],
       );
 
   Map<String, dynamic> toJson() => {

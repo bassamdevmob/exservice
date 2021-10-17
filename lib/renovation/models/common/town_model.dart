@@ -1,5 +1,5 @@
-class Town {
-  Town({
+class TownModel {
+  TownModel({
     this.id,
     this.name,
     this.image,
@@ -15,7 +15,7 @@ class Town {
   String country;
   String image;
 
-  factory Town.fromJson(Map<String, dynamic> json) => Town(
+  factory TownModel.fromJson(Map<String, dynamic> json) => TownModel(
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         latitude: json["latitude"] == null ? null : json["latitude"],

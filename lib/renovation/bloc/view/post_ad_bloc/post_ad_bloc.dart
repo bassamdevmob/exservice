@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:exservice/renovation/models/common/option_model.dart';
 import 'package:exservice/renovation/utils/constant.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -22,6 +24,9 @@ class PostAdAttributes {
   bool garage;
   bool terrace;
   bool gym;
+  OptionModel room;
+  OptionModel bath;
+  OptionModel furniture;
 }
 
 const ratios = [
@@ -29,11 +34,103 @@ const ratios = [
   AspectRatioSnapshot("TIGHT", 1.1),
 ];
 
+class DataCenter {
+  final List<OptionModel> baths = List.generate(5, (index) {
+    return OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "${index + 1} Bathroom",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    );
+  })..add(OptionModel(
+    id: faker.randomGenerator.integer(100),
+    title: "More",
+    image: faker.image.image(random: true, height: 300, width: 300),
+  ));
+  final List<OptionModel> rooms = List.generate(10, (index) {
+    return OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "${index + 1} Room",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    );
+  })..add(OptionModel(
+    id: faker.randomGenerator.integer(100),
+    title: "More",
+    image: faker.image.image(random: true, height: 300, width: 300),
+  ));
+  final List<OptionModel> options = [
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Sell",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Rent",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Contract",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Other",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+  ];
+  final List<OptionModel> types = [
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Land",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Residential",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Commercial",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Industrial",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+  ];
+  final List<OptionModel> furniture = [
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Furnished",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Unfurnished",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Super Deluxe",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Deluxe",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+  ];
+}
+
 class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   final titleController = TextEditingController();
   final detailsController = TextEditingController();
   final List<AssetEntity> selectedEntities = [];
   final PostAdAttributes snapshot = PostAdAttributes();
+  final DataCenter dataCenter = DataCenter();
 
   List<AssetEntity> media;
   AssetEntity placeholder;
@@ -109,6 +206,15 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
       yield PostAdChangeOptionState();
     } else if (event is ChangeTerracePostAdEvent) {
       snapshot.terrace = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeRoomPostAdEvent) {
+      snapshot.room = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeBathPostAdEvent) {
+      snapshot.bath = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeFurniturePostAdEvent) {
+      snapshot.furniture = event.value;
       yield PostAdChangeOptionState();
     }
   }

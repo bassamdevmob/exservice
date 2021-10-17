@@ -1,5 +1,6 @@
 import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/models/common/option_model.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/post_ad/option_picker_bottom_sheet.dart';
@@ -22,10 +23,15 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
     super.initState();
   }
 
-  String getPolarValue(bool value) {
+  String _getPolarValue(bool value) {
     if (value == null) return AppLocalization.of(context).trans("unknown");
     if (value) return AppLocalization.of(context).trans("yes");
     return AppLocalization.of(context).trans("no");
+  }
+
+  String _getOptionValue(OptionModel value) {
+    if (value == null) return AppLocalization.of(context).trans("unknown");
+    return value.title;
   }
 
   @override
@@ -100,48 +106,127 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
           BlocBuilder<PostAdBloc, PostAdState>(
             buildWhen: (_, current) => current is PostAdChangeOptionState,
             builder: (context, state) {
-              return Row(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: getPicker(
-                      icon: Icons.bed,
-                      title: AppLocalization.of(context).trans("rooms"),
-                      value: "5 Rooms",
-                      onTap: () {},
-                      color: Colors.primaries[0],
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.bed,
+                          title: AppLocalization.of(context).trans("rooms"),
+                          value: _getOptionValue(_bloc.snapshot.room),
+                          onTap: () {
+                            OptionPickerBottomSheet.show<OptionModel>(
+                              context,
+                              elements: _bloc.dataCenter.rooms,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeRoomPostAdEvent(value));
+                              }
+                            });
+                          },
+                          color: Colors.primaries[0],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.bathroom_rounded,
+                          title: AppLocalization.of(context).trans("bathroom"),
+                          value: _getOptionValue(_bloc.snapshot.bath),
+                          onTap: () {
+                            OptionPickerBottomSheet.show<OptionModel>(
+                              context,
+                              elements: _bloc.dataCenter.baths,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeBathPostAdEvent(value));
+                              }
+                            });
+                          },
+                          color: Colors.primaries[1],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.chair,
+                          title: AppLocalization.of(context).trans("furniture"),
+                          value: _getOptionValue(_bloc.snapshot.furniture),
+                          color: Colors.primaries[2],
+                          onTap: () {
+                            OptionPickerBottomSheet.show<OptionModel>(
+                              context,
+                              elements: _bloc.dataCenter.furniture,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeFurniturePostAdEvent(value));
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: getPicker(
-                      icon: Icons.chair,
-                      title: AppLocalization.of(context).trans("furniture"),
-                      value: "5 Rooms",
-                      onTap: () {
-                        OptionPickerBottomSheet.show(
-                          context,
-                          elements: ["more"],
-                          textBuilder: (e) => e,
-                        );
-                      },
-                      color: Colors.primaries[1],
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: getPicker(
-                      icon: Icons.garage,
-                      title: AppLocalization.of(context).trans("garage"),
-                      value: getPolarValue(_bloc.snapshot.garage),
-                      color: Colors.primaries[2],
-                      onTap: () {
-                        PolarQuestionBottomSheet.show(context).then((value) {
-                          if (value != null) {
-                            _bloc.add(ChangeGaragePostAdEvent(value));
-                          }
-                        });
-                      },
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.bed,
+                          title: AppLocalization.of(context).trans("rooms"),
+                          value: _getOptionValue(_bloc.snapshot.room),
+                          onTap: () {
+                            OptionPickerBottomSheet.show<OptionModel>(
+                              context,
+                              elements: _bloc.dataCenter.rooms,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeRoomPostAdEvent(value));
+                              }
+                            });
+                          },
+                          color: Colors.primaries[4],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.chair,
+                          title: AppLocalization.of(context).trans("furniture"),
+                          value: "5 Rooms",
+                          onTap: () {
+                            OptionPickerBottomSheet.show(
+                              context,
+                              elements: ["more"],
+                              textBuilder: (e) => e,
+                            );
+                          },
+                          color: Colors.primaries[5],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.garage,
+                          title: AppLocalization.of(context).trans("garage"),
+                          value: _getPolarValue(_bloc.snapshot.garage),
+                          color: Colors.primaries[6],
+                          onTap: () {
+                            PolarQuestionBottomSheet.show(context)
+                                .then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeGaragePostAdEvent(value));
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );
@@ -171,7 +256,6 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
         onTap: onTap,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 20,
             vertical: 10,
           ),
           child: Column(
@@ -192,6 +276,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
               Text(
                 value,
                 style: AppTextStyle.mediumWhite,
+                maxLines: 1,
               ),
             ],
           ),

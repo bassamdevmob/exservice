@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:exservice/models/GetChatUsersModel.dart';
-import 'package:exservice/models/GetUserProfileModel.dart';
+import 'package:exservice/renovation/models/responses/user_profile_response.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
-import 'package:exservice/models/common/AdModel.dart';
-import 'package:exservice/models/common/SimpleResponseModel.dart';
-import 'package:exservice/models/common/Town.dart';
-import 'package:exservice/models/common/User.dart';
+import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/responses/general_response.dart';
+import 'package:exservice/renovation/models/common/town_model.dart';
+import 'package:exservice/renovation/models/common/user_model.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
-import 'package:exservice/renovation/models/category.dart';
+import 'package:exservice/renovation/models/common/category.dart';
 import 'package:exservice/renovation/models/responses/session_response.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ abstract class ApiProviderDelegate {
 
   Future<List<AdModel>> fetchGetUserAds(int offset, int status);
 
-  Future<SimpleResponseModel> fetchUploadAdMedia(
+  Future<GeneralResponse> fetchUploadAdMedia(
     int adId,
     ProgressCallback cb,
   );
@@ -45,9 +45,9 @@ abstract class ApiProviderDelegate {
 
   Future<void> fetchSwitchToBusiness(username, website, bio);
 
-  Future<UserProfile> fetchGetUserAccount(int id);
+  Future<UserProfileModel> fetchGetUserAccount(int id);
 
-  Future<UserProfile> fetchGetUserProfile();
+  Future<UserProfileModel> fetchGetUserProfile();
 
   Future<UploadData> fetchUpdateUserPicture({String image, String video});
 
@@ -75,11 +75,11 @@ abstract class ApiProviderDelegate {
 
   Future<List<Choice>> fetchCountriesList(BuildContext context);
 
-  Future<List<Town>> fetchTownsList(BuildContext context, int countryId);
+  Future<List<TownModel>> fetchTownsList(BuildContext context, int countryId);
 
   Future<List<AdPrice>> fetchAdPricesList(BuildContext context);
 
-  Future<User> login(account, password);
+  Future<UserModel> login(account, password);
 
   Future<SessionResponse> fetchSignUp(name, account, password);
 
@@ -89,7 +89,7 @@ abstract class ApiProviderDelegate {
 
   Future<bool> fetchCheckAccount(account);
 
-  Future<User> fetchVerifyUser(String session, String code);
+  Future<UserModel> fetchVerifyUser(String session, String code);
 
   Future<void> fetchResendVerificationCode(account);
 

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:exservice/models/GetUserProfileModel.dart';
+import 'package:exservice/renovation/models/responses/user_profile_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,7 @@ class PublisherCubit extends Cubit<PublisherState> {
   final int id;
   final scrollController = ScrollController();
   DisplayFormat format = DisplayFormat.list;
-  UserProfile publisher;
+  UserProfileModel publisher;
 
   @override
   Future<void> close() {

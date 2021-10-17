@@ -1,5 +1,5 @@
-class Media {
-  Media({
+class MediaModel {
+  MediaModel({
     this.id,
     this.adId,
     this.link,
@@ -11,7 +11,7 @@ class Media {
   String link;
   int type;
 
-  factory Media.fromJson(Map<String, dynamic> json) => Media(
+  factory MediaModel.fromJson(Map<String, dynamic> json) => MediaModel(
         id: json["id"] == null ? null : json["id"],
         adId: json["ad_id"] == null ? null : json["ad_id"],
         link: json["link"] == null ? null : json["link"],

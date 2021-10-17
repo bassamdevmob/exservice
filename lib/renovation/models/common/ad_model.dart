@@ -1,8 +1,8 @@
 import 'package:exservice/models/options/GetOptionsModel.dart';
 
-import 'Media.dart';
-import 'Town.dart';
-import 'User.dart';
+import 'media_model.dart';
+import 'user_model.dart';
+import 'town_model.dart';
 
 class AdModel {
   AdModel({
@@ -34,22 +34,22 @@ class AdModel {
   int isFree;
   bool saved;
   int totalViews;
-  Town town;
-  User owner;
+  TownModel town;
+  UserModel owner;
   Attributes attr;
-  List<Media> media;
+  List<MediaModel> media;
 
   String get firstImage {
-    for (Media m in media) if (m.type == 1) return m.link;
+    for (MediaModel m in media) if (m.type == 1) return m.link;
     return null;
   }
 
-  List<Media> get images {
+  List<MediaModel> get images {
     return media.where((m) => m.type == 1).toList();
   }
 
   String get firstVideo {
-    for (Media m in media) if (m.type == 2) return m.link;
+    for (MediaModel m in media) if (m.type == 2) return m.link;
     return null;
   }
 
@@ -63,14 +63,14 @@ class AdModel {
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         isFree: json["is_free"] == null ? null : json["is_free"],
         saved: json["saved_ads_count"] == null ? null : json["saved_ads_count"],
-        town: json["town"] == null ? null : Town.fromJson(json["town"]),
-        owner: json["owner"] == null ? null : User.fromJson(json["owner"]),
+        town: json["town"] == null ? null : TownModel.fromJson(json["town"]),
+        owner: json["owner"] == null ? null : UserModel.fromJson(json["owner"]),
         attr: json["property_attributes"] == null
             ? null
             : Attributes.fromJson(json["property_attributes"]),
         media: json["media"] == null
             ? null
-            : List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+            : List<MediaModel>.from(json["media"].map((x) => MediaModel.fromJson(x))),
         totalViews: json["totalViews"] == null ? 0 : json["totalViews"],
       );
 

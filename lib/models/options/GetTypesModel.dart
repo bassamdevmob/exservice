@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:exservice/models/common/User.dart';
+import 'package:exservice/renovation/models/common/user_model.dart';
 
 GetTypesModel getTypesModelFromJson(String str) =>
     GetTypesModel.fromJson(json.decode(str));
