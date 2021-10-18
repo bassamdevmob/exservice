@@ -176,17 +176,17 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                     children: [
                       Expanded(
                         child: getPicker(
-                          icon: Icons.bed,
-                          title: AppLocalization.of(context).trans("rooms"),
-                          value: _getOptionValue(_bloc.snapshot.room),
+                          icon: Icons.house,
+                          title: AppLocalization.of(context).trans("type"),
+                          value: _getOptionValue(_bloc.snapshot.type),
                           onTap: () {
                             OptionPickerBottomSheet.show<OptionModel>(
                               context,
-                              elements: _bloc.dataCenter.rooms,
+                              elements: _bloc.dataCenter.types,
                               textBuilder: (e) => e.title,
                             ).then((value) {
                               if (value != null) {
-                                _bloc.add(ChangeRoomPostAdEvent(value));
+                                _bloc.add(ChangeTypePostAdEvent(value));
                               }
                             });
                           },
@@ -196,17 +196,78 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       SizedBox(width: 10),
                       Expanded(
                         child: getPicker(
-                          icon: Icons.chair,
-                          title: AppLocalization.of(context).trans("furniture"),
-                          value: "5 Rooms",
+                          icon: Icons.security,
+                          title: AppLocalization.of(context).trans("security"),
+                          value: _getOptionValue(_bloc.snapshot.security),
                           onTap: () {
-                            OptionPickerBottomSheet.show(
+                            OptionPickerBottomSheet.show<OptionModel>(
                               context,
-                              elements: ["more"],
-                              textBuilder: (e) => e,
-                            );
+                              elements: _bloc.dataCenter.security,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeSecurityPostAdEvent(value));
+                              }
+                            });
                           },
                           color: Colors.primaries[5],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.api_sharp,
+                          title: AppLocalization.of(context).trans("balcony"),
+                          value: _getOptionValue(_bloc.snapshot.balcony),
+                          color: Colors.primaries[6],
+                          onTap: () {
+                            OptionPickerBottomSheet.show<OptionModel>(
+                              context,
+                              elements: _bloc.dataCenter.balcony,
+                              textBuilder: (e) => e.title,
+                            ).then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeBalconyPostAdEvent(value));
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.directions_run,
+                          title: AppLocalization.of(context).trans("gym"),
+                          value: _getPolarValue(_bloc.snapshot.gym),
+                          onTap: () {
+                            PolarQuestionBottomSheet.show(context)
+                                .then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeGymPostAdEvent(value));
+                              }
+                            });
+                          },
+                          color: Colors.primaries[7],
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: getPicker(
+                          icon: Icons.terrain_outlined,
+                          title: AppLocalization.of(context).trans("terrace"),
+                          value: _getPolarValue(_bloc.snapshot.terrace),
+                          color: Colors.primaries[8],
+                          onTap: () {
+                            PolarQuestionBottomSheet.show(context)
+                                .then((value) {
+                              if (value != null) {
+                                _bloc.add(ChangeTerracePostAdEvent(value));
+                              }
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 10),
@@ -215,7 +276,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                           icon: Icons.garage,
                           title: AppLocalization.of(context).trans("garage"),
                           value: _getPolarValue(_bloc.snapshot.garage),
-                          color: Colors.primaries[6],
+                          color: Colors.primaries[9],
                           onTap: () {
                             PolarQuestionBottomSheet.show(context)
                                 .then((value) {

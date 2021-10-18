@@ -54,3 +54,11 @@ class ChangeBathPostAdEvent extends SingleOptionPostAdEvent {
 class ChangeFurniturePostAdEvent extends SingleOptionPostAdEvent {
   ChangeFurniturePostAdEvent(OptionModel value) : super(value);
 }
+
+class ChangeSecurityPostAdEvent extends SingleOptionPostAdEvent {
+  ChangeSecurityPostAdEvent(OptionModel value) : super(value);
+}
+
+class ChangeBalconyPostAdEvent extends SingleOptionPostAdEvent {
+  ChangeBalconyPostAdEvent(OptionModel value) : super(value);
+}

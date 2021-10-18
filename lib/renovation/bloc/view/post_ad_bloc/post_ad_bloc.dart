@@ -24,9 +24,12 @@ class PostAdAttributes {
   bool garage;
   bool terrace;
   bool gym;
+  OptionModel type;
   OptionModel room;
   OptionModel bath;
   OptionModel furniture;
+  OptionModel security;
+  OptionModel balcony;
 }
 
 const ratios = [
@@ -41,22 +44,36 @@ class DataCenter {
       title: "${index + 1} Bathroom",
       image: faker.image.image(random: true, height: 300, width: 300),
     );
-  })..add(OptionModel(
-    id: faker.randomGenerator.integer(100),
-    title: "More",
-    image: faker.image.image(random: true, height: 300, width: 300),
-  ));
+  })
+    ..add(OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "More",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ));
+  final List<OptionModel> balcony = List.generate(5, (index) {
+    return OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "${index + 1} balcony",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    );
+  })
+    ..add(OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "More",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ));
   final List<OptionModel> rooms = List.generate(10, (index) {
     return OptionModel(
       id: faker.randomGenerator.integer(100),
       title: "${index + 1} Room",
       image: faker.image.image(random: true, height: 300, width: 300),
     );
-  })..add(OptionModel(
-    id: faker.randomGenerator.integer(100),
-    title: "More",
-    image: faker.image.image(random: true, height: 300, width: 300),
-  ));
+  })
+    ..add(OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "More",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ));
   final List<OptionModel> options = [
     OptionModel(
       id: faker.randomGenerator.integer(100),
@@ -120,6 +137,33 @@ class DataCenter {
     OptionModel(
       id: faker.randomGenerator.integer(100),
       title: "Deluxe",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+  ];
+  final List<OptionModel> security = [
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Monitored Alarm",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Smoke Alarm",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Intruder Alarm",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "CCTV Cameras",
+      image: faker.image.image(random: true, height: 300, width: 300),
+    ),
+    OptionModel(
+      id: faker.randomGenerator.integer(100),
+      title: "Security Guard",
       image: faker.image.image(random: true, height: 300, width: 300),
     ),
   ];
@@ -215,6 +259,15 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
       yield PostAdChangeOptionState();
     } else if (event is ChangeFurniturePostAdEvent) {
       snapshot.furniture = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeTypePostAdEvent) {
+      snapshot.type = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeSecurityPostAdEvent) {
+      snapshot.security = event.value;
+      yield PostAdChangeOptionState();
+    } else if (event is ChangeBalconyPostAdEvent) {
+      snapshot.balcony = event.value;
       yield PostAdChangeOptionState();
     }
   }
