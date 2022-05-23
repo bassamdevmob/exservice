@@ -8,10 +8,10 @@ import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:string_validator/string_validator.dart' as validator;
 
 part 'register_event.dart';
+
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
@@ -28,7 +28,66 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   String usernameErrorMessage;
   String passwordErrorMessage;
 
-  RegisterBloc(this.context) : super(RegisterInitial());
+  RegisterBloc(this.context) : super(RegisterInitial()) {
+    on((event, emit) async {
+      if (event is RegisterChangeIdentifierEvent) {
+        identifier = event.identifier;
+        accountController.clear();
+        emit(RegisterChangeIdentifierState());
+      } else if (event is RegisterValidateEvent) {
+        _validate();
+        emit(RegisterValidationState());
+      } else if (event is RegisterCommitEvent) {
+        _validate();
+        emit(RegisterValidationState());
+        if (valid) {
+          emit(RegisterAwaitState());
+          try {
+            var account = accountController.text.trim();
+            var password = passwordController.text.trim();
+            var username = usernameController.text.trim();
+            var response = await GetIt.I
+                .get<ApiProviderDelegate>()
+                .fetchSignUp(username, account, password);
+            try {
+              await DataStore.instance.setAccount(account, password);
+            } finally {
+              emit(RegisterCommittedState(response.data.session));
+            }
+          } catch (e) {
+            emit(RegisterErrorState("$e"));
+          }
+        }
+      } else if (event is RegisterValidateAccountEvent) {
+        _validateAccount();
+        emit(RegisterValidationState());
+      } else if (event is RegisterCheckAccountEvent) {
+        _validateAccount();
+        emit(RegisterValidationState());
+        if (accountErrorMessage == null) {
+          emit(RegisterAwaitCheckAccountState());
+          try {
+            var account = accountController.text.trim();
+            var exists = await GetIt.I
+                .get<ApiProviderDelegate>()
+                .fetchCheckAccount(account);
+            if (exists) {
+              accountErrorMessage =
+                  AppLocalization.of(context).trans("already_exists");
+              emit(RegisterInitial());
+            } else {
+              emit(RegisterUniqueAccountState());
+            }
+          } catch (e) {
+            emit(RegisterErrorState("$e"));
+          }
+        }
+      } else if (event is RegisterSecurePasswordEvent) {
+        obscurePassword = !obscurePassword;
+        emit(RegisterSecurePasswordState());
+      }
+    });
+  }
 
   void _validate() {
     String password = passwordController.text.trim();
@@ -71,65 +130,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     passwordController.dispose();
     usernameController.dispose();
     return super.close();
-  }
-
-  @override
-  Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-    if (event is RegisterChangeIdentifierEvent) {
-      identifier = event.identifier;
-      accountController.clear();
-      yield RegisterChangeIdentifierState();
-    } else if (event is RegisterValidateEvent) {
-      _validate();
-      yield RegisterValidationState();
-    } else if (event is RegisterCommitEvent) {
-      _validate();
-      yield RegisterValidationState();
-      if (valid) {
-        yield RegisterAwaitState();
-        try {
-          var account = accountController.text.trim();
-          var password = passwordController.text.trim();
-          var username = usernameController.text.trim();
-          var response = await GetIt.I
-              .get<ApiProviderDelegate>()
-              .fetchSignUp(username, account, password);
-          try {
-            await DataStore.instance.setAccount(account, password);
-          } finally {
-            yield RegisterCommittedState(response.data.session);
-          }
-        } catch (e) {
-          yield RegisterErrorState("$e");
-        }
-      }
-    } else if (event is RegisterValidateAccountEvent) {
-      _validateAccount();
-      yield RegisterValidationState();
-    } else if (event is RegisterCheckAccountEvent) {
-      _validateAccount();
-      yield RegisterValidationState();
-      if (accountErrorMessage == null) {
-        yield RegisterAwaitCheckAccountState();
-        try {
-          var account = accountController.text.trim();
-          var exists = await GetIt.I
-              .get<ApiProviderDelegate>()
-              .fetchCheckAccount(account);
-          if (exists) {
-            accountErrorMessage =
-                AppLocalization.of(context).trans("already_exists");
-            yield RegisterInitial();
-          } else {
-            yield RegisterUniqueAccountState();
-          }
-        } catch (e) {
-          yield RegisterErrorState("$e");
-        }
-      }
-    } else if (event is RegisterSecurePasswordEvent) {
-      obscurePassword = !obscurePassword;
-      yield RegisterSecurePasswordState();
-    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/dialogs/confirm_dialog.dart';
 import 'package:exservice/renovation/widget/dialogs/error_dialog.dart';
-import 'package:exservice/widget/application/AppVideo.dart';
+import 'package:exservice/renovation/widget/application/app_video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

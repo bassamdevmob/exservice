@@ -1,4 +1,3 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/renovation/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/renovation/bloc/view/home_bloc/home_bloc.dart';
@@ -81,45 +80,39 @@ class _MainLayoutState extends State<MainLayout> {
         ],
       ),
       body: _views[_index],
-      bottomNavigationBar: ConvexAppBar(
+      bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.white,
-        color: AppColors.blue,
-        activeColor: AppColors.blue,
-        style: TabStyle.textIn,
+        selectedItemColor: AppColors.blue,
         items: [
-          TabItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.home, color: AppColors.gray),
             activeIcon: Icon(Icons.home, color: AppColors.blue),
-            title: AppLocalization.of(context).trans('home'),
+            label: AppLocalization.of(context).trans('home'),
           ),
-          TabItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border, color: AppColors.gray),
             activeIcon: Icon(Icons.favorite_border, color: AppColors.blue),
-            title: AppLocalization.of(context).trans('favorite'),
+            label: AppLocalization.of(context).trans('favorite'),
           ),
-          TabItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.add, color: AppColors.gray),
             activeIcon: Icon(Icons.add, color: AppColors.blue),
-            title: AppLocalization.of(context).trans('post'),
+            label: AppLocalization.of(context).trans('post'),
           ),
-          TabItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.mail_outline, color: AppColors.gray),
             activeIcon: Icon(Icons.mail_outline, color: AppColors.blue),
-            title: AppLocalization.of(context).trans('message'),
+            label: AppLocalization.of(context).trans('message'),
           ),
-          TabItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outline, color: AppColors.gray),
             activeIcon: Icon(Icons.person_outline, color: AppColors.blue),
-            title: AppLocalization.of(context).trans('account'),
+            label: AppLocalization.of(context).trans('account'),
           ),
         ],
-        initialActiveIndex: _index,
+        currentIndex: _index,
         onTap: (int i) {
-          if (i < 2) {
-            setState(() {
-              _index = i;
-            });
-          } else if (i == 2) {
+          if (i == 2) {
             Navigator.of(context).push(CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => PostAdBloc(),
@@ -128,7 +121,7 @@ class _MainLayoutState extends State<MainLayout> {
             ));
           } else {
             setState(() {
-              _index = i - 1;
+              _index = i;
             });
           }
         },

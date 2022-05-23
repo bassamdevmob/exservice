@@ -5,7 +5,6 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/global.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 

@@ -1,303 +1,301 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 import 'app_font_size.dart';
 
 class AppTextStyle {
-  static final xxLargeBlack = GoogleFonts.cairo(
+  static final xxLargeBlack = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.normal,
   );
 
-  static final xLargeWhite = GoogleFonts.cairo(
+  static final xLargeWhite = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.white,
     fontWeight: FontWeight.normal,
   );
 
-  static final xxLargeWhite = GoogleFonts.cairo(
+  static final xxLargeWhite = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.white,
   );
 
-  static final xxLargeWhiteBold = GoogleFonts.cairo(
+  static final xxLargeWhiteBold = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.white,
     fontWeight: FontWeight.bold,
   );
 
-  static final largeWhiteBold = GoogleFonts.cairo(
+  static final largeWhiteBold = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.white,
     fontWeight: FontWeight.bold,
   );
 
-  static final largeWhite = GoogleFonts.cairo(
+  static final largeWhite = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.white,
   );
 
-  static final largePurple = GoogleFonts.cairo(
+  static final largePurple = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.deepPurple,
   );
 
-  static final mediumWhite = GoogleFonts.cairo(
+  static final mediumWhite = TextStyle(
     fontSize: AppFontSize.MEDIUM,
     color: AppColors.white,
   );
 
-  static final mediumWhiteBold = GoogleFonts.cairo(
+  static final mediumWhiteBold = TextStyle(
     fontSize: AppFontSize.MEDIUM,
     color: AppColors.white,
     fontWeight: FontWeight.bold,
   );
 
-  static final smallWhite = GoogleFonts.cairo(
+  static final smallWhite = TextStyle(
     fontSize: AppFontSize.SMALL,
     color: AppColors.white,
   );
 
-  static final smallWhiteBold = GoogleFonts.cairo(
+  static final smallWhiteBold = TextStyle(
     fontSize: AppFontSize.SMALL,
     color: AppColors.white,
     fontWeight: FontWeight.bold,
   );
 
-  static final xSmallWhite = GoogleFonts.cairo(
+  static final xSmallWhite = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: Colors.white,
   );
 
-  static final thumbnail = GoogleFonts.cairo(
+  static final thumbnail = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: Colors.white,
     height: 1.5,
     fontWeight: FontWeight.w500,
   );
 
-  static final xSmallWhiteBold = GoogleFonts.cairo(
+  static final xSmallWhiteBold = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: Colors.white,
     fontWeight: FontWeight.bold,
   );
 
-  static final xxSmallWhite = GoogleFonts.cairo(
+  static final xxSmallWhite = TextStyle(
     fontSize: AppFontSize.XX_SMALL,
     color: AppColors.white,
   );
 
 //------------------------ gray
-  static final mediumGrayBold = GoogleFonts.cairo(
+  static final mediumGrayBold = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.MEDIUM,
     fontWeight: FontWeight.bold,
   );
 
-  static final smallGray = GoogleFonts.cairo(
+  static final smallGray = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.SMALL,
   );
 
-  static final smallGrayBold = GoogleFonts.cairo(
+  static final smallGrayBold = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.SMALL,
     fontWeight: FontWeight.bold,
   );
 
-  static final largeGray = GoogleFonts.cairo(
+  static final largeGray = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.LARGE,
   );
 
-  static final mediumGray = GoogleFonts.cairo(
+  static final mediumGray = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.MEDIUM,
   );
 
-  static final largeGrayBold = GoogleFonts.cairo(
+  static final largeGrayBold = TextStyle(
     color: AppColors.gray,
     fontSize: AppFontSize.LARGE,
     fontWeight: FontWeight.bold,
   );
 
-  static final mediumBlack = GoogleFonts.cairo(
+  static final mediumBlack = TextStyle(
       fontSize: AppFontSize.MEDIUM,
       color: AppColors.black,
       fontWeight: FontWeight.normal);
 
-  static final mediumBlackBold = GoogleFonts.cairo(
+  static final mediumBlackBold = TextStyle(
     fontSize: AppFontSize.MEDIUM,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final smallBlack = GoogleFonts.cairo(
+  static final smallBlack = TextStyle(
     fontSize: AppFontSize.SMALL,
     color: AppColors.black,
   );
 
-  static final smallBlackBold = GoogleFonts.cairo(
+  static final smallBlackBold = TextStyle(
     fontSize: AppFontSize.SMALL,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final largeBlackBold = GoogleFonts.cairo(
+  static final largeBlackBold = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final xLargeBlackBold = GoogleFonts.cairo(
+  static final xLargeBlackBold = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final xxLargeRed = GoogleFonts.cairo(
+  static final xxLargeRed = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.red,
   );
 
-  static final xLargeGray = GoogleFonts.cairo(
+  static final xLargeGray = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.gray,
   );
 
-  static final xLargeGrayBold = GoogleFonts.cairo(
+  static final xLargeGrayBold = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.gray,
     fontWeight: FontWeight.bold,
   );
 
-  static final mediumRed = GoogleFonts.cairo(
+  static final mediumRed = TextStyle(
     fontSize: AppFontSize.MEDIUM,
     color: AppColors.red,
   );
 
-  static final xLargeRed = GoogleFonts.cairo(
+  static final xLargeRed = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.red,
     fontWeight: FontWeight.normal,
   );
 
-  static final xxLargeBlue = GoogleFonts.cairo(
+  static final xxLargeBlue = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.blue,
   );
 
-  static final xxLargeBlueBold = GoogleFonts.cairo(
+  static final xxLargeBlueBold = TextStyle(
     fontSize: AppFontSize.XX_LARGE,
     color: AppColors.blue,
     fontWeight: FontWeight.bold,
   );
 
-  static final xLargeBlue = GoogleFonts.cairo(
+  static final xLargeBlue = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.blue,
   );
 
-  static final xLargeBlack = GoogleFonts.cairo(
+  static final xLargeBlack = TextStyle(
     fontSize: AppFontSize.X_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.normal,
   );
 
-  static final largeBlack = GoogleFonts.cairo(
+  static final largeBlack = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.normal,
   );
 
-  static final largeLobsterBlack = GoogleFonts.lobster(
+  static final largeLobsterBlack = TextStyle(
     fontSize: AppFontSize.LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.normal,
   );
 
-  static final xSmallBlackBold = GoogleFonts.cairo(
+  static final xSmallBlackBold = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final xSmallBlack = GoogleFonts.cairo(
+  static final xSmallBlack = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: AppColors.black,
   );
 
-  static final xSmallAccentGray = GoogleFonts.cairo(
+  static final xSmallAccentGray = TextStyle(
     fontSize: AppFontSize.X_SMALL,
     color: AppColors.grayAccent,
   );
 
-  static final xxSmallBlack = GoogleFonts.cairo(
+  static final xxSmallBlack = TextStyle(
     fontSize: AppFontSize.XX_SMALL,
     color: AppColors.black,
   );
 
 ////////////////////// blue
 
-  static final smallBlue = GoogleFonts.cairo(
+  static final smallBlue = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.SMALL,
   );
 
-  static final smallBlueBold = GoogleFonts.cairo(
+  static final smallBlueBold = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.SMALL,
     fontWeight: FontWeight.bold,
   );
 
-  static final mediumBlueBold = GoogleFonts.cairo(
+  static final mediumBlueBold = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.MEDIUM,
     fontWeight: FontWeight.bold,
   );
 
-  static final mediumBlue = GoogleFonts.cairo(
+  static final mediumBlue = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.MEDIUM,
   );
 
-  static final largeBlueSatisfy = GoogleFonts.satisfy(
+  static final largeBlueSatisfy = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.LARGE,
   );
 
-  static final xlargeBlue = GoogleFonts.cairo(
+  static final xlargeBlue = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.X_LARGE,
   );
 
-  static final xlargeBlueBold = GoogleFonts.cairo(
+  static final xlargeBlueBold = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.X_LARGE,
     fontWeight: FontWeight.bold,
   );
 
-  static final largeBlue = GoogleFonts.cairo(
+  static final largeBlue = TextStyle(
     color: AppColors.blue,
     fontSize: AppFontSize.LARGE,
   );
 
-  static final xxxLargeBlack = GoogleFonts.cairo(
+  static final xxxLargeBlack = TextStyle(
     fontSize: AppFontSize.XXX_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.normal,
   );
 
-  static final xxxLargeBlackBold = GoogleFonts.cairo(
+  static final xxxLargeBlackBold = TextStyle(
     fontSize: AppFontSize.XXX_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
 
-  static final xxxxLargeBlackSatisfy = GoogleFonts.satisfy(
+  static final xxxxLargeBlackSatisfy = TextStyle(
     fontSize: AppFontSize.XXXX_LARGE,
     color: AppColors.black,
     fontWeight: FontWeight.bold,

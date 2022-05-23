@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:exservice/models/GetChatUsersModel.dart';
-import 'package:exservice/renovation/models/responses/user_profile_response.dart';
+import 'package:exservice/renovation/models/response/user_profile_response.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
 import 'package:exservice/renovation/models/common/ad_model.dart';
-import 'package:exservice/renovation/models/responses/general_response.dart';
+import 'package:exservice/renovation/models/response/general_response.dart';
 import 'package:exservice/renovation/models/common/town_model.dart';
 import 'package:exservice/renovation/models/common/user_model.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
 import 'package:exservice/renovation/models/common/category.dart';
-import 'package:exservice/renovation/models/responses/session_response.dart';
+import 'package:exservice/renovation/models/response/session_response.dart';
 import 'package:flutter/material.dart';
 
 abstract class ApiProviderDelegate {

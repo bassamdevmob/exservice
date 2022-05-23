@@ -6,7 +6,6 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 
 part 'edit_ad_event.dart';
 

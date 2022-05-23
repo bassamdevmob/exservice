@@ -4,7 +4,7 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_number/phone_number.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class Utils {
   static final _phoneNumberUtil = PhoneNumberUtil();
@@ -89,11 +89,9 @@ abstract class Utils {
   }
 
   static Future<void> launchWeb(BuildContext context, String url) async {
-    if (await canLaunch(url)) {
-      await launch(
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(
         url,
-        forceSafariVC: false,
-        forceWebView: false,
       );
     } else {
       throw "${AppLocalization.of(context).trans("siteFailed")}: $url";
@@ -104,8 +102,8 @@ abstract class Utils {
     final path =
     Uri(scheme: 'mailto', path: mail, queryParameters: {'subject': 'hi '})
         .toString();
-    if (await canLaunch(path)) {
-      await launch(path);
+    if (await canLaunchUrlString(path)) {
+      await launchUrlString(path);
     } else {
       throw "${AppLocalization.of(context).trans("emailFailed")}: $mail";
     }
@@ -113,8 +111,8 @@ abstract class Utils {
 
   static Future<void> launchCall(BuildContext context, String number) async {
     var path = "tel:$number";
-    if (await canLaunch(path)) {
-      await launch(path);
+    if (await canLaunchUrlString(path)) {
+      await launchUrlString(path);
     } else {
       throw "${AppLocalization.of(context).trans("callFailed")}: $number";
     }

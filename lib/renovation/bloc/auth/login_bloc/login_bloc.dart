@@ -6,7 +6,6 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -24,6 +23,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.context) : super(LoginInitial()) {
     accountController.text = DataStore.instance.settings.account;
     passwordController.text = DataStore.instance.settings.password;
+    on((event, emit) async {
+      if (event is LoginValidateEvent) {
+        _validate();
+        emit (LoginValidationState());
+      } else if (event is LoginCommitEvent) {
+        _validate();
+        emit( LoginValidationState());
+        if (valid) {
+          emit (LoginAwaitState());
+          try {
+            var account = accountController.text.trim();
+            var password = passwordController.text.trim();
+            var response =
+            await GetIt.I.get<ApiProviderDelegate>().login(account, password);
+            DataStore.instance.setAccount(account, password);
+            DataStore.instance.user = response;
+            emit (LoginCommittedState());
+          } catch (e) {
+            emit (LoginErrorState("$e"));
+          }
+        }
+      } else if (event is LoginSecurePasswordEvent) {
+        obscurePassword = !obscurePassword;
+        emit (LoginSecurePasswordState());
+      }
+    });
   }
 
   bool get valid => accountErrorMessage == null && passwordErrorMessage == null;
@@ -46,33 +71,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     accountController.dispose();
     passwordController.dispose();
     return super.close();
-  }
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginValidateEvent) {
-      _validate();
-      yield LoginValidationState();
-    } else if (event is LoginCommitEvent) {
-      _validate();
-      yield LoginValidationState();
-      if (valid) {
-        yield LoginAwaitState();
-        try {
-          var account = accountController.text.trim();
-          var password = passwordController.text.trim();
-          var response =
-              await GetIt.I.get<ApiProviderDelegate>().login(account, password);
-          DataStore.instance.setAccount(account, password);
-          DataStore.instance.user = response;
-          yield LoginCommittedState();
-        } catch (e) {
-          yield LoginErrorState("$e");
-        }
-      }
-    } else if (event is LoginSecurePasswordEvent) {
-      obscurePassword = !obscurePassword;
-      yield LoginSecurePasswordState();
-    }
   }
 }

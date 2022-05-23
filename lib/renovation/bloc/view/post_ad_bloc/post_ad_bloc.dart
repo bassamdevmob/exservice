@@ -6,7 +6,6 @@ import 'package:exservice/renovation/models/common/option_model.dart';
 import 'package:exservice/renovation/utils/constant.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 part 'post_ad_event.dart';
@@ -187,7 +186,67 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
       ? selectedEntities
       : <AssetEntity>[placeholder];
 
-  PostAdBloc() : super(PostAdAwaitState());
+  PostAdBloc() : super(PostAdAwaitState()) {
+    on((event, emit) async {
+      if (event is FetchPostAdEvent) {
+        var result = await PhotoManager.requestPermissionExtend();
+        if (result.isAuth) {
+          var paths = await PhotoManager.getAssetPathList(
+            type: RequestType.common,
+            onlyAll: true,
+          );
+          media = await paths.first.getAssetListPaged(page: 0, size: 80);
+          selectedEntities.add(media.first);
+          emit(PostAdAccessibleState());
+        } else {
+          // add(FetchPostAdEvent());
+        }
+      } else if (event is SelectMediaPostAdEvent) {
+        if (selectedEntities.contains(event.entity)) {
+          selectedEntities.remove(event.entity);
+          placeholder = event.entity;
+        } else {
+          if (selectedEntities.length >= 10) {
+            emit(PostAdReachedMediaMaxLimitsErrorState());
+            return;
+          }
+          selectedEntities.add(event.entity);
+        }
+        emit(PostAdSelectMediaState());
+      } else if (event is ChangeDisplayModePostAdEvent) {
+        aspectRatioIndex++;
+        if (aspectRatioIndex >= ratios.length) aspectRatioIndex = 0;
+        emit(PostAdChangeDisplayModeState());
+      } else if (event is ChangeGaragePostAdEvent) {
+        snapshot.garage = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeGymPostAdEvent) {
+        snapshot.gym = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeTerracePostAdEvent) {
+        snapshot.terrace = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeRoomPostAdEvent) {
+        snapshot.room = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeBathPostAdEvent) {
+        snapshot.bath = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeFurniturePostAdEvent) {
+        snapshot.furniture = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeTypePostAdEvent) {
+        snapshot.type = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeSecurityPostAdEvent) {
+        snapshot.security = event.value;
+        emit(PostAdChangeOptionState());
+      } else if (event is ChangeBalconyPostAdEvent) {
+        snapshot.balcony = event.value;
+        emit(PostAdChangeOptionState());
+      }
+    });
+  }
 
   @override
   Future<void> close() {
@@ -203,72 +262,10 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
   Future<Uint8List> getThumbnail(AssetEntity entity) async {
     var thumb = _thumbnails[entity];
     if (thumb == null) {
-      return _thumbnails[entity] = await entity.thumbDataWithSize(400, 400);
+      return _thumbnails[entity] =
+          await entity.thumbnailDataWithSize(ThumbnailSize.square(400));
     } else {
       return thumb;
-    }
-  }
-
-  @override
-  Stream<PostAdState> mapEventToState(
-    PostAdEvent event,
-  ) async* {
-    if (event is FetchPostAdEvent) {
-      var isGranted = await PhotoManager.requestPermission();
-      if (isGranted) {
-        var paths = await PhotoManager.getAssetPathList(
-          type: RequestType.common,
-          onlyAll: true,
-        );
-        media = await paths.first.assetList;
-        selectedEntities.add(media.first);
-        yield PostAdAccessibleState();
-      } else {
-        // add(FetchPostAdEvent());
-      }
-    } else if (event is SelectMediaPostAdEvent) {
-      if (selectedEntities.contains(event.entity)) {
-        selectedEntities.remove(event.entity);
-        placeholder = event.entity;
-      } else {
-        if (selectedEntities.length >= 10) {
-          yield PostAdReachedMediaMaxLimitsErrorState();
-          return;
-        }
-        selectedEntities.add(event.entity);
-      }
-      yield PostAdSelectMediaState();
-    } else if (event is ChangeDisplayModePostAdEvent) {
-      aspectRatioIndex++;
-      if (aspectRatioIndex >= ratios.length) aspectRatioIndex = 0;
-      yield PostAdChangeDisplayModeState();
-    } else if (event is ChangeGaragePostAdEvent) {
-      snapshot.garage = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeGymPostAdEvent) {
-      snapshot.gym = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeTerracePostAdEvent) {
-      snapshot.terrace = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeRoomPostAdEvent) {
-      snapshot.room = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeBathPostAdEvent) {
-      snapshot.bath = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeFurniturePostAdEvent) {
-      snapshot.furniture = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeTypePostAdEvent) {
-      snapshot.type = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeSecurityPostAdEvent) {
-      snapshot.security = event.value;
-      yield PostAdChangeOptionState();
-    } else if (event is ChangeBalconyPostAdEvent) {
-      snapshot.balcony = event.value;
-      yield PostAdChangeOptionState();
     }
   }
 }

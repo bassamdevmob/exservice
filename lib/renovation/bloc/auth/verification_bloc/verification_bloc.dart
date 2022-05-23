@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:exservice/renovation/bloc/auth/reset_password_bloc/reset_password_bloc.dart';
 import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
@@ -9,13 +8,13 @@ import 'package:exservice/renovation/layout/auth/welcome_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 
 part 'verification_event.dart';
+
 part 'verification_factory.dart';
+
 part 'verification_state.dart';
 
 class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
@@ -31,8 +30,48 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   int _multi = 1;
   int _count = 1;
 
-  VerificationBloc(this.context, this.factory)
-      : super(VerificationInitial());
+  VerificationBloc(this.context, this.factory) : super(VerificationInitial()) {
+    on((event, emit) async {
+      if (event is VerificationResendPinEvent) {
+        try {
+          if (_timer != null && _timer.isActive) {
+            emit(VerificationWaitBeforeResendState(_count));
+            return;
+          }
+          emit(VerificationAwaitResendState());
+          _count = _multi * 20;
+          _multi *= 2;
+          _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+            if (_count < 1) {
+              timer.cancel();
+            } else {
+              _count -= 1;
+            }
+          });
+          await factory.onResend();
+          emit(VerificationCommittedResendState());
+        } catch (e) {
+          emit(VerificationErrorState("$e"));
+        }
+      } else if (event is VerificationValidateEvent) {
+        _validate();
+        emit(VerificationValidationState());
+      } else if (event is VerificationCommitEvent) {
+        _validate();
+        emit(VerificationValidationState());
+        if (valid) {
+          emit(VerificationAwaitState());
+          try {
+            var code = pinController.text.trim();
+            await factory.onVerify(code);
+            emit(VerificationCommittedState());
+          } catch (e) {
+            emit(VerificationErrorState("$e"));
+          }
+        }
+      }
+    });
+  }
 
   bool get valid => pinErrorMessage == null;
 
@@ -48,49 +87,5 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
     _timer?.cancel();
     pinController.dispose();
     return super.close();
-  }
-
-  @override
-  Stream<VerificationState> mapEventToState(
-    VerificationEvent event,
-  ) async* {
-    if (event is VerificationResendPinEvent) {
-      try {
-        if (_timer != null && _timer.isActive) {
-          yield VerificationWaitBeforeResendState(_count);
-          return;
-        }
-        yield VerificationAwaitResendState();
-        _count = _multi * 20;
-        _multi *= 2;
-        _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-          if (_count < 1) {
-            timer.cancel();
-          } else {
-            _count -= 1;
-          }
-        });
-        await factory.onResend();
-        yield VerificationCommittedResendState();
-      } catch (e) {
-        yield VerificationErrorState("$e");
-      }
-    } else if (event is VerificationValidateEvent) {
-      _validate();
-      yield VerificationValidationState();
-    } else if (event is VerificationCommitEvent) {
-      _validate();
-      yield VerificationValidationState();
-      if (valid) {
-        yield VerificationAwaitState();
-        try {
-          var code = pinController.text.trim();
-          await factory.onVerify(code);
-          yield VerificationCommittedState();
-        } catch (e) {
-          yield VerificationErrorState("$e");
-        }
-      }
-    }
   }
 }

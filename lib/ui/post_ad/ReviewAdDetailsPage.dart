@@ -12,7 +12,7 @@
 // import 'package:exservice/renovation/widget/button/app_button.dart';
 // import 'package:exservice/resources/ApiConstant.dart';
 // import 'package:exservice/ui/post_ad/CompletePublishAd.dart';
-// import 'package:exservice/widget/application/AppVideo.dart';
+// import 'package:exservice/widget/application/app_video.dart';
 // import 'package:exservice/widget/application/MoreAdInfo.dart';
 // import 'package:exservice/widget/application/OwnerAdHeader.dart';
 // import 'package:exservice/widget/component/ExpandableText.dart';

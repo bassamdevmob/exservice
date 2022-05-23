@@ -5,7 +5,6 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 import 'package:string_validator/string_validator.dart';
 
 part 'manage_email_address_event.dart';

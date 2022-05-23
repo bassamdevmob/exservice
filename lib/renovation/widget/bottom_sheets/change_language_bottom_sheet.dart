@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
@@ -36,8 +34,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
             size: Utils.iconSize(mediaQuery),
           ),
           onTap: () {
-            BlocProvider.of<ApplicationCubit>(context)
-                .changeLanguage(locale);
+            BlocProvider.of<ApplicationCubit>(context).changeLanguage(locale);
             Navigator.of(context).pop();
           },
         ),
@@ -83,12 +80,12 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
   }
 }
 
-
 Future<dynamic> showChangeLanguageBottomSheet(BuildContext context) {
-  return showCupertinoModalBottomSheet(
-    expand: false,
+  return showModalBottomSheet(
     context: context,
-    topRadius: Radius.circular(35),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(35),
+    ),
     backgroundColor: Colors.transparent,
     builder: (context) => ChangeLanguageBottomSheet(),
   );

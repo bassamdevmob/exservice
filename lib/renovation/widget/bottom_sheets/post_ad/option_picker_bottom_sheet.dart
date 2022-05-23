@@ -2,7 +2,6 @@ import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class OptionPickerBottomSheet<T> extends StatelessWidget {
   final String Function(T) textBuilder;
@@ -13,10 +12,11 @@ class OptionPickerBottomSheet<T> extends StatelessWidget {
     List<T> elements,
     String Function(T) textBuilder,
   }) {
-    return showCupertinoModalBottomSheet<T>(
-      expand: false,
+    return showModalBottomSheet<T>(
       context: context,
-      topRadius: Radius.circular(35),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(35),
+      ),
       backgroundColor: Colors.transparent,
       builder: (context) => OptionPickerBottomSheet<T>(
         elements: elements,

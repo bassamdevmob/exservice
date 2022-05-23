@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:exservice/renovation/models/responses/user_profile_response.dart';
+import 'package:exservice/renovation/models/response/user_profile_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 
 part 'publisher_state.dart';
 

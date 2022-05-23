@@ -4,14 +4,14 @@ import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PolarQuestionBottomSheet extends StatelessWidget {
   static Future<bool> show(BuildContext context) {
-    return showCupertinoModalBottomSheet(
-      expand: false,
+    return showModalBottomSheet(
       context: context,
-      topRadius: Radius.circular(35),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(35),
+      ),
       backgroundColor: Colors.transparent,
       builder: (context) => PolarQuestionBottomSheet(),
     );

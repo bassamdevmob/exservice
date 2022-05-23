@@ -16,7 +16,7 @@ import 'package:exservice/renovation/widget/application/global_widgets.dart';
 import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/renovation/widget/button/favorite_button.dart';
-import 'package:exservice/widget/application/AppVideo.dart';
+import 'package:exservice/renovation/widget/application/app_video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -14,7 +14,7 @@ import 'package:exservice/renovation/widget/application/reload_widget.dart';
 import 'package:exservice/renovation/widget/button/app_button.dart';
 import 'package:exservice/renovation/widget/cards/grid_ad_card.dart';
 import 'package:exservice/renovation/widget/cards/list_ad_card.dart';
-import 'package:exservice/widget/application/AppVideo.dart';
+import 'package:exservice/renovation/widget/application/app_video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

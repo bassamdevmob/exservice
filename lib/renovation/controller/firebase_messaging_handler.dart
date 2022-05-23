@@ -107,7 +107,6 @@ class FirebaseMessagingHandler {
             android: AndroidNotificationDetails(
               '100',
               'DLite',
-              'DLite',
               importance: Importance.max,
               priority: Priority.high,
               onlyAlertOnce: true,

@@ -5,7 +5,6 @@ import 'package:exservice/renovation/layout/chat/notifications_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

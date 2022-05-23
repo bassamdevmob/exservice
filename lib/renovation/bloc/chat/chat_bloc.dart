@@ -7,6 +7,7 @@ import 'package:exservice/renovation/models/common/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'chat_event.dart';
+
 part 'chat_state.dart';
 
 const CHAT_COLLECTION = "chat";
@@ -23,6 +24,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatId = chatter.id > user.id
         ? "${chatter.id}-${user.id}"
         : "${user.id}-${chatter.id}";
+
+    on((event, emit) async {
+      if (event is ChatSendMessageEvent) {
+        sendMessage(MessageModel(
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          content: controller.text.trim(),
+          senderId: user.id,
+          senderName: user.username,
+        ));
+        controller.clear();
+      }
+    });
   }
 
   @override
@@ -49,21 +62,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       .limit(MESSAGE_COUNT_LIMIT)
       .snapshots()
       .transform(_transformer);
-
-  @override
-  Stream<ChatState> mapEventToState(
-    ChatEvent event,
-  ) async* {
-    if (event is ChatSendMessageEvent) {
-      sendMessage(MessageModel(
-        timestamp: DateTime.now().millisecondsSinceEpoch,
-        content: controller.text.trim(),
-        senderId: user.id,
-        senderName: user.username,
-      ));
-      controller.clear();
-    }
-  }
 
   Future<DocumentReference> sendMessage(MessageModel message) async {
     return FirebaseFirestore.instance

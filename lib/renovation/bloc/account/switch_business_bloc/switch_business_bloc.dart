@@ -10,6 +10,7 @@ import 'package:get_it/get_it.dart';
 import 'package:string_validator/string_validator.dart' as validator;
 
 part 'switch_business_event.dart';
+
 part 'switch_business_state.dart';
 
 class SwitchBusinessBloc
@@ -23,7 +24,35 @@ class SwitchBusinessBloc
   String websiteErrorMessage;
   String bioErrorMessage;
 
-  SwitchBusinessBloc(this.context) : super(SwitchBusinessInitial());
+  SwitchBusinessBloc(this.context) : super(SwitchBusinessInitial()) {
+    on((event, emit) async {
+      if (event is SwitchBusinessCommitEvent) {
+        try {
+          _validate();
+          emit(SwitchBusinessValidationState());
+          if (valid) {
+            emit(SwitchBusinessAwaitState());
+            String companyName = companyNameController.text.trim();
+            String website = websiteController.text.trim();
+            String bio = bioController.text.trim();
+            await GetIt.I
+                .get<ApiProviderDelegate>()
+                .fetchSwitchToBusiness(companyName, website, bio);
+            var _accountBloc = BlocProvider.of<AccountBloc>(context);
+            _accountBloc.profile.user
+              ..companyName = companyName
+              ..website = website
+              ..bio = bio
+              ..type.id = AccountType.company.id;
+            _accountBloc.add(AccountRefreshEvent());
+            emit(SwitchBusinessCommittedState());
+          }
+        } catch (e) {
+          emit(SwitchBusinessErrorState("$e"));
+        }
+      }
+    });
+  }
 
   @override
   Future<void> close() {
@@ -47,7 +76,6 @@ class SwitchBusinessBloc
         ? AppLocalization.of(context).trans("filed_required")
         : null;
 
-
     if (website.isEmpty) {
       websiteErrorMessage = AppLocalization.of(context).trans("filed_required");
     } else if (!validator.isURL(website)) {
@@ -59,36 +87,5 @@ class SwitchBusinessBloc
     bioErrorMessage = bio.isEmpty
         ? AppLocalization.of(context).trans("filed_required")
         : null;
-  }
-
-  @override
-  Stream<SwitchBusinessState> mapEventToState(
-    SwitchBusinessEvent event,
-  ) async* {
-    if (event is SwitchBusinessCommitEvent) {
-      try {
-        _validate();
-        yield SwitchBusinessValidationState();
-        if (valid) {
-          yield SwitchBusinessAwaitState();
-          String companyName = companyNameController.text.trim();
-          String website = websiteController.text.trim();
-          String bio = bioController.text.trim();
-          await GetIt.I
-              .get<ApiProviderDelegate>()
-              .fetchSwitchToBusiness(companyName, website, bio);
-          var _accountBloc = BlocProvider.of<AccountBloc>(context);
-          _accountBloc.profile.user
-            ..companyName = companyName
-            ..website = website
-            ..bio = bio
-            ..type.id = AccountType.company.id;
-          _accountBloc.add(AccountRefreshEvent());
-          yield SwitchBusinessCommittedState();
-        }
-      } catch (e) {
-        yield SwitchBusinessErrorState("$e");
-      }
-    }
   }
 }
