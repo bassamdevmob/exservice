@@ -7,6 +7,7 @@ import 'package:exservice/renovation/layout/account/edit/edit_business_info_layo
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
+import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/renovation/utils/extensions.dart';
 import 'package:exservice/renovation/widget/application/dotted_container.dart';
 import 'package:exservice/renovation/widget/application/global_widgets.dart';
@@ -117,9 +118,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                             ),
                             child: ClipOval(
                               child: OctoImage(
-                                key: ValueKey(user.profilePic),
+                                key: ValueKey(user.profilePicture),
                                 fit: BoxFit.cover,
-                                image: NetworkImage(user.profilePic),
+                                image: NetworkImage(user.profilePicture),
                                 progressIndicatorBuilder: (context, progress) {
                                   return simpleShimmer;
                                 },
@@ -207,7 +208,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                     //                 ),
                   },
                 ),
-                if (user.type.isCompany)
+                if (user.type == UserType.BUSINESS.name)
                   ActionButton(
                     AppLocalization.of(context).trans("business_info"),
                     AppLocalization.of(context).trans("business_info_desc"),

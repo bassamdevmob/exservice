@@ -6,16 +6,16 @@ import 'package:exservice/renovation/models/response/user_profile_response.dart'
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
-import 'package:exservice/renovation/models/common/ad_model.dart';
-import 'package:exservice/renovation/models/common/media_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
+import 'package:exservice/renovation/models/entity/media_model.dart';
 import 'package:exservice/renovation/models/response/general_response.dart';
-import 'package:exservice/renovation/models/common/town_model.dart';
-import 'package:exservice/renovation/models/common/user_model.dart';
+import 'package:exservice/renovation/models/entity/town_model.dart';
+import 'package:exservice/renovation/models/entity/user.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
 import 'package:exservice/models/options/GetOptionsModel.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
-import 'package:exservice/renovation/models/common/category.dart';
+import 'package:exservice/renovation/models/entity/category.dart';
 import 'package:exservice/renovation/models/response/session_response.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
@@ -108,37 +108,14 @@ class FakeApiProvider extends ApiProviderDelegate {
     return "+9714$number";
   }
 
-  UserModel getRandomUser({int id, int type}) {
-    return UserModel(
+  User getRandomUser({int id, int type}) {
+    return User(
       id: id ?? faker.randomGenerator.integer(100),
       username: faker.person.name(),
-      town: getRandomTown(),
-      logo: faker.image.image(
-        keywords: keys,
-        height: 100,
-        width: 100,
-        random: true,
-      ),
-      firebaseToken: faker.guid.guid(),
       email: faker.internet.email(),
-      status: faker.randomGenerator.integer(1),
-      website: faker.internet.domainName(),
-      apiToken: faker.guid.guid(),
-      bio: faker.lorem.sentence(),
-      companyName: faker.person.firstName(),
       phoneNumber: getMobileNumber(),
-      profilePic: faker.image.image(
-        keywords: keys,
-        width: 100,
-        height: 100,
-        random: true,
-      ),
-      publicPhone: faker.randomGenerator.integer(1000000).toString(),
       profileVideo: video,
-      type: UserType(
-        id: type ?? AccountType.normal.id,
-        title: faker.food.restaurant(),
-      ),
+      type: UserType.NORMAL.name,
     );
   }
 
@@ -327,7 +304,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   Future<UserProfileModel> fetchGetUserAccount(int id) {
     return Future.delayed(
       getDelayDuration(),
-      () => getRandomUserProfile(type: AccountType.company.id),
+      () => getRandomUserProfile(),
     );
   }
 
@@ -395,7 +372,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<UserModel> login(account, password) {
+  Future<User> login(account, password) {
     return Future.delayed(getDelayDuration(), () async {
       return getRandomUser();
     });
@@ -533,19 +510,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<List<UserType>> fetchUserTypesList(BuildContext context) {
-    return Future.delayed(getDelayDuration(), () {
-      return List.generate(10, (index) {
-        return UserType(
-          id: faker.randomGenerator.integer(4),
-          title: faker.company.position(),
-        );
-      });
-    });
-  }
-
-  @override
-  Future<UserModel> fetchVerifyUser(String session, String code) {
+  Future<User> fetchVerifyUser(String session, String code) {
     return Future.delayed(getDelayDuration(), () {
       return getRandomUser();
     });

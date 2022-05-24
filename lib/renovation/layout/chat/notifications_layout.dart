@@ -74,7 +74,7 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 child: ClipOval(
                   child: OctoImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(model.ad.owner.profilePic),
+                    image: NetworkImage(model.ad.owner.profilePicture),
                     progressIndicatorBuilder: (context, progress) =>
                         simpleShimmer,
                     errorBuilder: (context, error, stacktrace) => Container(
@@ -90,7 +90,7 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 ),
               ),
               title: Text(
-                model.ad.owner.companyName ?? model.ad.owner.username,
+                model.ad.owner.business.companyName ?? model.ad.owner.username,
                 style: AppTextStyle.largeBlackBold,
               ),
               subtitle: Text(

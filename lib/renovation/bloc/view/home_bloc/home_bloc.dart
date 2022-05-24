@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/renovation/models/common/ad_model.dart';
-import 'package:exservice/renovation/models/common/category.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
+import 'package:exservice/renovation/models/entity/category.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';

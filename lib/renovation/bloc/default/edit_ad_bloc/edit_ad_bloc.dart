@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';

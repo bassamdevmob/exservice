@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:exservice/renovation/models/common/town_model.dart';
+import 'package:exservice/renovation/models/entity/town_model.dart';
 
 GetTownsListModel getTownsListModelFromJson(String str) =>
     GetTownsListModel.fromJson(json.decode(str));

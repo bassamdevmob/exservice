@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 
-import '../renovation/models/common/user_model.dart';
+import '../renovation/models/entity/user.dart';
 
 NotificationsModel notificationsModelFromJson(String str) =>
     NotificationsModel.fromJson(json.decode(str));
@@ -60,7 +60,7 @@ class NotificationModel {
   int adId;
   DateTime createdAt;
   DateTime updatedAt;
-  UserModel user;
+  User user;
   AdModel ad;
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
@@ -74,7 +74,7 @@ class NotificationModel {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
-        user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         ad: json["ad"] == null ? null : AdModel.fromJson(json["ad"]),
       );
 

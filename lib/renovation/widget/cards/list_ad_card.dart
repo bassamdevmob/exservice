@@ -1,4 +1,4 @@
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/default/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
@@ -71,7 +71,7 @@ class _ListAdCardState extends State<ListAdCard> {
                   child: ClipOval(
                     child: OctoImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(widget.ad.owner.profilePic),
+                      image: NetworkImage(widget.ad.owner.profilePicture),
                       progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                       errorBuilder: (ctx, e, _) =>
                           Image.asset(PLACEHOLDER, fit: BoxFit.cover),
@@ -88,7 +88,7 @@ class _ListAdCardState extends State<ListAdCard> {
                       style: AppTextStyle.largeBlackBold,
                     ),
                     Text(
-                      '${widget.ad.owner.town.country}, ${widget.ad.owner.town.name}',
+                      widget.ad.owner.country,
                       style: AppTextStyle.largeBlack,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

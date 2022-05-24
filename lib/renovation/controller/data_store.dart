@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:exservice/renovation/models/common/settings_model.dart';
-import 'package:exservice/renovation/models/common/user_model.dart';
+import 'package:exservice/renovation/models/entity/settings_model.dart';
+import 'package:exservice/renovation/models/entity/user.dart';
 
 class DataStore {
   static final DataStore _instance = DataStore._internal();
@@ -17,7 +17,7 @@ class DataStore {
 
   Box _box;
 
-  UserModel _user;
+  User _user;
   String _lang;
   String _fcmToken;
   SettingsModel _settings;
@@ -28,7 +28,7 @@ class DataStore {
     _box = await Hive.openBox(DEFAULT_TAG);
 
     var storedUser = _box.get("user");
-    _user = storedUser == null ? null : UserModel.fromJson(jsonDecode(storedUser));
+    _user = storedUser == null ? null : User.fromJson(jsonDecode(storedUser));
     var storedSettings = _box.get("settings");
     _settings = storedSettings == null
         ? SettingsModel()
@@ -41,17 +41,17 @@ class DataStore {
 
   bool get hasUser => _user != null;
 
-  UserModel get user => _user;
-
-  String get session => _user == null ? null : "Bearer ${_user.apiToken}";
+  User get user => _user;
 
   String get lang => _lang;
 
   String get fcmToken => _fcmToken;
 
+  String get token => "_fcmToken";
+
   SettingsModel get settings => _settings;
 
-  set user(UserModel value) =>
+  set user(User value) =>
       _box.put("user", jsonEncode((_user = value).toJson()));
 
   set lang(String value) => _box.put("lang", _lang = value);

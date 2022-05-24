@@ -1,6 +1,6 @@
 import 'package:exservice/renovation/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
-import 'package:exservice/renovation/models/common/option_model.dart';
+import 'package:exservice/renovation/models/entity/option_model.dart';
 import 'package:exservice/renovation/styles/app_colors.dart';
 import 'package:exservice/renovation/styles/app_text_style.dart';
 import 'package:exservice/renovation/widget/bottom_sheets/post_ad/option_picker_bottom_sheet.dart';

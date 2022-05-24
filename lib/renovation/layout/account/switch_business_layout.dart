@@ -105,7 +105,8 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                     child: OctoImage(
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
-                                          DataStore.instance.user.logo),
+                                        DataStore.instance.user.profilePicture,
+                                      ),
                                       progressIndicatorBuilder: (context, _) =>
                                           simpleShimmer,
                                       errorBuilder: (context, e, _) =>

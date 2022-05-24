@@ -30,7 +30,7 @@ class ChatCard extends StatelessWidget {
         child: ClipOval(
           child: OctoImage(
             fit: BoxFit.cover,
-            image: NetworkImage(chatter.user.profilePic),
+            image: NetworkImage(chatter.user.profilePicture),
             progressIndicatorBuilder: (context, _) => simpleShimmer,
             errorBuilder: (context, e, _) => Image.asset(
               PLACEHOLDER,

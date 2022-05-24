@@ -1,18 +1,19 @@
 class Links {
-  static const BASE = 'http://exservice.4000.global/api/';
+  static const BASE = 'http://localhost:3000/api/exservice/';
 
-  ///payment
-  static const adPricesListURL = "adPricesList";
-  static const userTypesListURL = "userTypesList";
 
   ///auth
-  static const loginURL = 'login';
+  static const LOGIN_URL = 'login';
   static const signUpURL = 'register';
   static const verifyUserURL = 'verifyUser';
   static const resendVerificationCodeURL = 'resendVerificationCode';
   static const checkAccountURL = 'checkAccount';
   static const forgetPasswordURL = 'forgetPassword';
   static const resetPasswordURL = 'resetPassword';
+
+  ///payment
+  static const adPricesListURL = "adPricesList";
+  static const userTypesListURL = "userTypesList";
 
   ///user
   static const completeUpdateEmailPhoneURL = "completeUpdateEmailPhone";

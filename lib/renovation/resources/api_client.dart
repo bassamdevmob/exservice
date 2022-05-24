@@ -86,7 +86,7 @@ class ClientInterceptor extends Interceptor {
     options.headers = {
       "Accept-Language": DataStore.instance.lang,
       "Content-Type": Headers.jsonContentType,
-      "Authorization": DataStore.instance.user.apiToken,
+      "Authorization": DataStore.instance.token,
       "Accept": "application/json",
     };
     handler.next(options);

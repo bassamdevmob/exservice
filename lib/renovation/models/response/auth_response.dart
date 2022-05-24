@@ -1,25 +1,45 @@
-import 'package:exservice/renovation/models/common/user_model.dart';
+import 'package:exservice/renovation/models/entity/user.dart';
 
 class AuthResponse {
   AuthResponse({
-    this.message,
     this.data,
+    this.message,
     this.code,
   });
 
+  AuthModel data;
   String message;
-  UserModel data;
-  int code;
+  String code;
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-        message: json["message"] == null ? null : json["message"],
-        data: json["data"] == null ? null : UserModel.fromJson(json["data"]),
-        code: json["code"] == null ? null : json["code"],
-      );
+    data: json["data"] == null ? null : AuthModel.fromJson(json["data"]),
+    message: json["message"] == null ? null : json["message"],
+    code: json["code"] == null ? null : json["code"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "message": message == null ? null : message,
-        "data": data == null ? null : data.toJson(),
-        "code": code == null ? null : code,
-      };
+    "data": data == null ? null : data.toJson(),
+    "message": message == null ? null : message,
+    "code": code == null ? null : code,
+  };
+}
+
+class AuthModel {
+  AuthModel({
+    this.token,
+    this.user,
+  });
+
+  String token;
+  User user;
+
+  factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
+    token: json["token"] == null ? null : json["token"],
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "token": token == null ? null : token,
+    "user": user == null ? null : user.toJson(),
+  };
 }

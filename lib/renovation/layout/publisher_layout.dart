@@ -113,7 +113,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                 child: OctoImage(
                                   fit: BoxFit.cover,
                                   image:
-                                  NetworkImage(_bloc.publisher.user.profilePic),
+                                  NetworkImage(_bloc.publisher.user.profilePicture),
                                   progressIndicatorBuilder: (context, _) =>
                                   simpleShimmer,
                                   errorBuilder: (context, e, _) => Image.asset(
@@ -134,9 +134,9 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                   style: AppTextStyle.largeBlack,
                                   maxLines: 1,
                                 ),
-                                if (_bloc.publisher.user.town != null)
+                                if (_bloc.publisher.user.country != null)
                                   Text(
-                                    "${_bloc.publisher.user.town.country}, ${_bloc.publisher.user.town.name}",
+                                    _bloc.publisher.user.country,
                                     style: AppTextStyle.largeBlack,
                                     maxLines: 1,
                                   )
@@ -146,7 +146,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                         ],
                       ),
                       Divider(),
-                      if (_bloc.publisher.user.type.isCompany)
+                      if (_bloc.publisher.user.type == UserType.BUSINESS.name)
                         ...getBusinessInfo(),
                       if (context.read<AccountBloc>().profile.user.id !=
                           _bloc.publisher.user.id) ...[
@@ -189,27 +189,27 @@ class _PublisherLayoutState extends State<PublisherLayout> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              _bloc.publisher.user.type.title,
+              _bloc.publisher.user.type,
               style: AppTextStyle.largeBlack,
             ),
-            if (_bloc.publisher.user.website != null &&
-                isURL(_bloc.publisher.user.website))
+            if (_bloc.publisher.user.business.website != null &&
+                isURL(_bloc.publisher.user.business.website))
               InkWell(
                 onTap: () {
-                  Utils.launchWeb(context, _bloc.publisher.user.website)
+                  Utils.launchWeb(context, _bloc.publisher.user.business.website)
                       .catchError((e) {
                     Fluttertoast.showToast(msg: e);
                   });
                 },
                 child: Text(
-                  _bloc.publisher.user.website,
+                  _bloc.publisher.user.business.website,
                   style: AppTextStyle.mediumBlue,
                 ),
               ),
-            if (_bloc.publisher.user.bio != null &&
-                _bloc.publisher.user.bio.isNotEmpty)
+            if (_bloc.publisher.user.business.bio != null &&
+                _bloc.publisher.user.business.bio.isNotEmpty)
               Text(
-                _bloc.publisher.user.bio,
+                _bloc.publisher.user.business.bio,
                 style: AppTextStyle.mediumBlack,
               ),
           ],

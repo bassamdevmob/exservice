@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 import 'package:exservice/renovation/utils/constant.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';

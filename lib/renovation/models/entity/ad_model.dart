@@ -1,8 +1,8 @@
 import 'package:exservice/models/options/GetOptionsModel.dart';
+import 'package:exservice/renovation/models/entity/town_model.dart';
 
 import 'media_model.dart';
-import 'user_model.dart';
-import 'town_model.dart';
+import 'user.dart';
 
 class AdModel {
   AdModel({
@@ -35,7 +35,7 @@ class AdModel {
   bool saved;
   int totalViews;
   TownModel town;
-  UserModel owner;
+  User owner;
   Attributes attr;
   List<MediaModel> media;
 
@@ -64,7 +64,7 @@ class AdModel {
         isFree: json["is_free"] == null ? null : json["is_free"],
         saved: json["saved_ads_count"] == null ? null : json["saved_ads_count"],
         town: json["town"] == null ? null : TownModel.fromJson(json["town"]),
-        owner: json["owner"] == null ? null : UserModel.fromJson(json["owner"]),
+        owner: json["owner"] == null ? null : User.fromJson(json["owner"]),
         attr: json["property_attributes"] == null
             ? null
             : Attributes.fromJson(json["property_attributes"]),

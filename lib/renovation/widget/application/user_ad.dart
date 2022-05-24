@@ -1,4 +1,4 @@
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 import 'package:exservice/renovation/bloc/account/account_ads_bloc/account_ads_cubit.dart';
 import 'package:exservice/renovation/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/renovation/bloc/default/edit_ad_bloc/edit_ad_bloc.dart';

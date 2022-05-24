@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exservice/models/GetChatUsersModel.dart';
-import 'package:exservice/renovation/models/common/user_model.dart';
+import 'package:exservice/renovation/models/entity/user.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'chat_event.dart';
@@ -16,8 +16,8 @@ const MESSAGE_COUNT_LIMIT = 50;
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final controller = TextEditingController();
-  final UserModel user;
-  final UserModel chatter;
+  final User user;
+  final User chatter;
   String _chatId;
 
   ChatBloc(this.user, this.chatter) : super(ChatInitial()) {

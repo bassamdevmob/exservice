@@ -1,16 +1,5 @@
 enum AccountRegistrationIdentifier { email, phone }
 
-class AccountType {
-  final int id;
-
-  AccountType._(this.id);
-
-  static final AccountType normal = AccountType._(1);
-  static final AccountType company = AccountType._(2);
-}
-
-// enum AdStatus { active, paused, expired }
-
 class AdStatus {
   final int id;
 
@@ -29,4 +18,12 @@ enum AccountTab {
 enum DisplayFormat {
   list,
   grid,
+}
+
+class UserType {
+  final String name;
+  const UserType._(this.name);
+
+  static const NORMAL = UserType._("NORMAL");
+  static const BUSINESS = UserType._("BUSINESS");
 }

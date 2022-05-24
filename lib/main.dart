@@ -5,6 +5,7 @@ import 'package:exservice/renovation/controller/firebase_messaging_handler.dart'
 import 'package:exservice/renovation/layout/auth/Intro_layout.dart';
 import 'package:exservice/renovation/layout/main_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/resources/repository/auth_repository.dart';
 import 'package:exservice/renovation/styles/app_theme.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:exservice/resources/api/FakeApiProvidor.dart';
@@ -19,6 +20,7 @@ Future<void> initialize() async {
   await FirebaseMessagingHandler.instance.initialize();
   GetIt.I.allowReassignment = true;
   GetIt.I.registerSingleton<ApiProviderDelegate>(FakeApiProvider());
+  GetIt.I.registerSingleton<AuthRepository>(AuthRepository());
 }
 
 void main() async {
@@ -30,7 +32,7 @@ void main() async {
       print('there is no session');
     } else {
       print('user loaded is : ${DataStore.instance.user.username}');
-      print('user session is : ${DataStore.instance.user.apiToken}');
+      print('user session is : ${DataStore.instance.token}');
     }
   } finally {
     runApp(

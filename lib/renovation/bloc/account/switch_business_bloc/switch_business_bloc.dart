@@ -39,11 +39,11 @@ class SwitchBusinessBloc
                 .get<ApiProviderDelegate>()
                 .fetchSwitchToBusiness(companyName, website, bio);
             var _accountBloc = BlocProvider.of<AccountBloc>(context);
-            _accountBloc.profile.user
+            _accountBloc.profile.user.business
               ..companyName = companyName
               ..website = website
-              ..bio = bio
-              ..type.id = AccountType.company.id;
+              ..bio = bio;
+            _accountBloc.profile.user.type = UserType.BUSINESS.name;
             _accountBloc.add(AccountRefreshEvent());
             emit(SwitchBusinessCommittedState());
           }

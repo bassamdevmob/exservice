@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:exservice/models/GetChatUsersModel.dart';
+import 'package:exservice/renovation/models/entity/town_model.dart';
 import 'package:exservice/renovation/models/response/user_profile_response.dart';
 import 'package:exservice/models/NotificationsModel.dart';
 import 'package:exservice/models/PostAdModel.dart';
 import 'package:exservice/models/UploadMediaModel.dart';
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 import 'package:exservice/renovation/models/response/general_response.dart';
-import 'package:exservice/renovation/models/common/town_model.dart';
-import 'package:exservice/renovation/models/common/user_model.dart';
+import 'package:exservice/renovation/models/entity/user.dart';
 import 'package:exservice/models/options/AdPricesListModel.dart';
 import 'package:exservice/models/options/GetCountriesListModel.dart';
-import 'package:exservice/renovation/models/common/category.dart';
+import 'package:exservice/renovation/models/entity/category.dart';
 import 'package:exservice/renovation/models/response/session_response.dart';
 import 'package:flutter/material.dart';
 
@@ -71,15 +71,13 @@ abstract class ApiProviderDelegate {
 
   Future<List<Chatter>> fetchGetChatUsers();
 
-  Future<List<UserType>> fetchUserTypesList(BuildContext context);
-
   Future<List<Choice>> fetchCountriesList(BuildContext context);
 
   Future<List<TownModel>> fetchTownsList(BuildContext context, int countryId);
 
   Future<List<AdPrice>> fetchAdPricesList(BuildContext context);
 
-  Future<UserModel> login(account, password);
+  Future<User> login(account, password);
 
   Future<SessionResponse> fetchSignUp(name, account, password);
 
@@ -89,7 +87,7 @@ abstract class ApiProviderDelegate {
 
   Future<bool> fetchCheckAccount(account);
 
-  Future<UserModel> fetchVerifyUser(String session, String code);
+  Future<User> fetchVerifyUser(String session, String code);
 
   Future<void> fetchResendVerificationCode(account);
 

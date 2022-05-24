@@ -446,7 +446,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: Image.network(
-                  "${_bloc.details.owner.profilePic}",
+                  "${_bloc.details.owner.profilePicture}",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -461,9 +461,9 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   textAlign: TextAlign.left,
                   style: AppTextStyle.largeBlackBold,
                 ),
-                if (_bloc.details.owner.town != null)
+                if (_bloc.details.owner.country != null)
                   Text(
-                    "${_bloc.details.owner.town.country}, ${_bloc.details.owner.town.name}",
+                    _bloc.details.owner.country,
                     textAlign: TextAlign.left,
                     style: AppTextStyle.largeBlack,
                     maxLines: 2,

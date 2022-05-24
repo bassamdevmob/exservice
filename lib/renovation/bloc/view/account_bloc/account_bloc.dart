@@ -50,7 +50,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           final res = await GetIt.I
               .get<ApiProviderDelegate>()
               .fetchUpdateUserPicture(image: event.path);
-          profile.user.profilePic = res.imagePath;
+          profile.user.profilePicture = res.imagePath;
           emit(AccountImageState());
         } catch (e) {
           emit(AccountErrorImageUploadState("$e"));

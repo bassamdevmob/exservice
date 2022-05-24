@@ -103,7 +103,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                 ],
               ),
             );
-            if (_bloc.profile.user.type.isCompany) {
+            if (_bloc.profile.user.type == UserType.BUSINESS.name) {
               return scrollView;
             }
 
@@ -192,30 +192,26 @@ class _AccountLayoutState extends State<AccountLayout> {
           AppLocalization.of(context).trans("phoneNumber"),
           _bloc.profile.user.phoneNumber,
         ),
-        if (_bloc.profile.user.type.isCompany) ...[
+        if (_bloc.profile.user.type == UserType.BUSINESS.name) ...[
           getInfoTile(
             AppLocalization.of(context).trans("companyName"),
-            _bloc.profile.user.companyName,
-          ),
-          getInfoTile(
-            AppLocalization.of(context).trans("companyType"),
-            _bloc.profile.user.type.title,
+            _bloc.profile.user.business.companyName,
           ),
           getInfoTile(
             AppLocalization.of(context).trans("website"),
-            _bloc.profile.user.website,
+            _bloc.profile.user.business.website,
           ),
           getInfoTile(
             AppLocalization.of(context).trans("phone_number"),
-            _bloc.profile.user.publicPhone,
+            _bloc.profile.user.business.publicPhone,
           ),
           getInfoTile(
             AppLocalization.of(context).trans("location"),
-            _bloc.profile.user.town?.name,
+            _bloc.profile.user.country,
           ),
           getInfoTile(
             AppLocalization.of(context).trans("desc"),
-            _bloc.profile.user.bio,
+            _bloc.profile.user.business.bio,
           ),
           CompanyVideo(),
         ],
@@ -285,7 +281,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                   child: ClipOval(
                     child: OctoImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(_bloc.profile.user.profilePic),
+                      image: NetworkImage(_bloc.profile.user.profilePicture),
                       progressIndicatorBuilder: (context, _) => simpleShimmer,
                       errorBuilder: (context, e, _) => Container(
                         color: AppColors.grayAccent,

@@ -2,7 +2,7 @@
 //
 // import 'package:exservice/renovation/utils/constant.dart';
 // import 'package:exservice/models/ReviewModel.dart';
-// import 'package:exservice/models/common/AdModel.dart';
+// import 'package:exservice/models/entity/AdModel.dart';
 // import 'package:exservice/renovation/controller/data_store.dart';
 // import 'package:exservice/renovation/localization/app_localization.dart';
 // import 'package:exservice/renovation/styles/app_colors.dart';

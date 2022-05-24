@@ -1,4 +1,4 @@
-import '../renovation/models/common/user_model.dart';
+import '../renovation/models/entity/user.dart';
 
 class MessageModel {
   MessageModel({
@@ -31,6 +31,6 @@ class MessageModel {
 class Chatter {
   Chatter(this.user, {this.message});
 
-  UserModel user;
+  User user;
   MessageModel message;
 }

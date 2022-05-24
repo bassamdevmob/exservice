@@ -104,7 +104,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           itemBuilder: (context, index) {
             return SummaryAdCard(
               title: _bloc.adModels[index].title,
-              avatar: _bloc.adModels[index].owner.logo,
+              avatar: _bloc.adModels[index].owner.profilePicture,
               images: _bloc.adModels[index].images.map((e) => e.link).toList(),
             );
           },

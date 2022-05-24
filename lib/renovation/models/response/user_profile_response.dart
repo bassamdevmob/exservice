@@ -1,5 +1,5 @@
-import '../common/ad_model.dart';
-import '../common/user_model.dart';
+import '../entity/ad_model.dart';
+import '../entity/user.dart';
 
 class UserProfileResponse {
   UserProfileResponse({
@@ -35,14 +35,14 @@ class UserProfileModel {
     this.expiredCount,
   });
 
-  UserModel user;
+  User user;
   List<AdModel> ads;
   int activeCount;
   int inactiveCount;
   int expiredCount;
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) => UserProfileModel(
-        user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         ads: json["ads"] == null ? null : List<AdModel>.from(json["ads"].map((x) => AdModel.fromJson(x))),
         activeCount: json["active_ads"] == null ? null : json["active_ads"],
         inactiveCount: json["de_active_ads"] == null ? null : json["de_active_ads"],

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/renovation/models/common/option_model.dart';
+import 'package:exservice/renovation/models/entity/option_model.dart';
 import 'package:exservice/renovation/utils/constant.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';

@@ -41,7 +41,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                 height: 40,
                 width: 40,
                 fit: BoxFit.cover,
-                image: NetworkImage(_bloc.chatter.profilePic),
+                image: NetworkImage(_bloc.chatter.profilePicture),
                 progressIndicatorBuilder: (context, _) => simpleShimmer,
                 errorBuilder: (context, e, _) => Container(
                   color: AppColors.white,

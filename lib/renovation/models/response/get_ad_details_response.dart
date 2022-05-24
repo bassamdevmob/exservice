@@ -1,5 +1,5 @@
 
-import 'package:exservice/renovation/models/common/ad_model.dart';
+import 'package:exservice/renovation/models/entity/ad_model.dart';
 
 class GetAdDetailsResponse {
   GetAdDetailsResponse({
