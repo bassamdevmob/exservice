@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/models/request/register_request.dart';
+import 'package:exservice/renovation/resources/repository/auth_repository.dart';
 import 'package:exservice/renovation/utils/enums.dart';
 import 'package:exservice/renovation/utils/utils.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
@@ -46,9 +48,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             var account = accountController.text.trim();
             var password = passwordController.text.trim();
             var username = usernameController.text.trim();
-            var response = await GetIt.I
-                .get<ApiProviderDelegate>()
-                .fetchSignUp(username, account, password);
+            var response =
+                await GetIt.I.get<AuthRepository>().register(RegisterRequest(
+                      username: username,
+                      account: account,
+                      password: password,
+                    ));
             try {
               await DataStore.instance.setAccount(account, password);
             } finally {
@@ -68,10 +73,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           emit(RegisterAwaitCheckAccountState());
           try {
             var account = accountController.text.trim();
-            var exists = await GetIt.I
-                .get<ApiProviderDelegate>()
-                .fetchCheckAccount(account);
-            if (exists) {
+            var response = await GetIt.I
+                .get<AuthRepository>()
+                .checkAccount(account);
+            if (response.data.exists) {
               accountErrorMessage =
                   AppLocalization.of(context).trans("already_exists");
               emit(RegisterInitial());

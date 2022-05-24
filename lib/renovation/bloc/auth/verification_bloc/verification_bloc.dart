@@ -6,6 +6,7 @@ import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/layout/auth/reset_password_layout.dart';
 import 'package:exservice/renovation/layout/auth/welcome_layout.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/resources/repository/auth_repository.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

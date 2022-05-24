@@ -3,8 +3,11 @@ class Links {
 
 
   ///auth
-  static const LOGIN_URL = 'login';
-  static const signUpURL = 'register';
+  static const LOGIN_URL = 'user/login';
+  static const REGISTER_URL = 'user/register';
+  static const VERIFY_URL = 'user/verify';
+  static const CHECK_ACCOUNT_URL = 'user/check_account';
+
   static const verifyUserURL = 'verifyUser';
   static const resendVerificationCodeURL = 'resendVerificationCode';
   static const checkAccountURL = 'checkAccount';

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:exservice/renovation/controller/data_store.dart';
 import 'package:exservice/renovation/localization/app_localization.dart';
+import 'package:exservice/renovation/resources/repository/auth_repository.dart';
 import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -40,8 +41,8 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
                 .get<ApiProviderDelegate>()
                 .fetchResetPassword(code, password, confirm);
             var response =
-            await GetIt.I.get<ApiProviderDelegate>().login(account, password);
-            DataStore.instance.user = response;
+            await GetIt.I.get<AuthRepository>().login(account, password);
+            DataStore.instance.user = response.data.user;
             emit (ResetPasswordCommittedState());
           } catch (e) {
             emit (ResetPasswordErrorState("$e"));

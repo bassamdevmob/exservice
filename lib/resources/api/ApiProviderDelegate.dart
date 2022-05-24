@@ -77,15 +77,9 @@ abstract class ApiProviderDelegate {
 
   Future<List<AdPrice>> fetchAdPricesList(BuildContext context);
 
-  Future<User> login(account, password);
-
-  Future<SessionResponse> fetchSignUp(name, account, password);
-
   Future<SessionResponse> fetchForgetPassword(account);
 
   Future<void> fetchResetPassword(code, password, confirm);
-
-  Future<bool> fetchCheckAccount(account);
 
   Future<User> fetchVerifyUser(String session, String code);
 

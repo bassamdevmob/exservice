@@ -33,9 +33,8 @@ class VerificationOnAuthFactory extends VerificationFactory {
 
   @override
   Future<void> onVerify(String code) async {
-    var response =
-        await GetIt.I.get<ApiProviderDelegate>().fetchVerifyUser(session, code);
-    DataStore.instance.user = response;
+    var response = await GetIt.I.get<AuthRepository>().verify(session, code);
+    DataStore.instance.user = response.data.user;
     print(DataStore.instance.user.toJson());
   }
 }
@@ -92,7 +91,6 @@ class VerificationOnChangePhoneNumberFactory extends VerificationFactory {
     return GetIt.I.get<ApiProviderDelegate>().fetchVerifyPin(session, code);
   }
 }
-
 
 class VerificationOnChangeEmailAddressFactory extends VerificationFactory {
   VerificationOnChangeEmailAddressFactory(String session) : super(session);

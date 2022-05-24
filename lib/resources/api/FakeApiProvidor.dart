@@ -191,14 +191,6 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<bool> fetchCheckAccount(account) {
-    return Future.delayed(
-      getDelayDuration(),
-      () => faker.randomGenerator.boolean(),
-    );
-  }
-
-  @override
   Future<void> fetchVerifyPin(String session, String pin) {
     return Future.delayed(getDelayDuration());
   }
@@ -372,13 +364,6 @@ class FakeApiProvider extends ApiProviderDelegate {
   }
 
   @override
-  Future<User> login(account, password) {
-    return Future.delayed(getDelayDuration(), () async {
-      return getRandomUser();
-    });
-  }
-
-  @override
   Future<List<NotificationModel>> fetchNotifications() {
     return Future.delayed(getDelayDuration(), () {
       return List.generate(10, (index) {
@@ -430,13 +415,6 @@ class FakeApiProvider extends ApiProviderDelegate {
       getDelayDuration(),
       () => List.generate(10, (index) => getRandomAdModel()),
     );
-  }
-
-  @override
-  Future<SessionResponse> fetchSignUp(name, account, password) {
-    return Future.delayed(getDelayDuration(), () {
-      return getRandomSession();
-    });
   }
 
   @override
@@ -519,7 +497,7 @@ class FakeApiProvider extends ApiProviderDelegate {
   SessionResponse getRandomSession(){
     return SessionResponse(
       message: faker.lorem.sentence(),
-      code: 200,
+      code: "200",
       data: Data(
         session: faker.guid.guid(),
       ),

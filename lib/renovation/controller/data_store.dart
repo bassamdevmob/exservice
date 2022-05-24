@@ -47,7 +47,7 @@ class DataStore {
 
   String get fcmToken => _fcmToken;
 
-  String get token => "_fcmToken";
+  var token = "";
 
   SettingsModel get settings => _settings;
 

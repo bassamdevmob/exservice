@@ -1,5 +1,5 @@
-class SessionResponse {
-  SessionResponse({
+class CheckAccountResponse {
+  CheckAccountResponse({
     this.data,
     this.message,
     this.code,
@@ -9,7 +9,7 @@ class SessionResponse {
   String message;
   String code;
 
-  factory SessionResponse.fromJson(Map<String, dynamic> json) => SessionResponse(
+  factory CheckAccountResponse.fromJson(Map<String, dynamic> json) => CheckAccountResponse(
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
     message: json["message"] == null ? null : json["message"],
     code: json["code"] == null ? null : json["code"],
@@ -24,16 +24,16 @@ class SessionResponse {
 
 class Data {
   Data({
-    this.session,
+    this.exists,
   });
 
-  String session;
+  bool exists;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    session: json["session"] == null ? null : json["session"],
+    exists: json["exists"] == null ? null : json["exists"],
   );
 
   Map<String, dynamic> toJson() => {
-    "session": session == null ? null : session,
+    "exists": exists == null ? null : exists,
   };
 }
