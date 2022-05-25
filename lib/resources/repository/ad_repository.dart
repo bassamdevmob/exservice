@@ -22,9 +22,12 @@ class AdRepository extends BaseClient {
     return SimpleResponse.fromJson(response.data);
   }
 
-  Future<AdsResponse> ads() async {
+  Future<AdsResponse> ads({int categoryId}) async {
     final response = await client.get(
       Links.AD_URL,
+      queryParameters: {
+        "category_id": categoryId,
+      },
     );
     return AdsResponse.fromJson(response.data);
   }

@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/models/entity/category.dart';
+import 'package:exservice/models/response/ads_response.dart';
+import 'package:exservice/models/response/categories_response.dart';
+import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
@@ -12,9 +15,9 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  List<AdModel> adModels;
+  List<AdModel> models;
   List<Category> categories;
-  int selectedId;
+  int categoryId;
 
   HomeBloc() : super(HomeAwaitCategoriesState()) {
     on((event, emit) async {
@@ -23,10 +26,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(HomeAwaitCategoriesState());
           var responses = await Future.wait([
             GetIt.I.get<ConfigRepository>().categories(),
-            GetIt.I.get<ApiProviderDelegate>().fetchGetAdsList(selectedId)
+            GetIt.I.get<AdRepository>().ads(categoryId: categoryId)
           ]);
-          categories = responses[0];
-          adModels = responses[1];
+          categories = (responses[0] as CategoriesResponse).data;
+          models = (responses[1] as AdsResponse).data;
           emit(HomeReceiveCategoriesState());
         } catch (e) {
           emit(HomeErrorCategoriesState("$e"));
@@ -34,16 +37,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else if (event is HomeFetchAdsEvent) {
         try {
           emit(HomeAwaitAdsState());
-          var response = await GetIt.I
-              .get<ApiProviderDelegate>()
-              .fetchGetAdsList(selectedId);
-          adModels = response;
+          var response =
+              await GetIt.I.get<AdRepository>().ads(categoryId: categoryId);
+          models = response.data;
           emit(HomeReceiveAdsState());
         } catch (e) {
           emit(HomeErrorAdsState("$e"));
         }
       } else if (event is HomeSelectCategoryEvent) {
-        selectedId = event.id;
+        categoryId = event.id;
         emit(HomeSelectCategoryState());
         add(HomeFetchAdsEvent());
       }

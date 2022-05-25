@@ -82,7 +82,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           );
         } else if (state is HomeAwaitState) {
           return Center(child: CupertinoActivityIndicator());
-        } else if (_bloc.adModels == null || _bloc.adModels.isEmpty) {
+        } else if (_bloc.models == null || _bloc.models.isEmpty) {
           return Center(
             child: ReloadWidget.empty(
               content: Text(
@@ -100,12 +100,12 @@ class _HomeLayoutState extends State<HomeLayout> {
           scale: 0.74,
           duration: 100,
           loop: false,
-          itemCount: _bloc.adModels.length,
+          itemCount: _bloc.models.length,
           itemBuilder: (context, index) {
             return SummaryAdCard(
-              title: _bloc.adModels[index].title,
-              avatar: _bloc.adModels[index].owner.profilePicture,
-              images: _bloc.adModels[index].media.gallery.map((e) => e.link).toList(),
+              title: _bloc.models[index].title,
+              avatar: _bloc.models[index].owner.profilePicture,
+              images: _bloc.models[index].media.gallery.map((e) => e.link).toList(),
             );
           },
         );
@@ -173,7 +173,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           child: Row(
             children: List<Widget>.generate(_bloc.categories.length, (index) {
               return AnimatedAvatar(
-                checked: _bloc.selectedId == _bloc.categories[index].id,
+                checked: _bloc.categoryId == _bloc.categories[index].id,
                 text: _bloc.categories[index].title,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 size: 70,
