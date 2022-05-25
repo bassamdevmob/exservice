@@ -1,14 +1,15 @@
-import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
-import 'package:exservice/renovation/bloc/view/account_bloc/account_bloc.dart';
-import 'package:exservice/renovation/controller/data_store.dart';
-import 'package:exservice/renovation/controller/firebase_messaging_handler.dart';
-import 'package:exservice/renovation/layout/auth/Intro_layout.dart';
-import 'package:exservice/renovation/layout/main_layout.dart';
-import 'package:exservice/renovation/localization/app_localization.dart';
-import 'package:exservice/renovation/resources/repository/auth_repository.dart';
-import 'package:exservice/renovation/styles/app_theme.dart';
-import 'package:exservice/resources/api/ApiProviderDelegate.dart';
-import 'package:exservice/resources/api/FakeApiProvidor.dart';
+import 'package:exservice/bloc/default/application_bloc/application_cubit.dart';
+import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/controller/firebase_messaging_handler.dart';
+import 'package:exservice/layout/auth/Intro_layout.dart';
+import 'package:exservice/layout/main_layout.dart';
+import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/resources/repository/ad_repository.dart';
+import 'package:exservice/resources/repository/auth_repository.dart';
+import 'package:exservice/resources/repository/config_repository.dart';
+import 'package:exservice/resources/repository/user_repository.dart';
+import 'package:exservice/styles/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +20,10 @@ Future<void> initialize() async {
   await DataStore.instance.init();
   await FirebaseMessagingHandler.instance.initialize();
   GetIt.I.allowReassignment = true;
-  GetIt.I.registerSingleton<ApiProviderDelegate>(FakeApiProvider());
+  GetIt.I.registerSingleton<AdRepository>(AdRepository());
   GetIt.I.registerSingleton<AuthRepository>(AuthRepository());
+  GetIt.I.registerSingleton<UserRepository>(UserRepository());
+  GetIt.I.registerSingleton<ConfigRepository>(ConfigRepository());
 }
 
 void main() async {

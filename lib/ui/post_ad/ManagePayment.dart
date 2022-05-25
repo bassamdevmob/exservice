@@ -2,12 +2,12 @@
 //
 // import 'package:exservice/bloc/StatePusher.dart';
 // import 'package:exservice/models/options/AdPricesListModel.dart';
-// import 'package:exservice/renovation/bloc/default/application_bloc/application_cubit.dart';
-// import 'package:exservice/renovation/localization/app_localization.dart';
-// import 'package:exservice/renovation/styles/app_colors.dart';
-// import 'package:exservice/renovation/styles/app_text_style.dart';
-// import 'package:exservice/renovation/widget/application/reload_widget.dart';
-// import 'package:exservice/renovation/widget/button/app_button.dart';
+// import 'package:exservice/bloc/default/application_bloc/application_cubit.dart';
+// import 'package:exservice/localization/app_localization.dart';
+// import 'package:exservice/styles/app_colors.dart';
+// import 'package:exservice/styles/app_text_style.dart';
+// import 'package:exservice/widget/application/reload_widget.dart';
+// import 'package:exservice/widget/button/app_button.dart';
 // import 'package:exservice/resources/api/ApiProviderDelegate.dart';
 // import 'package:exservice/ui/post_ad/PaymentWebView.dart';
 // import 'package:flutter/cupertino.dart';
@@ -239,10 +239,10 @@
 // // import 'package:flutter/cupertino.dart';
 // // import 'package:flutter/material.dart';
 // // import 'package:flutter_credit_card/flutter_credit_card.dart';
-// // import 'package:exservice/renovation/localization/app_localization.dart';
+// // import 'package:exservice/localization/app_localization.dart';
 // // import 'package:exservice/bloc/StatePusher.dart';
-// // import 'package:exservice/renovation/styles/app_colors.dart';
-// // import 'package:exservice/renovation/styles/app_text_style.dart';
+// // import 'package:exservice/styles/app_colors.dart';
+// // import 'package:exservice/styles/app_text_style.dart';
 // // import 'package:exservice/widget/application/HelperWidgets.dart';
 // //
 // // class CreditCardModel {
