@@ -21,8 +21,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final BuildContext context;
 
   bool obscurePassword = true;
-  AccountRegistrationIdentifier identifier =
-      AccountRegistrationIdentifier.phone;
+  AccountRegistrationType identifier =
+      AccountRegistrationType.phone;
 
   String accountErrorMessage;
   String usernameErrorMessage;
@@ -111,11 +111,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if (account.isEmpty) {
       accountErrorMessage = AppLocalization.of(context).translate("field_required");
       return;
-    } else if (identifier == AccountRegistrationIdentifier.phone &&
+    } else if (identifier == AccountRegistrationType.phone &&
         !Utils.isPhoneNumber(account)) {
       accountErrorMessage =
           AppLocalization.of(context).translate('invalid_phone_number');
-    } else if (identifier == AccountRegistrationIdentifier.email &&
+    } else if (identifier == AccountRegistrationType.email &&
         !validator.isEmail(account)) {
       accountErrorMessage = AppLocalization.of(context).translate('invalid_email');
     } else {

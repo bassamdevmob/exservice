@@ -43,7 +43,7 @@ class OptionPickerBottomSheet<T> extends StatelessWidget {
         shrinkWrap: true,
         children: [
           SizedBox(height: Utils.verticalSpace(mediaQuery)),
-          LineBottomSheetWidget(),
+          BottomSheetStroke(),
           SizedBox(height: Utils.verticalSpace(mediaQuery)),
           Text(
             AppLocalization.of(context).translate("choose_option"),

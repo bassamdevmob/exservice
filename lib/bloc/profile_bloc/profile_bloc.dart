@@ -15,7 +15,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ScrollController scrollController = ScrollController();
 
   User model;
-  ProfileTab currentTab = ProfileTab.details;
+  ProfileTab currentTab = ProfileTab.info;
 
 
   @override

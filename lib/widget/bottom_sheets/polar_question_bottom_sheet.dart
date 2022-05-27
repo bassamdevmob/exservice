@@ -60,7 +60,7 @@ class PolarQuestionBottomSheet extends StatelessWidget {
         shrinkWrap: true,
         children: [
           SizedBox(height: Utils.verticalSpace(mediaQuery)),
-          LineBottomSheetWidget(),
+          BottomSheetStroke(),
           SizedBox(height: Utils.verticalSpace(mediaQuery)),
           Padding(
             padding: EdgeInsets.symmetric(

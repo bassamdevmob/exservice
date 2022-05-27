@@ -70,11 +70,11 @@ class _MainLayoutState extends State<MainLayout> {
               color: AppColors.blue,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (context) => DrawerLayout(),
-                ),
-              );
+              // Navigator.of(context).push(
+              //   CupertinoPageRoute(
+              //     builder: (context) => DrawerLayout(),
+              //   ),
+              // );
             },
           ),
         ],

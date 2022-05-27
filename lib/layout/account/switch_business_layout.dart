@@ -110,11 +110,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                       ),
                                       progressIndicatorBuilder: (context, _) =>
                                           simpleShimmer,
-                                      errorBuilder: (context, e, _) =>
-                                          Image.asset(
-                                        PLACEHOLDER,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      errorBuilder: imageErrorBuilder,
                                     ),
                                   ),
                                 ),

@@ -55,10 +55,7 @@ class _GridAdCardState extends State<GridAdCard> {
                 fit: BoxFit.cover,
                 image: NetworkImage(widget.ad.media.cover.link),
                 progressIndicatorBuilder: (context, _) => simpleShimmer,
-                errorBuilder: (context, e, _) => Image.asset(
-                  PLACEHOLDER,
-                  fit: BoxFit.cover,
-                ),
+                errorBuilder: imageErrorBuilder,
               ),
             ),
           ),

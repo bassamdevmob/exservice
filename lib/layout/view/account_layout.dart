@@ -92,7 +92,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                           current is ProfileChangeTabState,
                       builder: (context, state) {
                         switch (_bloc.currentTab) {
-                          case ProfileTab.details:
+                          case ProfileTab.info:
                             return getProfileInformation();
                           default:
                             return getProfileAdvertisements();
@@ -369,11 +369,11 @@ class _AccountLayoutState extends State<AccountLayout> {
           children: [
             getSelector(
               AppLocalization.of(context).translate('account'),
-              ProfileTab.details,
+              ProfileTab.info,
             ),
             getSelector(
               AppLocalization.of(context).translate('myAds'),
-              ProfileTab.advertisements,
+              ProfileTab.posts,
             ),
           ],
         );

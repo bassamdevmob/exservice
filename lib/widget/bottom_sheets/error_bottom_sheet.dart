@@ -29,7 +29,7 @@ Future<dynamic> showErrorBottomSheet(
                 SizedBox(
                   height: Utils.verticalSpace(MediaQuery.of(context)),
                 ),
-                LineBottomSheetWidget(),
+                BottomSheetStroke(),
                 SizedBox(
                   height: Utils.verticalSpace(MediaQuery.of(context)) * 1.5,
                 ),

@@ -52,7 +52,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate([
               SizedBox(height: Utils.verticalSpace(mediaQuery)),
-              LineBottomSheetWidget(),
+              BottomSheetStroke(),
               SizedBox(height: Utils.verticalSpace(mediaQuery)),
               Padding(
                 padding: EdgeInsets.symmetric(

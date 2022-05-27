@@ -37,8 +37,7 @@ class AdGallery extends StatelessWidget {
                 fit: BoxFit.cover,
                 image: NetworkImage(medias.gallery[index].link),
                 progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                errorBuilder: (context, e, _) =>
-                    Image.asset(PLACEHOLDER, fit: BoxFit.cover),
+                errorBuilder: imageErrorBuilder,
               );
             }
             return AppVideo.network('${medias.gallery[index].link}');

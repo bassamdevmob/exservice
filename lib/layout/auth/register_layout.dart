@@ -139,21 +139,21 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           children: <Widget>[
             PageButton(
               text: AppLocalization.of(context).translate('phone'),
-              disabled: _bloc.identifier != AccountRegistrationIdentifier.phone,
+              disabled: _bloc.identifier != AccountRegistrationType.phone,
               onTap: () {
                 FocusScope.of(context).unfocus();
                 _bloc.add(RegisterChangeIdentifierEvent(
-                  AccountRegistrationIdentifier.phone,
+                  AccountRegistrationType.phone,
                 ));
               },
             ),
             PageButton(
               text: AppLocalization.of(context).translate('email'),
-              disabled: _bloc.identifier != AccountRegistrationIdentifier.email,
+              disabled: _bloc.identifier != AccountRegistrationType.email,
               onTap: () {
                 FocusScope.of(context).unfocus();
                 _bloc.add(RegisterChangeIdentifierEvent(
-                  AccountRegistrationIdentifier.email,
+                  AccountRegistrationType.email,
                 ));
               },
             ),
@@ -175,7 +175,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           child: TextField(
             controller: _bloc.accountController,
             keyboardType:
-                _bloc.identifier == AccountRegistrationIdentifier.email
+                _bloc.identifier == AccountRegistrationType.email
                     ? TextInputType.emailAddress
                     : TextInputType.phone,
             decoration: InputDecoration(
@@ -185,7 +185,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   _bloc.accountController.clear();
                 },
               ),
-              labelText: _bloc.identifier == AccountRegistrationIdentifier.email
+              labelText: _bloc.identifier == AccountRegistrationType.email
                   ? AppLocalization.of(context).translate('email2')
                   : AppLocalization.of(context).translate('phoneNumber'),
               labelStyle: AppTextStyle.largeBlue,

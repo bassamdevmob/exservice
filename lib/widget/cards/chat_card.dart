@@ -32,10 +32,7 @@ class ChatCard extends StatelessWidget {
             fit: BoxFit.cover,
             image: NetworkImage(chat.user.profilePicture),
             progressIndicatorBuilder: (context, _) => simpleShimmer,
-            errorBuilder: (context, e, _) => Image.asset(
-              PLACEHOLDER,
-              fit: BoxFit.cover,
-            ),
+            errorBuilder: imageErrorBuilder,
           ),
         ),
       ),

@@ -92,10 +92,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         fit: BoxFit.cover,
                         image: NetworkImage(_bloc.details.media.gallery[index].link),
                         progressIndicatorBuilder: (context, _) => simpleShimmer,
-                        errorBuilder: (context, e, _) => Image.asset(
-                          PLACEHOLDER,
-                          fit: BoxFit.cover,
-                        ),
+                        errorBuilder: imageErrorBuilder,
                       );
                     } else {
                       return Center(

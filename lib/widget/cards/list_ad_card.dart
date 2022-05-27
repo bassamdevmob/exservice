@@ -74,8 +74,7 @@ class _ListAdCardState extends State<ListAdCard> {
                       fit: BoxFit.cover,
                       image: NetworkImage(widget.ad.owner.profilePicture),
                       progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                      errorBuilder: (ctx, e, _) =>
-                          Image.asset(PLACEHOLDER, fit: BoxFit.cover),
+                      errorBuilder: imageErrorBuilder,
                     ),
                   ),
                 ),

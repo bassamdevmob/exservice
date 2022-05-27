@@ -178,8 +178,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                   fit: BoxFit.cover,
                   image: NetworkImage(_bloc.categories[index].image),
                   progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                  errorBuilder: (ctx, e, _) =>
-                      Image.asset(PLACEHOLDER, fit: BoxFit.cover),
+                  errorBuilder: imageErrorBuilder,
                 ),
                 onTap: () {
                   _bloc.add(HomeSelectCategoryEvent(

@@ -114,10 +114,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                   NetworkImage(_bloc.publisher.profilePicture),
                                   progressIndicatorBuilder: (context, _) =>
                                   simpleShimmer,
-                                  errorBuilder: (context, e, _) => Image.asset(
-                                    PLACEHOLDER,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  errorBuilder: imageErrorBuilder,
                                 ),
                               ),
                             ),

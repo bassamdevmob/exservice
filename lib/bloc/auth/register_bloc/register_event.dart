@@ -14,7 +14,7 @@ class RegisterCheckAccountEvent extends RegisterEvent {}
 class RegisterSecurePasswordEvent extends RegisterEvent {}
 
 class RegisterChangeIdentifierEvent extends RegisterEvent {
-  final AccountRegistrationIdentifier identifier;
+  final AccountRegistrationType identifier;
 
   RegisterChangeIdentifierEvent(this.identifier);
 }

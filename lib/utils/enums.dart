@@ -1,4 +1,11 @@
-enum AccountRegistrationIdentifier { email, phone }
+class UserType {
+  final String name;
+
+  const UserType._(this.name);
+
+  static const NORMAL = UserType._("NORMAL");
+  static const BUSINESS = UserType._("BUSINESS");
+}
 
 class AdStatus {
   final String name;
@@ -19,10 +26,9 @@ class MediaType {
   static final MediaType video = MediaType._("VIDEO");
 }
 
-
 enum ProfileTab {
-  details,
-  advertisements,
+  info,
+  posts,
 }
 
 enum DisplayFormat {
@@ -30,10 +36,4 @@ enum DisplayFormat {
   grid,
 }
 
-class UserType {
-  final String name;
-  const UserType._(this.name);
-
-  static const NORMAL = UserType._("NORMAL");
-  static const BUSINESS = UserType._("BUSINESS");
-}
+enum AccountRegistrationType { email, phone }
