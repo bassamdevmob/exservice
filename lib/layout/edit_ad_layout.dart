@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/default/edit_ad_bloc/edit_ad_bloc.dart';
+import 'package:exservice/bloc/edit_ad_bloc/edit_ad_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';

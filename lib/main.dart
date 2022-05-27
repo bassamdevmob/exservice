@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:exservice/bloc/default/application_bloc/application_cubit.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -43,7 +43,7 @@ void main() async {
       MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => ApplicationCubit()),
-          BlocProvider(create: (context) => AccountBloc()),
+          BlocProvider(create: (context) => ProfileBloc()),
         ],
         child: const AppMaterial(),
       ),

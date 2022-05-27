@@ -1,5 +1,5 @@
 import 'package:exservice/bloc/account/switch_business_bloc/switch_business_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -106,7 +106,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                     child: OctoImage(
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
-                                        BlocProvider.of<AccountBloc>(context).profile.profilePicture,
+                                        BlocProvider.of<ProfileBloc>(context).model.profilePicture,
                                       ),
                                       progressIndicatorBuilder: (context, _) =>
                                           simpleShimmer,

@@ -1,5 +1,6 @@
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:exservice/widget/cards/list_ad_card.dart';
@@ -55,12 +56,8 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
             return Center(child: CupertinoActivityIndicator());
           } else if (_bloc.models == null || _bloc.models.isEmpty) {
             return Center(
-              child: ReloadWidget.empty(
-                content: Text(
-                  AppLocalization.of(context).translate("empty_data"),
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                onPressed: () {
+              child: EmptyIndicator(
+                onTap: () {
                   _bloc.fetch();
                 },
               ),

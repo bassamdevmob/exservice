@@ -1,6 +1,6 @@
 import 'package:exservice/bloc/account/business_info_bloc/business_info_bloc.dart';
 import 'package:exservice/bloc/account/change_password_bloc/change_password_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/edit/change_password_layout.dart';
 import 'package:exservice/layout/account/contact_info_layout.dart';
 import 'package:exservice/layout/account/edit/edit_business_info_layout.dart';
@@ -26,11 +26,11 @@ class EditAccountLayout extends StatefulWidget {
 
 class _EditAccountLayoutState extends State<EditAccountLayout> {
   final picker = ImagePicker();
-  AccountBloc _bloc;
+  ProfileBloc _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<AccountBloc>(context);
+    _bloc = BlocProvider.of<ProfileBloc>(context);
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
           text: AppLocalization.of(dialogContext).translate("changeImage"),
           onTap: () {
             Navigator.of(dialogContext).pop();
-            _bloc.add(AccountChangeProfileImageEvent(file.path));
+            _bloc.add(ProfileChangeProfileImageEvent(file.path));
           },
         ),
       );
@@ -71,11 +71,11 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
 
   @override
   Widget build(BuildContext context) {
-    var user = context.read<AccountBloc>().profile;
-    return BlocListener<AccountBloc, AccountState>(
-      listenWhen: (_, current) => current is AccountErrorImageUploadState,
+    var user = context.read<ProfileBloc>().model;
+    return BlocListener<ProfileBloc, ProfileState>(
+      listenWhen: (_, current) => current is ProfileErrorImageUploadState,
       listener: (context, state) {
-        if (state is AccountErrorImageUploadState) {
+        if (state is ProfileErrorImageUploadState) {
           showErrorBottomSheet(
             context,
             AppLocalization.of(context).translate("error"),
@@ -93,8 +93,8 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
             style: AppTextStyle.largeLobsterBlack,
           ),
         ),
-        body: BlocBuilder<AccountBloc, AccountState>(
-          buildWhen: (_, current) => current is AccountInitial,
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          buildWhen: (_, current) => current is ProfileInitial,
           builder: (context, state) {
             return ListView(
               padding: EdgeInsets.symmetric(vertical: 20),
@@ -139,14 +139,14 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                           start: 0,
                           bottom: 0,
                           textDirection: Directionality.of(context),
-                          child: BlocBuilder<AccountBloc, AccountState>(
+                          child: BlocBuilder<ProfileBloc, ProfileState>(
                             buildWhen: (_, current) =>
-                                current is AccountImageState ||
-                                current is AccountAwaitImageUploadState ||
-                                current is AccountErrorImageUploadState,
+                                current is ProfileImageState ||
+                                current is ProfileAwaitImageUploadState ||
+                                current is ProfileErrorImageUploadState,
                             builder: (context, state) {
                               return MaterialButton(
-                                color: state is AccountAwaitImageUploadState
+                                color: state is ProfileAwaitImageUploadState
                                     ? AppColors.gray
                                     : AppColors.blue,
                                 minWidth: 0,
@@ -158,7 +158,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                                   Icons.add,
                                   color: AppColors.white,
                                 ),
-                                onPressed: state is AccountAwaitImageUploadState
+                                onPressed: state is ProfileAwaitImageUploadState
                                     ? null
                                     : changeProfilePic,
                               );

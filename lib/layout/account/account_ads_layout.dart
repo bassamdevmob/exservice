@@ -2,6 +2,7 @@ import 'package:exservice/bloc/account/account_ads_bloc/account_ads_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/application/user_ad.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
@@ -69,12 +70,8 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
             }
             if (_bloc.models == null || _bloc.models.isEmpty)
               return Center(
-                child: ReloadWidget.empty(
-                  content: Text(
-                    AppLocalization.of(context).translate("empty_data"),
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  onPressed: () {
+                child: EmptyIndicator(
+                  onTap: () {
                     _bloc.fetch();
                   },
                 ),

@@ -1,7 +1,7 @@
 import 'package:exservice/utils/constant.dart';
 import 'package:exservice/bloc/chat/chat_bloc.dart';
-import 'package:exservice/bloc/default/publisher_bloc/publisher_cubit.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
@@ -146,7 +146,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                       Divider(),
                       if (_bloc.publisher.type == UserType.BUSINESS.name)
                         ...getBusinessInfo(),
-                      if (context.read<AccountBloc>().profile.id !=
+                      if (context.read<ProfileBloc>().model.id !=
                           _bloc.publisher.id) ...[
                         getContactToolbar(),
                         Divider(),
@@ -242,7 +242,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => ChatBloc(
-                    BlocProvider.of<AccountBloc>(context).profile,
+                    BlocProvider.of<ProfileBloc>(context).model,
                     _bloc.publisher,
                   ),
                   child: ChatLayout(),

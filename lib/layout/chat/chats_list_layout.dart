@@ -1,10 +1,11 @@
 import 'package:exservice/bloc/chat/chat_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/application/separated_sliver_child_builder_delegate.dart';
 import 'package:exservice/widget/cards/chat_card.dart';
@@ -84,12 +85,8 @@ class _ChatsListLayoutState extends State<ChatsListLayout> {
             ),
             if (_bloc.chats == null || _bloc.chats.isEmpty)
               SliverToBoxAdapter(
-                child: ReloadWidget.empty(
-                  content: Text(
-                    AppLocalization.of(context).translate("empty_data"),
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  onPressed: () {
+                child: EmptyIndicator(
+                  onTap: () {
                     _bloc.add(ChatsListFetchEvent());
                   },
                 ),
@@ -105,7 +102,7 @@ class _ChatsListLayoutState extends State<ChatsListLayout> {
                         Navigator.of(context).push(CupertinoPageRoute(
                           builder: (context) => BlocProvider(
                             create: (context) => ChatBloc(
-                              BlocProvider.of<AccountBloc>(context).profile,
+                              BlocProvider.of<ProfileBloc>(context).model,
                               _bloc.chats[index].user,
                             ),
                             child: ChatLayout(),

@@ -1,7 +1,7 @@
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
-import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
-import 'package:exservice/bloc/default/publisher_bloc/publisher_cubit.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/layout/publisher_layout.dart';
@@ -117,7 +117,7 @@ class _ListAdCardState extends State<ListAdCard> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Builder(builder: (context) {
-            if (BlocProvider.of<AccountBloc>(context).profile.id == widget.ad.owner.id) {
+            if (BlocProvider.of<ProfileBloc>(context).model.id == widget.ad.owner.id) {
               return AdDetails(widget.ad);
             }
             return Row(

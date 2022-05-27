@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -30,7 +30,7 @@ class WelcomeLayout extends StatelessWidget {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        BlocProvider.of<AccountBloc>(context).profile.username,
+                        BlocProvider.of<ProfileBloc>(context).model.username,
                         style: AppTextStyle.largeBlackBold,
                       ),
                     ),

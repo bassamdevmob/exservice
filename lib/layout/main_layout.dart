@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
@@ -48,7 +48,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   void initState() {
-    context.read<AccountBloc>().add(AccountFetchEvent());
+    context.read<ProfileBloc>().add(ProfileFetchEvent());
     super.initState();
   }
 
@@ -119,9 +119,9 @@ class _MainLayoutState extends State<MainLayout> {
                 child: PostAdLayout(),
               ),
             ));
-          } else {
+          } else if(i > 2){
             setState(() {
-              _index = i;
+              _index = i - 1;
             });
           }
         },

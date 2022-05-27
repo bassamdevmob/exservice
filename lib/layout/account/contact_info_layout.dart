@@ -1,6 +1,6 @@
 import 'package:exservice/bloc/account/manage_email_address_bloc/manage_email_address_bloc.dart';
 import 'package:exservice/bloc/account/manage_phone_number_bloc/manage_phone_number_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/edit/manage_email_address_layout.dart';
 import 'package:exservice/layout/account/edit/manage_phone_number_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -15,7 +15,7 @@ import 'package:phone_number/phone_number.dart';
 class ContactInfoLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var user = BlocProvider.of<AccountBloc>(context).profile;
+    var user = BlocProvider.of<ProfileBloc>(context).model;
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(

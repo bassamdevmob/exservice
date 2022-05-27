@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/models/request/switch_business_request.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
@@ -43,13 +43,13 @@ class SwitchBusinessBloc
                   bio: bio,
                   website: website,
                 ));
-            var _accountBloc = BlocProvider.of<AccountBloc>(context);
-            _accountBloc.profile.business
+            var _accountBloc = BlocProvider.of<ProfileBloc>(context);
+            _accountBloc.model.business
               ..companyName = companyName
               ..website = website
               ..bio = bio;
-            _accountBloc.profile.type = UserType.BUSINESS.name;
-            _accountBloc.add(AccountRefreshEvent());
+            _accountBloc.model.type = UserType.BUSINESS.name;
+            _accountBloc.add(ProfileRefreshEvent());
             emit(SwitchBusinessCommittedState());
           }
         } catch (e) {

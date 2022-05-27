@@ -20,7 +20,7 @@ class MediaType {
 }
 
 
-enum AccountTab {
+enum ProfileTab {
   details,
   advertisements,
 }

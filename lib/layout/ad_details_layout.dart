@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:expandable/expandable.dart';
 import 'package:exservice/bloc/chat/chat_bloc.dart';
-import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -170,7 +170,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       ),
                     ],
                   );
-                  if (BlocProvider.of<AccountBloc>(context).profile.id == _bloc.details.owner.id) {
+                  if (BlocProvider.of<ProfileBloc>(context).model.id == _bloc.details.owner.id) {
                     return content;
                   }
                   return Row(
@@ -198,7 +198,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                 }),
               ),
               _getExpandableInfo(),
-              if (BlocProvider.of<AccountBloc>(context).profile.id == _bloc.details.owner.id)
+              if (BlocProvider.of<ProfileBloc>(context).model.id == _bloc.details.owner.id)
                 getContactToolbar(),
               SizedBox(height: 10),
             ],
@@ -246,7 +246,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   CupertinoPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => ChatBloc(
-                        BlocProvider.of<AccountBloc>(context).profile,
+                        BlocProvider.of<ProfileBloc>(context).model,
                         _bloc.details.owner,
                       ),
                       child: ChatLayout(),

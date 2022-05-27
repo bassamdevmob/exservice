@@ -1,18 +1,14 @@
-import 'package:exservice/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+//todo [remove]
 class ReloadWidget extends StatelessWidget {
   final Widget content;
   final VoidCallback onPressed;
   final String image;
 
-  ReloadWidget.empty({Key key, this.content, this.onPressed})
-      : image = EMPTY_PLACEHOLDER,
-        super(key: key);
-
   ReloadWidget.error({Key key, this.content, this.onPressed})
-      : image = ERROR_PLACEHOLDER,
+      : image = "assets/svg/error.svg",
         super(key: key);
 
   @override

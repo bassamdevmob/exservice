@@ -1,5 +1,5 @@
 import 'package:exservice/bloc/account/account_ads_bloc/account_ads_cubit.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/account_ads_layout.dart';
 import 'package:exservice/layout/account/edit_account_layout.dart';
 import 'package:exservice/layout/account/welcome_business_layout.dart';
@@ -26,34 +26,34 @@ class AccountLayout extends StatefulWidget {
 }
 
 class _AccountLayoutState extends State<AccountLayout> {
-  AccountBloc _bloc;
+  ProfileBloc _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<AccountBloc>(context);
+    _bloc = BlocProvider.of<ProfileBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountState>(
+    return BlocBuilder<ProfileBloc, ProfileState>(
       buildWhen: (_, current) =>
-          current is AccountInitial ||
-          current is AccountAwaitState ||
-          current is AccountAccessibleState ||
-          current is AccountErrorState,
+          current is ProfileInitial ||
+          current is ProfileAwaitState ||
+          current is ProfileAccessibleState ||
+          current is ProfileErrorState,
       builder: (context, state) {
-        if (state is AccountErrorState) {
+        if (state is ProfileErrorState) {
           return Center(
             child: ReloadWidget.error(
               content: Text(state.message, textAlign: TextAlign.center),
               onPressed: () {
-                _bloc.add(AccountFetchEvent());
+                _bloc.add(ProfileFetchEvent());
               },
             ),
           );
         }
-        if (state is AccountAwaitState) {
+        if (state is ProfileAwaitState) {
           return Center(child: CupertinoActivityIndicator());
         }
         return WillPopScope(
@@ -87,15 +87,15 @@ class _AccountLayoutState extends State<AccountLayout> {
                   getTabBar(),
                   Divider(),
                   Expanded(
-                    child: BlocBuilder<AccountBloc, AccountState>(
+                    child: BlocBuilder<ProfileBloc, ProfileState>(
                       buildWhen: (_, current) =>
-                          current is AccountChangeTabState,
+                          current is ProfileChangeTabState,
                       builder: (context, state) {
                         switch (_bloc.currentTab) {
-                          case AccountTab.details:
-                            return getAccountInformation();
+                          case ProfileTab.details:
+                            return getProfileInformation();
                           default:
-                            return getAccountAdvertisements();
+                            return getProfileAdvertisements();
                         }
                       },
                     ),
@@ -103,7 +103,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                 ],
               ),
             );
-            if (_bloc.profile.type == UserType.BUSINESS.name) {
+            if (_bloc.model.type == UserType.BUSINESS.name) {
               return scrollView;
             }
 
@@ -137,7 +137,7 @@ class _AccountLayoutState extends State<AccountLayout> {
     );
   }
 
-  Widget getAccountAdvertisements() {
+  Widget getProfileAdvertisements() {
     return ListView(
       children: <Widget>[
         getActionButton(AppLocalization.of(context).translate('activeAds'), () {
@@ -177,41 +177,41 @@ class _AccountLayoutState extends State<AccountLayout> {
     );
   }
 
-  Widget getAccountInformation() {
+  Widget getProfileInformation() {
     return ListView(
       children: <Widget>[
         getInfoTile(
           AppLocalization.of(context).translate("username"),
-          _bloc.profile.username,
+          _bloc.model.username,
         ),
         getInfoTile(
           AppLocalization.of(context).translate("email2"),
-          _bloc.profile.email,
+          _bloc.model.email,
         ),
         getInfoTile(
           AppLocalization.of(context).translate("phoneNumber"),
-          _bloc.profile.phoneNumber,
+          _bloc.model.phoneNumber,
         ),
-        if (_bloc.profile.type == UserType.BUSINESS.name) ...[
+        if (_bloc.model.type == UserType.BUSINESS.name) ...[
           getInfoTile(
             AppLocalization.of(context).translate("companyName"),
-            _bloc.profile.business.companyName,
+            _bloc.model.business.companyName,
           ),
           getInfoTile(
             AppLocalization.of(context).translate("website"),
-            _bloc.profile.business.website,
+            _bloc.model.business.website,
           ),
           getInfoTile(
             AppLocalization.of(context).translate("phone_number"),
-            _bloc.profile.business.publicPhone,
+            _bloc.model.business.publicPhone,
           ),
           getInfoTile(
             AppLocalization.of(context).translate("location"),
-            _bloc.profile.country,
+            _bloc.model.country,
           ),
           getInfoTile(
             AppLocalization.of(context).translate("desc"),
-            _bloc.profile.business.bio,
+            _bloc.model.business.bio,
           ),
           CompanyVideo(),
         ],
@@ -281,13 +281,13 @@ class _AccountLayoutState extends State<AccountLayout> {
                   child: ClipOval(
                     child: OctoImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(_bloc.profile.profilePicture),
+                      image: NetworkImage(_bloc.model.profilePicture),
                       progressIndicatorBuilder: (context, _) => simpleShimmer,
                       errorBuilder: (context, e, _) => Container(
                         color: AppColors.grayAccent,
                         child: Center(
                           child: Text(
-                            _bloc.profile.username.camelCase,
+                            _bloc.model.username.camelCase,
                             style: AppTextStyle.xxLargeBlack,
                           ),
                         ),
@@ -296,7 +296,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                   ),
                 ),
                 Text(
-                  _bloc.profile.username,
+                  _bloc.model.username,
                   style: AppTextStyle.largeBlack,
                   textAlign: TextAlign.center,
                   maxLines: 2,
@@ -312,15 +312,15 @@ class _AccountLayoutState extends State<AccountLayout> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               getStatusItem(
-                "${_bloc.profile.statistics.activeAdsCount}",
+                "${_bloc.model.statistics.activeAdsCount}",
                 AppLocalization.of(context).translate('active'),
               ),
               getStatusItem(
-                "${_bloc.profile.statistics.inactiveAdsCount}",
+                "${_bloc.model.statistics.inactiveAdsCount}",
                 AppLocalization.of(context).translate('inactive'),
               ),
               getStatusItem(
-                "${_bloc.profile.statistics.expiredAdsCount}",
+                "${_bloc.model.statistics.expiredAdsCount}",
                 AppLocalization.of(context).translate('expired'),
               ),
             ],
@@ -339,7 +339,7 @@ class _AccountLayoutState extends State<AccountLayout> {
     );
   }
 
-  Widget getSelector(String title, AccountTab tab) {
+  Widget getSelector(String title, ProfileTab tab) {
     return AnimatedAvatar(
       text: title,
       checked: _bloc.currentTab == tab,
@@ -355,25 +355,25 @@ class _AccountLayoutState extends State<AccountLayout> {
         ),
       ),
       onTap: () {
-        _bloc.add(AccountChangeTabEvent(tab));
+        _bloc.add(ProfileChangeTabEvent(tab));
       },
     );
   }
 
   Widget getTabBar() {
-    return BlocBuilder<AccountBloc, AccountState>(
-      buildWhen: (_, current) => current is AccountChangeTabState,
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (_, current) => current is ProfileChangeTabState,
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             getSelector(
               AppLocalization.of(context).translate('account'),
-              AccountTab.details,
+              ProfileTab.details,
             ),
             getSelector(
               AppLocalization.of(context).translate('myAds'),
-              AccountTab.advertisements,
+              ProfileTab.advertisements,
             ),
           ],
         );

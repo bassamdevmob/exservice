@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -58,15 +58,15 @@ class BusinessInfoBloc extends Bloc<BusinessInfoEvent, BusinessInfoState> {
   }
 
   BusinessInfoBloc(this.context) : super(BusinessInfoInitial()) {
-    var _accountBloc = BlocProvider.of<AccountBloc>(context);
-    companyNameController.text = _accountBloc.profile.business.companyName;
-    websiteController.text = _accountBloc.profile.business.website;
-    bioController.text = _accountBloc.profile.business.bio;
+    var _accountBloc = BlocProvider.of<ProfileBloc>(context);
+    companyNameController.text = _accountBloc.model.business.companyName;
+    websiteController.text = _accountBloc.model.business.website;
+    bioController.text = _accountBloc.model.business.bio;
     on<BusinessInfoEvent>((event, emit) async {
       if (event is ResetBusinessInfoEvent) {
-        companyNameController.text = _accountBloc.profile.business.companyName;
-        websiteController.text = _accountBloc.profile.business.website;
-        bioController.text = _accountBloc.profile.business.bio;
+        companyNameController.text = _accountBloc.model.business.companyName;
+        websiteController.text = _accountBloc.model.business.website;
+        bioController.text = _accountBloc.model.business.bio;
         emit(BusinessInfoResetState());
       } else if (event is UpdateBusinessInfoEvent) {
         try {
@@ -78,11 +78,11 @@ class BusinessInfoBloc extends Bloc<BusinessInfoEvent, BusinessInfoState> {
             String website = websiteController.text.trim();
             String bio = bioController.text.trim();
             await GetIt.I.get<UserRepository>().updateProfile();
-            _accountBloc.profile.business
+            _accountBloc.model.business
               ..companyName = companyName
               ..website = website
               ..bio = bio;
-            _accountBloc.add(AccountRefreshEvent());
+            _accountBloc.add(ProfileRefreshEvent());
             emit(BusinessInfoCommittedState());
           }
         } catch (e) {

@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/styles/app_colors.dart';

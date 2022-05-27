@@ -1,5 +1,5 @@
 import 'package:exservice/bloc/account/switch_business_bloc/switch_business_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/switch_business_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class WelcomeBusinessLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AccountBloc>().profile;
+    final user = context.read<ProfileBloc>().model;
     var _mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {

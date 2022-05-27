@@ -1,8 +1,8 @@
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/account/account_ads_bloc/account_ads_cubit.dart';
-import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
-import 'package:exservice/bloc/default/edit_ad_bloc/edit_ad_bloc.dart';
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/edit_ad_bloc/edit_ad_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/layout/edit_ad_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -30,12 +30,12 @@ class UserAd extends StatefulWidget {
 
 class _UserAdState extends State<UserAd> {
   AccountAdsCubit _bloc;
-  AccountBloc _accountBloc;
+  ProfileBloc _accountBloc;
 
   @override
   void initState() {
     _bloc = BlocProvider.of<AccountAdsCubit>(context);
-    _accountBloc = BlocProvider.of<AccountBloc>(context);
+    _accountBloc = BlocProvider.of<ProfileBloc>(context);
     super.initState();
   }
 
@@ -74,9 +74,9 @@ class _UserAdState extends State<UserAd> {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
           _bloc.activateAd(widget.ad).then((_) {
-            _accountBloc.profile.statistics.activeAdsCount++;
-            _accountBloc.profile.statistics.inactiveAdsCount--;
-            _accountBloc.add(AccountRefreshEvent());
+            _accountBloc.model.statistics.activeAdsCount++;
+            _accountBloc.model.statistics.inactiveAdsCount--;
+            _accountBloc.add(ProfileRefreshEvent());
             Fluttertoast.showToast(
               msg: AppLocalization.of(context).translate("activated"),
             );
@@ -100,9 +100,9 @@ class _UserAdState extends State<UserAd> {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
           _bloc.pauseAd(widget.ad).then((_) {
-            _accountBloc.profile.statistics.activeAdsCount--;
-            _accountBloc.profile.statistics.inactiveAdsCount++;
-            _accountBloc.add(AccountRefreshEvent());
+            _accountBloc.model.statistics.activeAdsCount--;
+            _accountBloc.model.statistics.inactiveAdsCount++;
+            _accountBloc.add(ProfileRefreshEvent());
             Fluttertoast.showToast(
               msg: AppLocalization.of(context).translate("paused"),
             );
@@ -141,7 +141,7 @@ class _UserAdState extends State<UserAd> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: AdDetails(widget.ad),
         ),
-        if (_accountBloc.profile.id == widget.ad.owner.id)
+        if (_accountBloc.model.id == widget.ad.owner.id)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[

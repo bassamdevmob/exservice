@@ -5,6 +5,7 @@ import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/widget/application/animated_avatar.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/cards/summary_ad_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,12 +85,8 @@ class _HomeLayoutState extends State<HomeLayout> {
           return Center(child: CupertinoActivityIndicator());
         } else if (_bloc.models == null || _bloc.models.isEmpty) {
           return Center(
-            child: ReloadWidget.empty(
-              content: Text(
-                AppLocalization.of(context).translate("empty"),
-                textAlign: TextAlign.center,
-              ),
-              onPressed: () {
+            child: EmptyIndicator(
+              onTap: () {
                 _bloc.add(HomeFetchAdsEvent());
               },
             ),

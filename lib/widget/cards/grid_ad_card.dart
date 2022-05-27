@@ -1,6 +1,6 @@
-import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
-import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
@@ -91,7 +91,7 @@ class _GridAdCardState extends State<GridAdCard> {
                   ),
                 ],
               );
-              if (BlocProvider.of<AccountBloc>(context).profile.id == widget.ad.owner.id) {
+              if (BlocProvider.of<ProfileBloc>(context).model.id == widget.ad.owner.id) {
                 return body;
               }
               return Row(

@@ -1,94 +1,248 @@
-import 'package:exservice/bloc/default/application_bloc/application_cubit.dart';
-import 'package:exservice/controller/data_store.dart';
-import 'package:exservice/layout/auth/Intro_layout.dart';
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
+import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/utils.dart';
-import 'package:exservice/widget/bottom_sheets/change_language_bottom_sheet.dart';
-import 'package:exservice/widget/button/action_button.dart';
+import 'package:exservice/utils/sizer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DrawerLayout extends StatelessWidget {
+  final StackLoaderIndicator _loaderIndicator = StackLoaderIndicator();
+
+  DrawerLayout({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
-        title: Text(
-          AppLocalization.of(context).translate('app_name'),
-          style: AppTextStyle.largeBlack,
+    var iconSize = Sizer.iconSizeMedium;
+    var _bloc = BlocProvider.of<ProfileCubit>(context);
+    var isAuthenticated = _bloc.isAuthenticated;
+    return BlocListener<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileLogoutAwaitState) {
+          _loaderIndicator.show(context);
+        } else if (state is ProfileLogoutAcceptState) {
+          Fluttertoast.showToast(
+            msg: AppLocalization.of(context).translate("logged_out"),
+            toastLength: Toast.LENGTH_LONG,
+          );
+          BlocProvider.of<ApplicationCubit>(context).restart();
+          // Navigator.of(context).push(
+          //   CupertinoPageRoute(
+          //     builder: (context) => BlocProvider(
+          //       create: (context) => LoginBloc(),
+          //       child: const LoginLayout(),
+          //     ),
+          //   ),
+          // );
+        } else if (state is ProfileLogoutErrorState) {
+          _loaderIndicator.dismiss();
+          Fluttertoast.showToast(msg: state.error.toString());
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        body: ListView(
+          children: [
+            if (!isAuthenticated)
+              ListTile(
+                leading: SvgPicture.asset(
+                  "assets/svg/user.svg",
+                  height: iconSize,
+                  width: iconSize,
+                ),
+                title: Text(
+                  AppLocalization.of(context).translate("guest"),
+                ),
+                trailing: Text(
+                  AppLocalization.of(context).translate("login"),
+                  style: Theme.of(context).primaryTextTheme.titleSmall,
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => LoginBloc(),
+                        child: const LoginLayout(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            if (isAuthenticated)
+              BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (_, current) =>
+                current is ProfileAcceptState ||
+                    current is ProfileUpdateAcceptState,
+                builder: (context, state) {
+                  return ListTile(
+                    leading: SvgPicture.asset(
+                      "assets/svg/user.svg",
+                      height: iconSize,
+                      width: iconSize,
+                    ),
+                    title: getUserWidget(context),
+                    trailing: getTrailing(context),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => const ProfileLayout(),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ListTile(
+              leading: SvgPicture.asset(
+                "assets/svg/globe.svg",
+                height: iconSize,
+                width: iconSize,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("change_language"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => const ChangeLanguageLayout(),
+                ));
+              },
+            ),
+            SwitchListTile(
+              secondary: SvgPicture.asset(
+                "assets/svg/moon.svg",
+                height: iconSize,
+                width: iconSize,
+              ),
+              inactiveTrackColor: AppColors.gray,
+              title: Text(
+                AppLocalization.of(context).translate("dark_mode"),
+              ),
+              value: DataStore.instance.isDarkModeEnabled,
+              onChanged: (bool value) {
+                BlocProvider.of<ApplicationCubit>(context).switchTheme();
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                "assets/svg/file.svg",
+                height: Sizer.iconSizeMedium,
+                width: Sizer.iconSizeMedium,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("about_us"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => const AboutUsLayout(),
+                ));
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                "assets/svg/mail1.svg",
+                height: Sizer.iconSizeMedium,
+                width: Sizer.iconSizeMedium,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("contact_us"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => ContactUsBloc(),
+                    child: const ContactUsLayout(),
+                  ),
+                ));
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                "assets/svg/alert.svg",
+                height: Sizer.iconSizeMedium,
+                width: Sizer.iconSizeMedium,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("terms_condition"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => InfoLayout(
+                    title: AppLocalization.of(context).translate("terms_condition"),
+                    content: faker.lorem.sentences(10).join("\n"),
+                  ),
+                ));
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                "assets/svg/book.svg",
+                height: Sizer.iconSizeMedium,
+                width: Sizer.iconSizeMedium,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("privacy_police"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => InfoLayout(
+                    title: AppLocalization.of(context).translate("privacy_police"),
+                    content: faker.lorem.sentences(10).join("\n"),
+                  ),
+                ));
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                Assets.svgShare,
+                height: iconSize,
+                width: iconSize,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("share_app"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {},
+            ),
+            if (isAuthenticated)
+              ListTile(
+                leading: SvgPicture.asset(
+                  Assets.svgLogout,
+                  height: iconSize,
+                  width: iconSize,
+                ),
+                title: Text(
+                  AppLocalization.of(context).translate("logout"),
+                ),
+                onTap: () {
+                  ActionBottomSheet.show(
+                    context,
+                    title: AppLocalization.of(context).translate("logout"),
+                    subtitle: AppLocalization.of(context).translate("logout_desc"),
+                    confirmText: AppLocalization.of(context).translate("logout"),
+                    onTap: () {
+                      BlocProvider.of<ProfileCubit>(context).logout();
+                    },
+                  );
+                },
+              ),
+          ],
         ),
       ),
-      backgroundColor: AppColors.white,
-      body: LayoutBuilder(
-        builder: (context, constraint) {
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  height: Utils.verticalSpace(mediaQuery) * 2,
-                ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // ActionButton(
-                      //   AppLocalization.of(context).trans("my_profile"),
-                      //   AppLocalization.of(context).trans("my_profile_title"),
-                      //   () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) {
-                      //           return BlocProvider<ProfileBloc>(
-                      //             create: (context) => ProfileBloc(),
-                      //             child: ProfileUi(),
-                      //           );
-                      //         },
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
-                      ActionButton(
-                        AppLocalization.of(context).translate("about_us"),
-                        AppLocalization.of(context).translate("about_us_sub_title"),
-                        () {},
-                      ),
-                      ActionButton(
-                        AppLocalization.of(context).translate("language"),
-                        AppLocalization.of(context).translate("change_language"),
-                        () {
-                          showChangeLanguageBottomSheet(context);
-                        },
-                      ),
-                      if (DataStore.instance.hasToken)
-                        ActionButton(
-                          AppLocalization.of(context).translate("logout"),
-                          AppLocalization.of(context).translate("logout_title"),
-                          () {
-                            DataStore.instance.deleteCertificates();
-                            BlocProvider.of<ApplicationCubit>(context).update();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => IntroLayout(),
-                              ),
-                            );
-                          },
-                        ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
+    );
+  }
+
+  Widget getUserWidget(BuildContext context) {
+    var subscriber = DataStore.instance.subscriber!;
+    return Text(
+      subscriber.name ?? subscriber.msisdn,
     );
   }
 }

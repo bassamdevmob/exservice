@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/default/ads_list_bloc/ads_list_cubit.dart';
+import 'package:exservice/bloc/ads_list_bloc/ads_list_cubit.dart';
 import 'package:exservice/layout/ads_list_layout.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/constant.dart';
