@@ -47,7 +47,7 @@ class _AnimatedCrossIconState
         endIcon: widget.endIcon,
         progress: _tween.animate(animation),
         color: AppColors.white,
-        size: AppFontSize.LARGE,
+        size: AppFontSize.large,
       ),
     );
   }

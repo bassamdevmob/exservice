@@ -67,12 +67,12 @@ class DrawerLayout extends StatelessWidget {
                           showChangeLanguageBottomSheet(context);
                         },
                       ),
-                      if (DataStore.instance.hasUser)
+                      if (DataStore.instance.hasToken)
                         ActionButton(
                           AppLocalization.of(context).trans("logout"),
                           AppLocalization.of(context).trans("logout_title"),
                           () {
-                            DataStore.instance.deleteUser();
+                            DataStore.instance.deleteCertificates();
                             BlocProvider.of<ApplicationCubit>(context).update();
                             Navigator.of(context).push(
                               MaterialPageRoute(

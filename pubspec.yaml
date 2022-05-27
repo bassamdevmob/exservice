@@ -69,6 +69,7 @@ dependencies:
   readmore: ^2.1.0
   mask_text_input_formatter: ^2.3.0
   phone_number: ^0.12.0+2
+  package_info_plus: ^1.4.0
 
 dev_dependencies:
   flutter_test:
@@ -97,3 +98,7 @@ flutter:
     - assets/images/
     - assets/svg/
     - assets/lang/
+  fonts:
+    - family: Satisfy
+      fonts:
+        - asset: assets/fonts/satisfy.ttf

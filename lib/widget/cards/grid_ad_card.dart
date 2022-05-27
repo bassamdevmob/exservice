@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
@@ -90,7 +91,7 @@ class _GridAdCardState extends State<GridAdCard> {
                   ),
                 ],
               );
-              if (DataStore.instance.user.id == widget.ad.owner.id) {
+              if (BlocProvider.of<AccountBloc>(context).profile.id == widget.ad.owner.id) {
                 return body;
               }
               return Row(

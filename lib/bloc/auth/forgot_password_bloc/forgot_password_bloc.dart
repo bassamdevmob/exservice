@@ -1,6 +1,5 @@
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
 import 'package:exservice/utils/utils.dart';
@@ -20,10 +19,6 @@ class ForgotPasswordBloc
   String accountErrorMessage;
 
   ForgotPasswordBloc(this.context) : super(ForgotPasswordInitial()) {
-    if (DataStore.instance.settings.account != null) {
-      accountController.text = DataStore.instance.settings.account;
-    }
-
     on((event, emit) async {
       if (event is ForgotPasswordValidateEvent) {
         _validate();

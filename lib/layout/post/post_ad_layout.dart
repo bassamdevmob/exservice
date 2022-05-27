@@ -265,7 +265,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
             Icon(
               CupertinoIcons.play_arrow_solid,
               color: AppColors.white,
-              size: AppFontSize.X_SMALL,
+              size: AppFontSize.xSmall,
             ),
             SizedBox(width: 2),
             Text(

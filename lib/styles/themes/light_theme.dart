@@ -2,7 +2,7 @@ import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-final ThemeData appTheme = ThemeData(
+final ThemeData lightTheme = ThemeData(
   colorScheme: ColorScheme.light(
     primary: AppColors.blue,
     secondary: AppColors.blue,

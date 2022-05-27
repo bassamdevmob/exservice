@@ -170,7 +170,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       ),
                     ],
                   );
-                  if (DataStore.instance.user.id == _bloc.details.owner.id) {
+                  if (BlocProvider.of<AccountBloc>(context).profile.id == _bloc.details.owner.id) {
                     return content;
                   }
                   return Row(
@@ -198,7 +198,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                 }),
               ),
               _getExpandableInfo(),
-              if (DataStore.instance.user.id == _bloc.details.owner.id)
+              if (BlocProvider.of<AccountBloc>(context).profile.id == _bloc.details.owner.id)
                 getContactToolbar(),
               SizedBox(height: 10),
             ],

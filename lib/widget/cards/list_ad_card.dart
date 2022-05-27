@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/default/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/default/publisher_bloc/publisher_cubit.dart';
@@ -116,7 +117,7 @@ class _ListAdCardState extends State<ListAdCard> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Builder(builder: (context) {
-            if (DataStore.instance.user.id == widget.ad.owner.id) {
+            if (BlocProvider.of<AccountBloc>(context).profile.id == widget.ad.owner.id) {
               return AdDetails(widget.ad);
             }
             return Row(

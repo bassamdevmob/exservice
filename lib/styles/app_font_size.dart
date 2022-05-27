@@ -1,11 +1,12 @@
+import 'package:exservice/utils/sizer.dart';
+
 abstract class AppFontSize {
-  static const double XX_SMALL = 8.0;
-  static const double X_SMALL = 10.0;
-  static const double SMALL = 12;
-  static const double MEDIUM = 14.0;
-  static const double LARGE = 16.0;
-  static const double X_LARGE = 18.0;
-  static const double XX_LARGE = 20.0;
-  static const double XXX_LARGE = 24.0;
-  static const double XXXX_LARGE = 36.0;
+  static final double xxSmall = 10.0.sp;
+  static final double xSmall = 12.0.sp;
+  static final double small = 14.sp;
+  static final double medium = 16.sp;
+  static final double large = 18.sp;
+  static final double xLarge = 20.sp;
+  static final double xxLarge = 24.sp;
+  static final double xxxLarge = 28.sp;
 }

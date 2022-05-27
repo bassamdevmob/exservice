@@ -232,7 +232,7 @@ class _ChatLayoutState extends State<ChatLayout> {
               child: Icon(
                 Icons.send,
                 color: AppColors.white,
-                size: AppFontSize.LARGE,
+                size: AppFontSize.large,
               ),
             ),
           ),

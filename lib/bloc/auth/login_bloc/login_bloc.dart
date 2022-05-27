@@ -22,8 +22,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   String passwordErrorMessage;
 
   LoginBloc(this.context) : super(LoginInitial()) {
-    accountController.text = DataStore.instance.settings.account;
-    passwordController.text = DataStore.instance.settings.password;
     on((event, emit) async {
       if (event is LoginValidateEvent) {
         _validate();
@@ -40,9 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   account,
                   password,
                 );
-            DataStore.instance.setAccount(account, password);
-            DataStore.instance.token = response.data.token;
-            DataStore.instance.user = response.data.user;
+            DataStore.instance.setToken(response.data.token);
             emit(LoginCommittedState());
           } catch (e) {
             emit(LoginErrorState("$e"));

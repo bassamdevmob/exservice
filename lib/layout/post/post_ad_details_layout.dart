@@ -3,8 +3,8 @@ import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/models/entity/option_model.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/widget/bottom_sheets/post_ad/option_picker_bottom_sheet.dart';
-import 'package:exservice/widget/bottom_sheets/post_ad/polar_question_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/polar_question_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/models/request/register_request.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
@@ -53,11 +52,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
                       account: account,
                       password: password,
                     ));
-            try {
-              await DataStore.instance.setAccount(account, password);
-            } finally {
-              emit(RegisterCommittedState(response.data.session));
-            }
+            emit(RegisterCommittedState(response.data.session));
           } catch (e) {
             emit(RegisterErrorState("$e"));
           }

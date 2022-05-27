@@ -212,7 +212,7 @@ class _VolumeButtonState extends AnimatedWidgetBaseState<VolumeButton> {
           child: Icon(
             _mute ? Icons.volume_off : Icons.volume_up,
             color: AppColors.white,
-            size: AppFontSize.LARGE,
+            size: AppFontSize.large,
           ),
         ),
       ),

@@ -78,7 +78,7 @@ class VerificationOnChangePhoneNumberFactory extends VerificationFactory {
 
   @override
   void afterVerified(BuildContext context) {
-    DataStore.instance.deleteUser();
+    DataStore.instance.deleteCertificates();
     Navigator.of(context).pushAndRemoveUntil(
       CupertinoPageRoute(
         builder: (context) => BlocProvider(
@@ -106,7 +106,7 @@ class VerificationOnChangeEmailAddressFactory extends VerificationFactory {
 
   @override
   void afterVerified(BuildContext context) {
-    DataStore.instance.deleteUser();
+    DataStore.instance.deleteCertificates();
     Navigator.of(context).pushAndRemoveUntil(
       CupertinoPageRoute(
         builder: (context) => BlocProvider(

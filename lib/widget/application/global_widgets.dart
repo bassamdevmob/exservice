@@ -27,3 +27,27 @@ class LineBottomSheetWidget extends StatelessWidget {
     );
   }
 }
+
+
+class ExpandedSingleChildScrollView extends StatelessWidget {
+  final Widget child;
+
+  const ExpandedSingleChildScrollView({
+    Key key,
+    this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraint) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraint.maxHeight),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+}

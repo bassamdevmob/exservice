@@ -1,8 +1,10 @@
+import 'package:exservice/bloc/view/account_bloc/account_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeLayout extends StatelessWidget {
   @override
@@ -28,7 +30,7 @@ class WelcomeLayout extends StatelessWidget {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        DataStore.instance.user.username,
+                        BlocProvider.of<AccountBloc>(context).profile.username,
                         style: AppTextStyle.largeBlackBold,
                       ),
                     ),
