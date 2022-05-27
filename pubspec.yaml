@@ -102,3 +102,10 @@ flutter:
     - family: Satisfy
       fonts:
         - asset: assets/fonts/satisfy.ttf
+
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#565656"
+  image: assets/images/app_icon.png
+  image_dark: assets/images/app_icon_dark.png
