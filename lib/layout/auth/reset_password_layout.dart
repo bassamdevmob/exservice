@@ -64,7 +64,7 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            AppLocalization.of(context).trans('reset'),
+                            AppLocalization.of(context).translate('reset'),
                             style: AppTextStyle.xxLargeBlack,
                           ),
                         ),
@@ -98,7 +98,7 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: _bloc.obscurePassword,
           decoration: InputDecoration(
-            labelText: AppLocalization.of(context).trans("newPassword"),
+            labelText: AppLocalization.of(context).translate("newPassword"),
             labelStyle: AppTextStyle.largeBlue,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             suffixIcon: IconButton(
@@ -127,7 +127,7 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
           controller: _bloc.confirmController,
           keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
-            labelText: AppLocalization.of(context).trans("confirmPassword"),
+            labelText: AppLocalization.of(context).translate("confirmPassword"),
             labelStyle: AppTextStyle.largeBlue,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             errorText: _bloc.confirmErrorMessage,
@@ -148,7 +148,7 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
           child: state is ResetPasswordAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('next'),
+                  AppLocalization.of(context).translate('next'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is ResetPasswordAwaitState ? null : _resetPassword,

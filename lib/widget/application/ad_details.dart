@@ -35,7 +35,7 @@ class AdDetails extends StatelessWidget {
               if (ad.extra.size != null)
                 TextSpan(
                   text:
-                      '${ad.extra.size} ${AppLocalization.of(context).trans("meter")}',
+                      '${ad.extra.size} ${AppLocalization.of(context).translate("meter")}',
                   style: AppTextStyle.mediumBlueBold,
                 )
             ],
@@ -62,7 +62,7 @@ class AdDetails extends StatelessWidget {
   Widget getTitleWidget(BuildContext context, String title) {
     if (title == null || title.isEmpty) {
       return Text(
-        AppLocalization.of(context).trans("noDesc"),
+        AppLocalization.of(context).translate("noDesc"),
         style: AppTextStyle.largeBlack,
       );
     } else {

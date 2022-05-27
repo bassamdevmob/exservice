@@ -76,7 +76,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            AppLocalization.of(context).trans('app_name'),
+                            AppLocalization.of(context).translate('app_name'),
                             style: AppTextStyle.xxxxLargeBlackSatisfy,
                           ),
                         ),
@@ -96,7 +96,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                         child: InkWell(
                           onTap: _navigateToForgotPassword,
                           child: Text(
-                            AppLocalization.of(context).trans('forget'),
+                            AppLocalization.of(context).translate('forget'),
                             style: AppTextStyle.smallBlackBold,
                           ),
                         ),
@@ -119,12 +119,12 @@ class _LoginLayoutState extends State<LoginLayout> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                AppLocalization.of(context).trans('no_account'),
+                                AppLocalization.of(context).translate('no_account'),
                                 style: AppTextStyle.smallGray,
                               ),
                               SizedBox(width: 5),
                               Text(
-                                '${AppLocalization.of(context).trans('register')}.',
+                                '${AppLocalization.of(context).translate('register')}.',
                                 style: AppTextStyle.smallBlackBold,
                               )
                             ],
@@ -153,7 +153,7 @@ class _LoginLayoutState extends State<LoginLayout> {
           child: state is LoginAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('login'),
+                  AppLocalization.of(context).translate('login'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is LoginAwaitState ? null : _login,
@@ -171,7 +171,7 @@ class _LoginLayoutState extends State<LoginLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).trans("account"),
+              labelText: AppLocalization.of(context).translate("account"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.accountErrorMessage,
@@ -194,7 +194,7 @@ class _LoginLayoutState extends State<LoginLayout> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: _bloc.obscurePassword,
           decoration: InputDecoration(
-            labelText: AppLocalization.of(context).trans("password"),
+            labelText: AppLocalization.of(context).translate("password"),
             labelStyle: AppTextStyle.largeBlue,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             suffixIcon: IconButton(

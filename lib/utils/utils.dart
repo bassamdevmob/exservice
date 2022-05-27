@@ -94,7 +94,7 @@ abstract class Utils {
         url,
       );
     } else {
-      throw "${AppLocalization.of(context).trans("siteFailed")}: $url";
+      throw "${AppLocalization.of(context).translate("siteFailed")}: $url";
     }
   }
 
@@ -105,7 +105,7 @@ abstract class Utils {
     if (await canLaunchUrlString(path)) {
       await launchUrlString(path);
     } else {
-      throw "${AppLocalization.of(context).trans("emailFailed")}: $mail";
+      throw "${AppLocalization.of(context).translate("emailFailed")}: $mail";
     }
   }
 
@@ -114,7 +114,7 @@ abstract class Utils {
     if (await canLaunchUrlString(path)) {
       await launchUrlString(path);
     } else {
-      throw "${AppLocalization.of(context).trans("callFailed")}: $number";
+      throw "${AppLocalization.of(context).translate("callFailed")}: $number";
     }
   }
 

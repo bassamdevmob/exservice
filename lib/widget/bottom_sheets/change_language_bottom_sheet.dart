@@ -59,7 +59,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
                   horizontal: mediaQuery.size.width * 0.05,
                 ),
                 child: Text(
-                  AppLocalization.of(context).trans("choose_language"),
+                  AppLocalization.of(context).translate("choose_language"),
                   style: Theme.of(context).textTheme.headline3,
                 ),
               )

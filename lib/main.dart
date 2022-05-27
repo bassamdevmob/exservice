@@ -15,11 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   try {
     await Future.wait([
       ApplicationCubit.init(),
@@ -31,7 +32,7 @@ void main() async {
     GetIt.I.registerSingleton<AuthRepository>(AuthRepository());
     GetIt.I.registerSingleton<UserRepository>(UserRepository());
     GetIt.I.registerSingleton<ConfigRepository>(ConfigRepository());
-    // FlutterNativeSplash.remove();
+    FlutterNativeSplash.remove();
     log('language loaded is : ${DataStore.instance.lang}');
     if (DataStore.instance.hasToken) {
       log('user token is : ${DataStore.instance.token}');

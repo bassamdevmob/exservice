@@ -58,11 +58,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String password = passwordController.text.trim();
 
     accountErrorMessage = account.isEmpty
-        ? AppLocalization.of(context).trans("field_required")
+        ? AppLocalization.of(context).translate("field_required")
         : null;
 
     passwordErrorMessage = password.isEmpty
-        ? AppLocalization.of(context).trans("field_required")
+        ? AppLocalization.of(context).translate("field_required")
         : null;
   }
 

@@ -23,13 +23,13 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
   }
 
   String _getPolarValue(bool value) {
-    if (value == null) return AppLocalization.of(context).trans("unknown");
-    if (value) return AppLocalization.of(context).trans("yes");
-    return AppLocalization.of(context).trans("no");
+    if (value == null) return AppLocalization.of(context).translate("unknown");
+    if (value) return AppLocalization.of(context).translate("yes");
+    return AppLocalization.of(context).translate("no");
   }
 
   String _getOptionValue(OptionModel value) {
-    if (value == null) return AppLocalization.of(context).trans("unknown");
+    if (value == null) return AppLocalization.of(context).translate("unknown");
     return value.title;
   }
 
@@ -42,7 +42,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
         actions: [
@@ -82,8 +82,8 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                   controller: _bloc.titleController,
                   decoration: InputDecoration(
                     hintText:
-                        "${AppLocalization.of(context).trans("enter_title")}...",
-                    label: Text(AppLocalization.of(context).trans("title")),
+                        "${AppLocalization.of(context).translate("enter_title")}...",
+                    label: Text(AppLocalization.of(context).translate("title")),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                 ),
@@ -96,8 +96,8 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
             controller: _bloc.detailsController,
             decoration: InputDecoration(
               hintText:
-                  "${AppLocalization.of(context).trans("enter_details")}...",
-              label: Text(AppLocalization.of(context).trans("details")),
+                  "${AppLocalization.of(context).translate("enter_details")}...",
+              label: Text(AppLocalization.of(context).translate("details")),
               floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
@@ -113,7 +113,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.bed,
-                          title: AppLocalization.of(context).trans("rooms"),
+                          title: AppLocalization.of(context).translate("rooms"),
                           value: _getOptionValue(_bloc.snapshot.room),
                           onTap: () {
                             OptionPickerBottomSheet.show<OptionModel>(
@@ -133,7 +133,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.bathroom_rounded,
-                          title: AppLocalization.of(context).trans("bathroom"),
+                          title: AppLocalization.of(context).translate("bathroom"),
                           value: _getOptionValue(_bloc.snapshot.bath),
                           onTap: () {
                             OptionPickerBottomSheet.show<OptionModel>(
@@ -153,7 +153,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.chair,
-                          title: AppLocalization.of(context).trans("furniture"),
+                          title: AppLocalization.of(context).translate("furniture"),
                           value: _getOptionValue(_bloc.snapshot.furniture),
                           color: Colors.primaries[2],
                           onTap: () {
@@ -176,7 +176,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.house,
-                          title: AppLocalization.of(context).trans("type"),
+                          title: AppLocalization.of(context).translate("type"),
                           value: _getOptionValue(_bloc.snapshot.type),
                           onTap: () {
                             OptionPickerBottomSheet.show<OptionModel>(
@@ -196,7 +196,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.security,
-                          title: AppLocalization.of(context).trans("security"),
+                          title: AppLocalization.of(context).translate("security"),
                           value: _getOptionValue(_bloc.snapshot.security),
                           onTap: () {
                             OptionPickerBottomSheet.show<OptionModel>(
@@ -216,7 +216,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.api_sharp,
-                          title: AppLocalization.of(context).trans("balcony"),
+                          title: AppLocalization.of(context).translate("balcony"),
                           value: _getOptionValue(_bloc.snapshot.balcony),
                           color: Colors.primaries[6],
                           onTap: () {
@@ -239,7 +239,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.directions_run,
-                          title: AppLocalization.of(context).trans("gym"),
+                          title: AppLocalization.of(context).translate("gym"),
                           value: _getPolarValue(_bloc.snapshot.gym),
                           onTap: () {
                             PolarQuestionBottomSheet.show(context)
@@ -256,7 +256,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.terrain_outlined,
-                          title: AppLocalization.of(context).trans("terrace"),
+                          title: AppLocalization.of(context).translate("terrace"),
                           value: _getPolarValue(_bloc.snapshot.terrace),
                           color: Colors.primaries[8],
                           onTap: () {
@@ -273,7 +273,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
                       Expanded(
                         child: getPicker(
                           icon: Icons.garage,
-                          title: AppLocalization.of(context).trans("garage"),
+                          title: AppLocalization.of(context).translate("garage"),
                           value: _getPolarValue(_bloc.snapshot.garage),
                           color: Colors.primaries[9],
                           onTap: () {
@@ -350,7 +350,7 @@ class _PostAdDetailsLayoutState extends State<PostAdDetailsLayout> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Text(
-          AppLocalization.of(context).trans("next"),
+          AppLocalization.of(context).translate("next"),
           style: AppTextStyle.largeBlue,
         ),
       ),

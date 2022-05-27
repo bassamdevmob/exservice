@@ -29,11 +29,11 @@ class EditAdBloc extends Bloc<EditAdEvent, EditAdState> {
     String description = descriptionController.text.trim();
 
     titleErrorMessage = title.isEmpty
-        ? AppLocalization.of(context).trans("filed_required")
+        ? AppLocalization.of(context).translate("filed_required")
         : null;
 
     descriptionErrorMessage = description.isEmpty
-        ? AppLocalization.of(context).trans("filed_required")
+        ? AppLocalization.of(context).translate("filed_required")
         : null;
   }
 

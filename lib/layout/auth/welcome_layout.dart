@@ -23,7 +23,7 @@ class WelcomeLayout extends StatelessWidget {
                   children: <Widget>[
                     Center(
                       child: Text(
-                        AppLocalization.of(context).trans('welcome'),
+                        AppLocalization.of(context).translate('welcome'),
                         style: AppTextStyle.largeBlackBold,
                       ),
                     ),
@@ -37,7 +37,7 @@ class WelcomeLayout extends StatelessWidget {
                     SizedBox(height: 20),
                     ElevatedButton(
                       child: Text(
-                        AppLocalization.of(context).trans('next'),
+                        AppLocalization.of(context).translate('next'),
                         style: AppTextStyle.mediumWhite,
                       ),
                       onPressed: () {

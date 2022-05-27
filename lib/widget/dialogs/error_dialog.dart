@@ -15,7 +15,7 @@ class ErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        AppLocalization.of(context).trans('error'),
+        AppLocalization.of(context).translate('error'),
         style: AppTextStyle.mediumRed,
       ),
       content: Column(
@@ -29,7 +29,7 @@ class ErrorDialog extends StatelessWidget {
           SizedBox(height: 10),
           AppButton(
             child: Text(
-              AppLocalization.of(context).trans('ok'),
+              AppLocalization.of(context).translate('ok'),
               style: AppTextStyle.largeBlack,
             ),
             onTap: () {

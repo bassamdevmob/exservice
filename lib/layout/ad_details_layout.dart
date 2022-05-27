@@ -53,7 +53,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
       ),
@@ -153,9 +153,9 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         colorClickableText: AppColors.blue,
                         trimMode: TrimMode.Line,
                         trimCollapsedText:
-                            AppLocalization.of(context).trans("more"),
+                            AppLocalization.of(context).translate("more"),
                         trimExpandedText:
-                            AppLocalization.of(context).trans("less"),
+                            AppLocalization.of(context).translate("less"),
                       ),
                       if (_bloc.details.location != null)
                         Text(
@@ -217,7 +217,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
           Expanded(
             child: AppButton(
               child: Text(
-                AppLocalization.of(context).trans('call'),
+                AppLocalization.of(context).translate('call'),
                 style: AppTextStyle.largeBlack,
                 textAlign: TextAlign.center,
               ),
@@ -225,7 +225,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                 if (!Utils.isPhoneNumber(_bloc.details.owner.phoneNumber)) {
                   Fluttertoast.showToast(
                       msg: AppLocalization.of(context)
-                          .trans("phone_not_inserted"));
+                          .translate("phone_not_inserted"));
                   return;
                 }
                 Utils.launchCall(context, _bloc.details.owner.phoneNumber)
@@ -237,7 +237,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
           Expanded(
             child: AppButton(
               child: Text(
-                AppLocalization.of(context).trans('chat'),
+                AppLocalization.of(context).translate('chat'),
                 style: AppTextStyle.largeBlack,
                 textAlign: TextAlign.center,
               ),
@@ -273,7 +273,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
             header: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Text(
-                AppLocalization.of(context).trans('specifications'),
+                AppLocalization.of(context).translate('specifications'),
                 style: AppTextStyle.mediumBlack,
               ),
             ),
@@ -288,37 +288,37 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   SizedBox(height: 5),
                   if (details.extra.trade != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('option'),
+                      AppLocalization.of(context).translate('option'),
                       details.extra.trade.type,
                     ),
                   if (details.extra.type != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('type'),
+                      AppLocalization.of(context).translate('type'),
                       details.extra.type.type,
                     ),
                   if (details.extra.furniture != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('furniture'),
+                      AppLocalization.of(context).translate('furniture'),
                       details.extra.furniture.type,
                     ),
                   if (details.extra.balcony != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('balcony'),
+                      AppLocalization.of(context).translate('balcony'),
                       details.extra.balcony.value.toString(),
                     ),
                   if (details.extra.garage != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('garage'),
+                      AppLocalization.of(context).translate('garage'),
                       details.extra.garage.value.toString(),
                     ),
                   if (details.extra.gym != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('gym'),
+                      AppLocalization.of(context).translate('gym'),
                       details.extra.gym.value.toString(),
                     ),
                   if (details.createdAt != null)
                     _getFeature(
-                      AppLocalization.of(context).trans('createdAt'),
+                      AppLocalization.of(context).translate('createdAt'),
                       isoFormatter.format(details.createdAt),
                     ),
                 ];
@@ -341,7 +341,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
             header: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Text(
-                AppLocalization.of(context).trans('location'),
+                AppLocalization.of(context).translate('location'),
                 style: AppTextStyle.mediumBlack,
               ),
             ),
@@ -352,7 +352,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   child: Center(
                     child: Text(
                       AppLocalization.of(context)
-                          .trans("location_not_available"),
+                          .translate("location_not_available"),
                       style: AppTextStyle.largeBlack,
                     ),
                   ),
@@ -468,7 +468,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                   style: AppTextStyle.largeBlackBold,
                 ),
                 Text(
-                  AppLocalization.of(context).trans('views'),
+                  AppLocalization.of(context).translate('views'),
                   style: AppTextStyle.largeBlack,
                 ),
               ],

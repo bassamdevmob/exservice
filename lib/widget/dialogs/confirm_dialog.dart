@@ -20,7 +20,7 @@ class ConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalization.of(context).trans('note')),
+      title: Text(AppLocalization.of(context).translate('note')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -49,7 +49,7 @@ class ConfirmDialog extends StatelessWidget {
             children: <Widget>[
               AppButton(
                 child: Text(
-                  AppLocalization.of(context).trans('cancel'),
+                  AppLocalization.of(context).translate('cancel'),
                   style: AppTextStyle.largeBlack,
                 ),
                 onTap: () {
@@ -58,7 +58,7 @@ class ConfirmDialog extends StatelessWidget {
               ),
               AppButton(
                 child: Text(
-                  AppLocalization.of(context).trans('ok'),
+                  AppLocalization.of(context).translate('ok'),
                   style: AppTextStyle.largeBlack,
                 ),
                 onTap: onTap,

@@ -70,7 +70,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
         if (state is SwitchBusinessErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).trans("error"),
+            AppLocalization.of(context).translate("error"),
             state.message,
           );
         } else if (state is SwitchBusinessCommittedState) {
@@ -121,14 +121,14 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                               ),
                               SizedBox(height: 10),
                               Text(
-                                "${AppLocalization.of(context).trans("companyName")}*",
+                                "${AppLocalization.of(context).translate("companyName")}*",
                               ),
                               DirectionalTextField(
                                 controller: _bloc.companyNameController,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
                                   hintText: AppLocalization.of(context)
-                                      .trans("companyName"),
+                                      .translate("companyName"),
                                   errorText: _bloc.companyNameErrorMessage,
                                 ),
                               ),
@@ -136,14 +136,14 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                 height: Utils.verticalSpace(_mediaQuery) * 2,
                               ),
                               Text(
-                                "${AppLocalization.of(context).trans("website")}*",
+                                "${AppLocalization.of(context).translate("website")}*",
                               ),
                               DirectionalTextField(
                                 controller: _bloc.websiteController,
                                 keyboardType: TextInputType.url,
                                 decoration: InputDecoration(
                                   hintText: AppLocalization.of(context)
-                                      .trans("website"),
+                                      .translate("website"),
                                   errorText: _bloc.websiteErrorMessage,
                                 ),
                               ),
@@ -151,13 +151,13 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                 height: Utils.verticalSpace(_mediaQuery) * 2,
                               ),
                               Text(
-                                "${AppLocalization.of(context).trans("bio")}*",
+                                "${AppLocalization.of(context).translate("bio")}*",
                               ),
                               DirectionalTextField(
                                 controller: _bloc.bioController,
                                 decoration: InputDecoration(
                                   hintText:
-                                      AppLocalization.of(context).trans("bio"),
+                                      AppLocalization.of(context).translate("bio"),
                                   errorText: _bloc.bioErrorMessage,
                                 ),
                               ),
@@ -178,7 +178,7 @@ class _SwitchBusinessLayoutState extends State<SwitchBusinessLayout>
                                       ? CupertinoActivityIndicator()
                                       : Text(
                                           AppLocalization.of(context)
-                                              .trans('switch'),
+                                              .translate('switch'),
                                           style: AppTextStyle.mediumWhite,
                                         ),
                                   onPressed: state is SwitchBusinessAwaitState

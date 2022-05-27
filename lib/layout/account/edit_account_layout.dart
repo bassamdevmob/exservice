@@ -41,7 +41,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
         context: context,
         builder: (dialogContext) => ConfirmDialog(
           mediaPath: file.path,
-          text: AppLocalization.of(dialogContext).trans("changeImage"),
+          text: AppLocalization.of(dialogContext).translate("changeImage"),
           onTap: () {
             Navigator.of(dialogContext).pop();
             _bloc.add(AccountChangeProfileImageEvent(file.path));
@@ -60,7 +60,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
           Text(key, style: AppTextStyle.mediumBlack),
           val == null
               ? Text(
-                  AppLocalization.of(context).trans("notAssigned"),
+                  AppLocalization.of(context).translate("notAssigned"),
                   style: AppTextStyle.largeGray,
                 )
               : Text(val, style: AppTextStyle.largeBlackBold),
@@ -78,7 +78,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
         if (state is AccountErrorImageUploadState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).trans("error"),
+            AppLocalization.of(context).translate("error"),
             state.message,
           );
         }
@@ -89,7 +89,7 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
           iconTheme: IconThemeData(color: AppColors.blue),
           centerTitle: true,
           title: Text(
-            AppLocalization.of(context).trans("app_name"),
+            AppLocalization.of(context).translate("app_name"),
             style: AppTextStyle.largeLobsterBlack,
           ),
         ),
@@ -175,8 +175,8 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                   ],
                 ),
                 ActionButton(
-                  AppLocalization.of(context).trans("contact_info"),
-                  AppLocalization.of(context).trans("contact_info_desc"),
+                  AppLocalization.of(context).translate("contact_info"),
+                  AppLocalization.of(context).translate("contact_info_desc"),
                   () {
                     Navigator.of(context).push(CupertinoPageRoute(
                       builder: (context) => ContactInfoLayout(),
@@ -209,8 +209,8 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                 ),
                 if (user.type == UserType.BUSINESS.name)
                   ActionButton(
-                    AppLocalization.of(context).trans("business_info"),
-                    AppLocalization.of(context).trans("business_info_desc"),
+                    AppLocalization.of(context).translate("business_info"),
+                    AppLocalization.of(context).translate("business_info_desc"),
                     () {
                       Navigator.of(context).push(CupertinoPageRoute(
                         builder: (context) => BlocProvider(
@@ -221,8 +221,8 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                     },
                   ),
                 ActionButton(
-                  AppLocalization.of(context).trans("password"),
-                  AppLocalization.of(context).trans("password_desc"),
+                  AppLocalization.of(context).translate("password"),
+                  AppLocalization.of(context).translate("password_desc"),
                   () {
                     Navigator.of(context).push(CupertinoPageRoute(
                       builder: (context) => BlocProvider(

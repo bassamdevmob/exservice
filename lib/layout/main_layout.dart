@@ -60,7 +60,7 @@ class _MainLayoutState extends State<MainLayout> {
         backgroundColor: AppColors.white,
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
         actions: [
@@ -87,27 +87,27 @@ class _MainLayoutState extends State<MainLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: AppColors.gray),
             activeIcon: Icon(Icons.home, color: AppColors.blue),
-            label: AppLocalization.of(context).trans('home'),
+            label: AppLocalization.of(context).translate('home'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border, color: AppColors.gray),
             activeIcon: Icon(Icons.favorite_border, color: AppColors.blue),
-            label: AppLocalization.of(context).trans('favorite'),
+            label: AppLocalization.of(context).translate('favorite'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add, color: AppColors.gray),
             activeIcon: Icon(Icons.add, color: AppColors.blue),
-            label: AppLocalization.of(context).trans('post'),
+            label: AppLocalization.of(context).translate('post'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.mail_outline, color: AppColors.gray),
             activeIcon: Icon(Icons.mail_outline, color: AppColors.blue),
-            label: AppLocalization.of(context).trans('message'),
+            label: AppLocalization.of(context).translate('message'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline, color: AppColors.gray),
             activeIcon: Icon(Icons.person_outline, color: AppColors.blue),
-            label: AppLocalization.of(context).trans('account'),
+            label: AppLocalization.of(context).translate('account'),
           ),
         ],
         currentIndex: _index,

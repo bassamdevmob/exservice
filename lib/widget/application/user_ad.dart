@@ -46,17 +46,17 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        text: AppLocalization.of(context).trans("confirmDelete"),
+        text: AppLocalization.of(context).translate("confirmDelete"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => deleteLoading = true);
           _bloc.removeAd(widget.ad).then((_) {
             Fluttertoast.showToast(
-              msg: AppLocalization.of(context).trans("deleted"),
+              msg: AppLocalization.of(context).translate("deleted"),
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).trans("error"), "$e");
+                context, AppLocalization.of(context).translate("error"), "$e");
           }).whenComplete(() {
             setState(() => deleteLoading = false);
           });
@@ -69,7 +69,7 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        text: AppLocalization.of(context).trans("confirmActivate"),
+        text: AppLocalization.of(context).translate("confirmActivate"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
@@ -78,11 +78,11 @@ class _UserAdState extends State<UserAd> {
             _accountBloc.profile.statistics.inactiveAdsCount--;
             _accountBloc.add(AccountRefreshEvent());
             Fluttertoast.showToast(
-              msg: AppLocalization.of(context).trans("activated"),
+              msg: AppLocalization.of(context).translate("activated"),
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).trans("error"), "$e");
+                context, AppLocalization.of(context).translate("error"), "$e");
           }).whenComplete(() {
             setState(() => statusLoading = false);
           });
@@ -95,7 +95,7 @@ class _UserAdState extends State<UserAd> {
     showDialog(
       context: context,
       builder: (ctx) => ConfirmDialog(
-        text: AppLocalization.of(context).trans("confirmPause"),
+        text: AppLocalization.of(context).translate("confirmPause"),
         onTap: () {
           Navigator.of(ctx).pop();
           setState(() => statusLoading = true);
@@ -104,11 +104,11 @@ class _UserAdState extends State<UserAd> {
             _accountBloc.profile.statistics.inactiveAdsCount++;
             _accountBloc.add(AccountRefreshEvent());
             Fluttertoast.showToast(
-              msg: AppLocalization.of(context).trans("paused"),
+              msg: AppLocalization.of(context).translate("paused"),
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).trans("error"), "$e");
+                context, AppLocalization.of(context).translate("error"), "$e");
           }).whenComplete(() {
             setState(() => statusLoading = false);
           });
@@ -147,7 +147,7 @@ class _UserAdState extends State<UserAd> {
             children: <Widget>[
               AppButton(
                 child: Text(
-                  AppLocalization.of(context).trans("edit"),
+                  AppLocalization.of(context).translate("edit"),
                   style: AppTextStyle.largeBlack,
                 ),
                 onTap: () {
@@ -170,7 +170,7 @@ class _UserAdState extends State<UserAd> {
                       child: statusLoading == true
                           ? CupertinoActivityIndicator()
                           : Text(
-                              AppLocalization.of(context).trans("activate"),
+                              AppLocalization.of(context).translate("activate"),
                               style: AppTextStyle.largeBlack,
                             ),
                       onTap: statusLoading == true ? null : _activate,
@@ -180,13 +180,13 @@ class _UserAdState extends State<UserAd> {
                       child: statusLoading == true
                           ? CupertinoActivityIndicator()
                           : Text(
-                              AppLocalization.of(context).trans("pause"),
+                              AppLocalization.of(context).translate("pause"),
                               style: AppTextStyle.largeBlack,
                             ),
                       onTap: statusLoading == true ? null : _pause,
                     );
                   return Text(
-                    AppLocalization.of(context).trans("expired"),
+                    AppLocalization.of(context).translate("expired"),
                     style: AppTextStyle.mediumBlue,
                   );
                 },
@@ -195,7 +195,7 @@ class _UserAdState extends State<UserAd> {
                 child: deleteLoading == true
                     ? CupertinoActivityIndicator()
                     : Text(
-                        AppLocalization.of(context).trans("delete"),
+                        AppLocalization.of(context).translate("delete"),
                         style: AppTextStyle.largeBlack,
                       ),
                 onTap: deleteLoading == true ? null : _delete,

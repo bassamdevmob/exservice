@@ -72,7 +72,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
                 .checkAccount(account);
             if (response.data.exists) {
               accountErrorMessage =
-                  AppLocalization.of(context).trans("already_exists");
+                  AppLocalization.of(context).translate("already_exists");
               emit(RegisterInitial());
             } else {
               emit(RegisterUniqueAccountState());
@@ -93,11 +93,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     String username = usernameController.text.trim();
 
     passwordErrorMessage = password.length < 6 || password.length > 40
-        ? AppLocalization.of(context).trans("allow_chars_number")
+        ? AppLocalization.of(context).translate("allow_chars_number")
         : null;
 
     usernameErrorMessage = username.length < 6 || username.length > 40
-        ? AppLocalization.of(context).trans("allow_chars_number")
+        ? AppLocalization.of(context).translate("allow_chars_number")
         : null;
   }
 
@@ -109,15 +109,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   void _validateAccount() {
     String account = accountController.text.trim();
     if (account.isEmpty) {
-      accountErrorMessage = AppLocalization.of(context).trans("field_required");
+      accountErrorMessage = AppLocalization.of(context).translate("field_required");
       return;
     } else if (identifier == AccountRegistrationIdentifier.phone &&
         !Utils.isPhoneNumber(account)) {
       accountErrorMessage =
-          AppLocalization.of(context).trans('invalid_phone_number');
+          AppLocalization.of(context).translate('invalid_phone_number');
     } else if (identifier == AccountRegistrationIdentifier.email &&
         !validator.isEmail(account)) {
-      accountErrorMessage = AppLocalization.of(context).trans('invalid_email');
+      accountErrorMessage = AppLocalization.of(context).translate('invalid_email');
     } else {
       accountErrorMessage = null;
     }

@@ -211,7 +211,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                     vertical: 10,
                   ),
                   hintText:
-                      AppLocalization.of(context).trans("type_message_hint"),
+                      AppLocalization.of(context).translate("type_message_hint"),
                   hintStyle: AppTextStyle.mediumGray,
                 ),
               ),

@@ -23,7 +23,7 @@ class ContactInfoLayout extends StatelessWidget {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans("app_name"),
+          AppLocalization.of(context).translate("app_name"),
           style: AppTextStyle.largeLobsterBlack,
         ),
       ),
@@ -53,7 +53,7 @@ class ContactInfoLayout extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              AppLocalization.of(context).trans("email_desc"),
+              AppLocalization.of(context).translate("email_desc"),
               style: Theme.of(context)
                   .textTheme
                   .bodyText2
@@ -107,7 +107,7 @@ class ContactInfoLayout extends StatelessWidget {
               },
             ),
             subtitle: Text(
-              AppLocalization.of(context).trans("phone_desc"),
+              AppLocalization.of(context).translate("phone_desc"),
               style: Theme.of(context)
                   .textTheme
                   .bodyText2

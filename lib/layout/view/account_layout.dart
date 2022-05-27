@@ -124,7 +124,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                       );
                     },
                     child: Text(
-                      AppLocalization.of(context).trans('stb'),
+                      AppLocalization.of(context).translate('stb'),
                       style: AppTextStyle.largeBlue,
                     ),
                   ),
@@ -140,7 +140,7 @@ class _AccountLayoutState extends State<AccountLayout> {
   Widget getAccountAdvertisements() {
     return ListView(
       children: <Widget>[
-        getActionButton(AppLocalization.of(context).trans('activeAds'), () {
+        getActionButton(AppLocalization.of(context).translate('activeAds'), () {
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
@@ -151,7 +151,7 @@ class _AccountLayoutState extends State<AccountLayout> {
           );
         }),
         Divider(),
-        getActionButton(AppLocalization.of(context).trans('nonActiveAds'), () {
+        getActionButton(AppLocalization.of(context).translate('nonActiveAds'), () {
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
@@ -162,7 +162,7 @@ class _AccountLayoutState extends State<AccountLayout> {
           );
         }),
         Divider(),
-        getActionButton(AppLocalization.of(context).trans('expired'), () {
+        getActionButton(AppLocalization.of(context).translate('expired'), () {
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
@@ -181,36 +181,36 @@ class _AccountLayoutState extends State<AccountLayout> {
     return ListView(
       children: <Widget>[
         getInfoTile(
-          AppLocalization.of(context).trans("username"),
+          AppLocalization.of(context).translate("username"),
           _bloc.profile.username,
         ),
         getInfoTile(
-          AppLocalization.of(context).trans("email2"),
+          AppLocalization.of(context).translate("email2"),
           _bloc.profile.email,
         ),
         getInfoTile(
-          AppLocalization.of(context).trans("phoneNumber"),
+          AppLocalization.of(context).translate("phoneNumber"),
           _bloc.profile.phoneNumber,
         ),
         if (_bloc.profile.type == UserType.BUSINESS.name) ...[
           getInfoTile(
-            AppLocalization.of(context).trans("companyName"),
+            AppLocalization.of(context).translate("companyName"),
             _bloc.profile.business.companyName,
           ),
           getInfoTile(
-            AppLocalization.of(context).trans("website"),
+            AppLocalization.of(context).translate("website"),
             _bloc.profile.business.website,
           ),
           getInfoTile(
-            AppLocalization.of(context).trans("phone_number"),
+            AppLocalization.of(context).translate("phone_number"),
             _bloc.profile.business.publicPhone,
           ),
           getInfoTile(
-            AppLocalization.of(context).trans("location"),
+            AppLocalization.of(context).translate("location"),
             _bloc.profile.country,
           ),
           getInfoTile(
-            AppLocalization.of(context).trans("desc"),
+            AppLocalization.of(context).translate("desc"),
             _bloc.profile.business.bio,
           ),
           CompanyVideo(),
@@ -221,7 +221,7 @@ class _AccountLayoutState extends State<AccountLayout> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               child: Text(
-                AppLocalization.of(context).trans('edit'),
+                AppLocalization.of(context).translate('edit'),
                 style: AppTextStyle.mediumWhite,
               ),
               onPressed: () {
@@ -313,15 +313,15 @@ class _AccountLayoutState extends State<AccountLayout> {
             children: <Widget>[
               getStatusItem(
                 "${_bloc.profile.statistics.activeAdsCount}",
-                AppLocalization.of(context).trans('active'),
+                AppLocalization.of(context).translate('active'),
               ),
               getStatusItem(
                 "${_bloc.profile.statistics.inactiveAdsCount}",
-                AppLocalization.of(context).trans('inactive'),
+                AppLocalization.of(context).translate('inactive'),
               ),
               getStatusItem(
                 "${_bloc.profile.statistics.expiredAdsCount}",
-                AppLocalization.of(context).trans('expired'),
+                AppLocalization.of(context).translate('expired'),
               ),
             ],
           ),
@@ -368,11 +368,11 @@ class _AccountLayoutState extends State<AccountLayout> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             getSelector(
-              AppLocalization.of(context).trans('account'),
+              AppLocalization.of(context).translate('account'),
               AccountTab.details,
             ),
             getSelector(
-              AppLocalization.of(context).trans('myAds'),
+              AppLocalization.of(context).translate('myAds'),
               AccountTab.advertisements,
             ),
           ],
@@ -393,7 +393,7 @@ class _AccountLayoutState extends State<AccountLayout> {
           ),
           val == null
               ? Text(
-                  AppLocalization.of(context).trans("notAssigned"),
+                  AppLocalization.of(context).translate("notAssigned"),
                   style: AppTextStyle.largeGray,
                 )
               : Text(

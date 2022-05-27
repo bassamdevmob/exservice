@@ -37,7 +37,7 @@ Future<dynamic> showErrorBottomSheet(
                   title,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.headline6.copyWith(
-                      color: AppColors.redAccent, fontWeight: FontWeight.w500),
+                      color: AppColors.red, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
                   height: Utils.verticalSpace(MediaQuery.of(context)),

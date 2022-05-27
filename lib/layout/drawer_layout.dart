@@ -20,7 +20,7 @@ class DrawerLayout extends StatelessWidget {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
       ),
@@ -56,21 +56,21 @@ class DrawerLayout extends StatelessWidget {
                       //   },
                       // ),
                       ActionButton(
-                        AppLocalization.of(context).trans("about_us"),
-                        AppLocalization.of(context).trans("about_us_sub_title"),
+                        AppLocalization.of(context).translate("about_us"),
+                        AppLocalization.of(context).translate("about_us_sub_title"),
                         () {},
                       ),
                       ActionButton(
-                        AppLocalization.of(context).trans("language"),
-                        AppLocalization.of(context).trans("change_language"),
+                        AppLocalization.of(context).translate("language"),
+                        AppLocalization.of(context).translate("change_language"),
                         () {
                           showChangeLanguageBottomSheet(context);
                         },
                       ),
                       if (DataStore.instance.hasToken)
                         ActionButton(
-                          AppLocalization.of(context).trans("logout"),
-                          AppLocalization.of(context).trans("logout_title"),
+                          AppLocalization.of(context).translate("logout"),
+                          AppLocalization.of(context).translate("logout_title"),
                           () {
                             DataStore.instance.deleteCertificates();
                             BlocProvider.of<ApplicationCubit>(context).update();

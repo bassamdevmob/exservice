@@ -47,7 +47,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
       ),
@@ -224,7 +224,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
         if (_bloc.publisher.phoneNumber != null)
           AppButton(
             child: Text(
-              AppLocalization.of(context).trans("call"),
+              AppLocalization.of(context).translate("call"),
               style: AppTextStyle.largeBlack,
             ),
             onTap: () {
@@ -234,7 +234,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
           ),
         AppButton(
           child: Text(
-            AppLocalization.of(context).trans("chat"),
+            AppLocalization.of(context).translate("chat"),
             style: AppTextStyle.largeBlack,
           ),
           onTap: () {
@@ -254,7 +254,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
         if (_bloc.publisher.email != null)
           AppButton(
             child: Text(
-              AppLocalization.of(context).trans("email2"),
+              AppLocalization.of(context).translate("email2"),
               style: AppTextStyle.largeBlack,
             ),
             onTap: () {

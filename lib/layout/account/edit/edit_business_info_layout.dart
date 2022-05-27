@@ -31,7 +31,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans("app_name"),
+          AppLocalization.of(context).translate("app_name"),
           style: AppTextStyle.largeLobsterBlack,
         ),
       ),
@@ -52,7 +52,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          "${AppLocalization.of(context).trans("companyName")}*",
+                          "${AppLocalization.of(context).translate("companyName")}*",
                         ),
                         BlocBuilder<BusinessInfoBloc, BusinessInfoState>(
                           buildWhen: (_, current) =>
@@ -64,7 +64,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: AppLocalization.of(context)
-                                    .trans("companyName"),
+                                    .translate("companyName"),
                                 errorText: _bloc.companyNameErrorMessage,
                               ),
                             );
@@ -74,7 +74,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                           height: Utils.verticalSpace(_mediaQuery) * 2,
                         ),
                         Text(
-                          "${AppLocalization.of(context).trans("website")}*",
+                          "${AppLocalization.of(context).translate("website")}*",
                         ),
                         BlocBuilder<BusinessInfoBloc, BusinessInfoState>(
                           buildWhen: (_, current) =>
@@ -86,7 +86,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                               keyboardType: TextInputType.url,
                               decoration: InputDecoration(
                                 hintText: AppLocalization.of(context)
-                                    .trans("website"),
+                                    .translate("website"),
                                 errorText: _bloc.websiteErrorMessage,
                               ),
                             );
@@ -96,7 +96,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                           height: Utils.verticalSpace(_mediaQuery) * 2,
                         ),
                         Text(
-                          "${AppLocalization.of(context).trans("bio")}*",
+                          "${AppLocalization.of(context).translate("bio")}*",
                         ),
                         BlocBuilder<BusinessInfoBloc, BusinessInfoState>(
                           buildWhen: (_, current) =>
@@ -107,7 +107,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                               controller: _bloc.bioController,
                               decoration: InputDecoration(
                                 hintText:
-                                    AppLocalization.of(context).trans("bio"),
+                                    AppLocalization.of(context).translate("bio"),
                                 errorText: _bloc.bioErrorMessage,
                               ),
                             );
@@ -126,7 +126,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                               primary: AppColors.white,
                             ),
                             child: Text(
-                              AppLocalization.of(context).trans("reset"),
+                              AppLocalization.of(context).translate("reset"),
                               style: AppTextStyle.mediumGray,
                             ),
                           ),
@@ -146,7 +146,7 @@ class _EditBusinessInfoLayoutState extends State<EditBusinessInfoLayout> {
                                     ? CupertinoActivityIndicator()
                                     : Text(
                                         AppLocalization.of(context)
-                                            .trans("update"),
+                                            .translate("update"),
                                         style: AppTextStyle.mediumWhite,
                                       ),
                               );

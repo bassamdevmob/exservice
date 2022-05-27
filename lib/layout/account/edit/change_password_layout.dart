@@ -35,7 +35,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans('app_name'),
+          AppLocalization.of(context).translate('app_name'),
           style: AppTextStyle.largeBlack,
         ),
       ),
@@ -44,7 +44,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
         listener: (context, state) {
           if (state is OnChangePasswordState) {
             Fluttertoast.showToast(
-              msg: AppLocalization.of(context).trans("password_updated"),
+              msg: AppLocalization.of(context).translate("password_updated"),
             );
           } else if (state is ChangePasswordErrorState) {
             Fluttertoast.showToast(msg: state.message);
@@ -68,7 +68,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
                         children: [
                           Text(
                             AppLocalization.of(context)
-                                .trans('change_password'),
+                                .translate('change_password'),
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(
@@ -100,7 +100,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
                                 ? CupertinoActivityIndicator()
                                 : Text(
                                     AppLocalization.of(context)
-                                        .trans("change_password"),
+                                        .translate("change_password"),
                                   ),
                           );
                         },
@@ -128,7 +128,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: this._bloc.obscureNewPassword,
           decoration: InputDecoration(
-            labelText: "${AppLocalization.of(context).trans("new_password")}*",
+            labelText: "${AppLocalization.of(context).translate("new_password")}*",
             suffixIcon: IconButton(
               onPressed: () {
                 this._bloc.add(ChangePasswordObscureNewPasswordEvent());
@@ -160,7 +160,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: this._bloc.obscureOldPassword,
           decoration: InputDecoration(
-            labelText: "${AppLocalization.of(context).trans("old_password")}*",
+            labelText: "${AppLocalization.of(context).translate("old_password")}*",
             suffixIcon: IconButton(
               onPressed: () {
                 this._bloc.add(ChangePasswordObscureOldPasswordEvent());
@@ -193,7 +193,7 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           obscureText: this._bloc.obscureConfirmPassword,
           decoration: InputDecoration(
             labelText:
-                "${AppLocalization.of(context).trans("confirm_password")}*",
+                "${AppLocalization.of(context).translate("confirm_password")}*",
             suffixIcon: IconButton(
               onPressed: () {
                 this._bloc.add(ChangePasswordObscureConfirmPasswordEvent());

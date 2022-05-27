@@ -38,7 +38,7 @@ class CompanyVideo extends StatelessWidget {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => onUpdateVideo(context),
                   child: Text(
-                    AppLocalization.of(context).trans('uploadVideo'),
+                    AppLocalization.of(context).translate('uploadVideo'),
                     style: AppTextStyle.largeBlue,
                   ),
                 );
@@ -66,7 +66,7 @@ class CompanyVideo extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => ConfirmDialog(
-        text: AppLocalization.of(dialogContext).trans("change_video"),
+        text: AppLocalization.of(dialogContext).translate("change_video"),
         onTap: () async {
           Navigator.of(dialogContext).pop();
           _bloc.add(AccountUploadVideoEvent(file.path));

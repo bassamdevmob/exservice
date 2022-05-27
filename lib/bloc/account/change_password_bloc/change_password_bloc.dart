@@ -71,19 +71,19 @@ class ChangePasswordBloc
     String confirmPassword = this.confirmPasswordController.text.trim();
 
     this.errorOldPasswordMsg = oldPassword.isEmpty
-        ? AppLocalization.of(context).trans("field_required")
+        ? AppLocalization.of(context).translate("field_required")
         : null;
 
     this.errorNewPasswordMsg = newPassword.isEmpty
-        ? AppLocalization.of(context).trans("field_required")
+        ? AppLocalization.of(context).translate("field_required")
         : null;
     var strengthPassword = Utils.estimateBruteforceStrength(newPassword);
     if (!(strengthPassword > 0.3 && strengthPassword <= 1)) {
-      errorNewPasswordMsg = AppLocalization.of(context).trans("weak_password");
+      errorNewPasswordMsg = AppLocalization.of(context).translate("weak_password");
     }
 
     this.errorConfirmPasswordMsg = confirmPassword.isEmpty
-        ? AppLocalization.of(context).trans("field_required")
+        ? AppLocalization.of(context).translate("field_required")
         : null;
   }
 

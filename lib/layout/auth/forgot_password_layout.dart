@@ -64,7 +64,7 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
                       children: <Widget>[
                         Center(
                           child: Text(
-                            AppLocalization.of(context).trans('forget'),
+                            AppLocalization.of(context).translate('forget'),
                             style: AppTextStyle.xxLargeBlack,
                           ),
                         ),
@@ -72,7 +72,7 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Text(
-                            AppLocalization.of(context).trans('enter_account'),
+                            AppLocalization.of(context).translate('enter_account'),
                             style: AppTextStyle.mediumGray,
                             textAlign: TextAlign.center,
                           ),
@@ -102,7 +102,7 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).trans("account"),
+              labelText: AppLocalization.of(context).translate("account"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.accountErrorMessage,
@@ -124,7 +124,7 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
           child: state is ForgotPasswordAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('send_code'),
+                  AppLocalization.of(context).translate('send_code'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is ForgotPasswordAwaitState ? null : _sendCode,

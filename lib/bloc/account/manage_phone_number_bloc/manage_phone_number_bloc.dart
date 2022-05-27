@@ -39,16 +39,16 @@ class ManagePhoneNumberBloc
     String mobileNumber =
         phoneNumberFormatter.unmaskText(mobileNumberController.text.trim());
     if (mobileNumber.isEmpty)
-      return AppLocalization.of(context).trans("filed_required");
+      return AppLocalization.of(context).translate("filed_required");
     if (!Utils.isPhoneNumber(mobileNumber))
-      return AppLocalization.of(context).trans("error_mobile_number_msg");
+      return AppLocalization.of(context).translate("error_mobile_number_msg");
     return null;
   }
 
   String validatePassword() {
     String password = passwordController.text.trim();
     if (password.isEmpty)
-      return AppLocalization.of(context).trans("filed_required");
+      return AppLocalization.of(context).translate("filed_required");
     return null;
   }
 

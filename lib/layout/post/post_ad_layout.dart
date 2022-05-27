@@ -41,7 +41,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       listener: (context, state) {
         if (state is PostAdReachedMediaMaxLimitsErrorState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).trans("reached_max_media_limits"),
+            msg: AppLocalization.of(context).translate("reached_max_media_limits"),
           );
         }
       },
@@ -51,7 +51,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
           iconTheme: IconThemeData(color: AppColors.blue),
           centerTitle: true,
           title: Text(
-            AppLocalization.of(context).trans('app_name'),
+            AppLocalization.of(context).translate('app_name'),
             style: AppTextStyle.largeBlack,
           ),
           actions: [
@@ -180,7 +180,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
                   height: 25,
                   width: 25,
                   decoration: BoxDecoration(
-                    color: selected ? AppColors.blue : AppColors.transparent,
+                    color: selected ? AppColors.blue : Colors.transparent,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: selected ? AppColors.deepGray : AppColors.white,
@@ -295,7 +295,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
                 style: AppTextStyle.smallWhite,
               ),
               child: Text(
-                AppLocalization.of(context).trans("next"),
+                AppLocalization.of(context).translate("next"),
                 style: AppTextStyle.largeBlue,
               ),
             );
@@ -305,7 +305,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       onTap: () {
         if (_bloc.selectedEntities.length < 1) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).trans("choose_one_media_at_least"),
+            msg: AppLocalization.of(context).translate("choose_one_media_at_least"),
           );
           return;
         }

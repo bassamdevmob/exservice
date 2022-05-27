@@ -37,7 +37,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans("app_name"),
+          AppLocalization.of(context).translate("app_name"),
           style: AppTextStyle.largeLobsterBlack,
         ),
       ),
@@ -77,7 +77,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                           children: [
                             Text(
                               AppLocalization.of(context)
-                                  .trans('update_mobile_number'),
+                                  .translate('update_mobile_number'),
                               style: Theme.of(context).textTheme.headline6,
                             ),
                             SizedBox(
@@ -92,7 +92,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                                 decoration: InputDecoration(
                                   errorText: _bloc.mobileNumberMsg,
                                   labelText:
-                                      "${AppLocalization.of(context).trans("mobile_number")}*",
+                                      "${AppLocalization.of(context).translate("mobile_number")}*",
                                   floatingLabelBehavior:
                                       FloatingLabelBehavior.always,
                                   labelStyle: AppTextStyle.xlargeBlue,
@@ -123,7 +123,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                                 ),
                                 errorText: _bloc.passwordMsg,
                                 labelText:
-                                    "${AppLocalization.of(context).trans("password")}*",
+                                    "${AppLocalization.of(context).translate("password")}*",
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
                                 labelStyle: AppTextStyle.xlargeBlue,
@@ -143,7 +143,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                           child: state is ManagePhoneNumberAwaitState
                               ? CupertinoActivityIndicator()
                               : Text(
-                                  AppLocalization.of(context).trans("update"),
+                                  AppLocalization.of(context).translate("update"),
                                 ),
                         ),
                       ],

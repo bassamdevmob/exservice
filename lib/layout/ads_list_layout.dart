@@ -35,7 +35,7 @@ class _AdsListLayoutState extends State<AdsListLayout> {
         if (state is AdsListLazyErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).trans("error"),
+            AppLocalization.of(context).translate("error"),
             state.message,
           );
         }
@@ -46,7 +46,7 @@ class _AdsListLayoutState extends State<AdsListLayout> {
           iconTheme: IconThemeData(color: AppColors.blue),
           centerTitle: true,
           title: Text(
-            AppLocalization.of(context).trans('app_name'),
+            AppLocalization.of(context).translate('app_name'),
             style: AppTextStyle.largeBlack,
           ),
         ),

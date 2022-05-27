@@ -27,12 +27,12 @@ class AppLocalization {
     return true;
   }
 
-  String trans(String key) {
+  String translate(String key) {
     return this._sentences[key] ?? '???';
   }
 
   String sentence(List<String> keys, [String separator = " "]) {
-    return keys.map((key) => trans(key)).join(separator);
+    return keys.map((key) => translate(key)).join(separator);
   }
 }
 

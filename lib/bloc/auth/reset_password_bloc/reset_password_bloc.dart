@@ -61,14 +61,14 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     String confirm = confirmController.text.trim();
 
     passwordErrorMessage = password.length < 6 || password.length > 40
-        ? AppLocalization.of(context).trans("allow_chars_number")
+        ? AppLocalization.of(context).translate("allow_chars_number")
         : null;
 
     if (confirm.isEmpty) {
-      confirmErrorMessage = AppLocalization.of(context).trans("field_required");
+      confirmErrorMessage = AppLocalization.of(context).translate("field_required");
     } else if (confirm != password) {
       confirmErrorMessage =
-          AppLocalization.of(context).trans("password_not_match");
+          AppLocalization.of(context).translate("password_not_match");
     } else {
       confirmErrorMessage = null;
     }

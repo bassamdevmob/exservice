@@ -107,12 +107,12 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                             children: <Widget>[
                               Text(
                                 AppLocalization.of(context)
-                                    .trans('had_account'),
+                                    .translate('had_account'),
                                 style: AppTextStyle.smallGray,
                               ),
                               SizedBox(width: 5),
                               Text(
-                                '${AppLocalization.of(context).trans('login')}.',
+                                '${AppLocalization.of(context).translate('login')}.',
                                 style: AppTextStyle.smallBlackBold,
                               )
                             ],
@@ -138,7 +138,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             PageButton(
-              text: AppLocalization.of(context).trans('phone'),
+              text: AppLocalization.of(context).translate('phone'),
               disabled: _bloc.identifier != AccountRegistrationIdentifier.phone,
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -148,7 +148,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
               },
             ),
             PageButton(
-              text: AppLocalization.of(context).trans('email'),
+              text: AppLocalization.of(context).translate('email'),
               disabled: _bloc.identifier != AccountRegistrationIdentifier.email,
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -186,8 +186,8 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                 },
               ),
               labelText: _bloc.identifier == AccountRegistrationIdentifier.email
-                  ? AppLocalization.of(context).trans('email2')
-                  : AppLocalization.of(context).trans('phoneNumber'),
+                  ? AppLocalization.of(context).translate('email2')
+                  : AppLocalization.of(context).translate('phoneNumber'),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.accountErrorMessage,
@@ -210,7 +210,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           child: state is RegisterAwaitCheckAccountState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('next'),
+                  AppLocalization.of(context).translate('next'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is RegisterAwaitCheckAccountState ? null : _register,

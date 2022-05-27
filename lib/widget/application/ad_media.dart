@@ -24,7 +24,7 @@ class AdGallery extends StatelessWidget {
         if (medias.gallery.isEmpty) {
           return Center(
             child: Text(
-              AppLocalization.of(context).trans('empty_media'),
+              AppLocalization.of(context).translate('empty_media'),
               style: AppTextStyle.largeBlueSatisfy,
               textAlign: TextAlign.center,
             ),

@@ -20,13 +20,13 @@ class IntroLayout extends StatelessWidget {
           children: <Widget>[
             SizedBox(),
             Text(
-              AppLocalization.of(context).trans('app_name'),
+              AppLocalization.of(context).translate('app_name'),
               style: AppTextStyle.xxxxLargeBlackSatisfy,
             ),
             ElevatedButton(
               child: Text(
                 AppLocalization.of(context)
-                    .trans('register_email _or_phone_number'),
+                    .translate('register_email _or_phone_number'),
                 style: AppTextStyle.mediumWhite,
               ),
               onPressed: () {
@@ -65,12 +65,12 @@ class IntroLayout extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          AppLocalization.of(context).trans('had_account'),
+                          AppLocalization.of(context).translate('had_account'),
                           style: AppTextStyle.smallGray,
                         ),
                         SizedBox(width: 5),
                         Text(
-                          '${AppLocalization.of(context).trans('login')}.',
+                          '${AppLocalization.of(context).translate('login')}.',
                           style: AppTextStyle.smallBlackBold,
                         )
                       ],

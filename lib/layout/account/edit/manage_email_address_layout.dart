@@ -36,7 +36,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
         iconTheme: IconThemeData(color: AppColors.blue),
         centerTitle: true,
         title: Text(
-          AppLocalization.of(context).trans("app_name"),
+          AppLocalization.of(context).translate("app_name"),
           style: AppTextStyle.largeLobsterBlack,
         ),
       ),
@@ -76,7 +76,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
                           children: [
                             Text(
                               AppLocalization.of(context)
-                                  .trans('update_email_address'),
+                                  .translate('update_email_address'),
                               style: Theme.of(context).textTheme.headline6,
                             ),
                             SizedBox(
@@ -90,7 +90,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
                                 decoration: InputDecoration(
                                   errorText: _bloc.mobileNumberMsg,
                                   labelText:
-                                  "${AppLocalization.of(context).trans("email_address")}*",
+                                  "${AppLocalization.of(context).translate("email_address")}*",
                                   floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                                   labelStyle: AppTextStyle.xlargeBlue,
@@ -121,7 +121,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
                                 ),
                                 errorText: _bloc.passwordMsg,
                                 labelText:
-                                "${AppLocalization.of(context).trans("password")}*",
+                                "${AppLocalization.of(context).translate("password")}*",
                                 floatingLabelBehavior:
                                 FloatingLabelBehavior.always,
                                 labelStyle: AppTextStyle.xlargeBlue,
@@ -141,7 +141,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
                           child: state is ManageEmailAddressAwaitState
                               ? CupertinoActivityIndicator()
                               : Text(
-                            AppLocalization.of(context).trans("update"),
+                            AppLocalization.of(context).translate("update"),
                           ),
                         ),
                       ],

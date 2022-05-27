@@ -76,7 +76,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
                   children: <Widget>[
                     Center(
                       child: Text(
-                        AppLocalization.of(context).trans('name_password'),
+                        AppLocalization.of(context).translate('name_password'),
                         style: AppTextStyle.largeBlackBold,
                       ),
                     ),
@@ -112,7 +112,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
                   _bloc.usernameController.clear();
                 },
               ),
-              labelText: AppLocalization.of(context).trans('fullName'),
+              labelText: AppLocalization.of(context).translate('fullName'),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.usernameErrorMessage,
@@ -137,7 +137,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
             keyboardType: TextInputType.visiblePassword,
             obscureText: _bloc.obscurePassword,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).trans("password"),
+              labelText: AppLocalization.of(context).translate("password"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: IconButton(
@@ -171,7 +171,7 @@ class _CompleteRegisterLayoutState extends State<CompleteRegisterLayout> {
           child: state is RegisterAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('next'),
+                  AppLocalization.of(context).translate('next'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is RegisterAwaitState ? null : _register,

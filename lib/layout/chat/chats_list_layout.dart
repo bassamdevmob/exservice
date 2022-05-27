@@ -69,7 +69,7 @@ class _ChatsListLayoutState extends State<ChatsListLayout> {
                         vertical: 15,
                       ),
                       hintText:
-                          "${AppLocalization.of(context).trans("search")}...",
+                          "${AppLocalization.of(context).translate("search")}...",
                       hintStyle: AppTextStyle.mediumGray,
                       suffixIcon: GestureDetector(
                         child: Icon(Icons.clear, color: AppColors.blue),
@@ -86,7 +86,7 @@ class _ChatsListLayoutState extends State<ChatsListLayout> {
               SliverToBoxAdapter(
                 child: ReloadWidget.empty(
                   content: Text(
-                    AppLocalization.of(context).trans("empty_data"),
+                    AppLocalization.of(context).translate("empty_data"),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   onPressed: () {

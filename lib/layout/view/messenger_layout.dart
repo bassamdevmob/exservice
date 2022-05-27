@@ -34,14 +34,14 @@ class MessengerLayoutState extends State<MessengerLayout> {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  AppLocalization.of(context).trans("chats"),
+                  AppLocalization.of(context).translate("chats"),
                   style: AppTextStyle.largeBlue,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  AppLocalization.of(context).trans("notifications"),
+                  AppLocalization.of(context).translate("notifications"),
                   style: AppTextStyle.largeBlue,
                 ),
               ),

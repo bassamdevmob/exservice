@@ -37,7 +37,7 @@ class WelcomeBusinessLayout extends StatelessWidget {
                       ),
                       SizedBox(height: _mediaQuery.size.height * 0.06),
                       Text(
-                        "${AppLocalization.of(context).trans('welcomeToBusiness')}, ${user.username}",
+                        "${AppLocalization.of(context).translate('welcomeToBusiness')}, ${user.username}",
                         style: AppTextStyle.xxLargeBlack,
                         textAlign: TextAlign.center,
                       ),
@@ -49,7 +49,7 @@ class WelcomeBusinessLayout extends StatelessWidget {
                     ),
                     child: ElevatedButton(
                       child: Text(
-                        AppLocalization.of(context).trans('continue'),
+                        AppLocalization.of(context).translate('continue'),
                         style: AppTextStyle.mediumWhite,
                       ),
                       onPressed: () {

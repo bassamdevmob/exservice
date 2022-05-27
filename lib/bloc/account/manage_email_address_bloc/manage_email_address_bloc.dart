@@ -36,16 +36,16 @@ class ManageEmailAddressBloc
   String validateMobileNumber() {
     String mobileNumber = mobileNumberController.text.trim();
     if (mobileNumber.isEmpty)
-      return AppLocalization.of(context).trans("filed_required");
+      return AppLocalization.of(context).translate("filed_required");
     if (!isEmail(mobileNumber))
-      return AppLocalization.of(context).trans("error_email_msg");
+      return AppLocalization.of(context).translate("error_email_msg");
     return null;
   }
 
   String validatePassword() {
     String password = passwordController.text.trim();
     if (password.isEmpty)
-      return AppLocalization.of(context).trans("filed_required");
+      return AppLocalization.of(context).translate("filed_required");
     return null;
   }
 

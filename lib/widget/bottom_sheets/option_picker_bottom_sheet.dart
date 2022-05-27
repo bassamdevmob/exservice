@@ -46,7 +46,7 @@ class OptionPickerBottomSheet<T> extends StatelessWidget {
           LineBottomSheetWidget(),
           SizedBox(height: Utils.verticalSpace(mediaQuery)),
           Text(
-            AppLocalization.of(context).trans("choose_option"),
+            AppLocalization.of(context).translate("choose_option"),
             style: Theme.of(context).textTheme.headline3,
           ),
           SizedBox(height: Utils.verticalSpace(mediaQuery)),

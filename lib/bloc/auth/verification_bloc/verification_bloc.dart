@@ -79,7 +79,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
     String pin = pinController.text.trim();
 
     pinErrorMessage =
-        pin.length != 6 ? AppLocalization.of(context).trans("invalid") : null;
+        pin.length != 6 ? AppLocalization.of(context).translate("invalid") : null;
   }
 
   @override

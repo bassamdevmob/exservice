@@ -31,7 +31,7 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
         if (state is FavoritesLazyErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).trans("error"),
+            AppLocalization.of(context).translate("error"),
             state.message,
           );
         }
@@ -57,7 +57,7 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
             return Center(
               child: ReloadWidget.empty(
                 content: Text(
-                  AppLocalization.of(context).trans("empty_data"),
+                  AppLocalization.of(context).translate("empty_data"),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 onPressed: () {

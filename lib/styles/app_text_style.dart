@@ -22,6 +22,11 @@ class AppTextStyle {
     color: AppColors.white,
   );
 
+  static final xxxLargeWhite = TextStyle(
+    fontSize: AppFontSize.xxxLarge,
+    color: AppColors.white,
+  );
+
   static final xxLargeWhiteBold = TextStyle(
     fontSize: AppFontSize.xxLarge,
     color: AppColors.white,

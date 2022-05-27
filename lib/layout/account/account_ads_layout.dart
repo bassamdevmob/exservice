@@ -33,7 +33,7 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
         if (state is AccountAdsLazyErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).trans("error"),
+            AppLocalization.of(context).translate("error"),
             state.message,
           );
         }
@@ -44,7 +44,7 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
           iconTheme: IconThemeData(color: AppColors.blue),
           centerTitle: true,
           title: Text(
-            AppLocalization.of(context).trans('app_name'),
+            AppLocalization.of(context).translate('app_name'),
             style: AppTextStyle.largeBlack,
           ),
         ),
@@ -71,7 +71,7 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
               return Center(
                 child: ReloadWidget.empty(
                   content: Text(
-                    AppLocalization.of(context).trans("empty_data"),
+                    AppLocalization.of(context).translate("empty_data"),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   onPressed: () {

@@ -48,10 +48,10 @@ class ForgotPasswordBloc
     String account = accountController.text.trim();
 
     if (account.isEmpty) {
-      accountErrorMessage = AppLocalization.of(context).trans("field_required");
+      accountErrorMessage = AppLocalization.of(context).translate("field_required");
     } else if (!Utils.isPhoneNumber(account) && !isEmail(account)) {
       accountErrorMessage =
-          AppLocalization.of(context).trans("invalid_account");
+          AppLocalization.of(context).translate("invalid_account");
     } else {
       accountErrorMessage = null;
     }

@@ -67,7 +67,7 @@ class PolarQuestionBottomSheet extends StatelessWidget {
               horizontal: mediaQuery.size.width * 0.05,
             ),
             child: Text(
-              AppLocalization.of(context).trans("choose_option"),
+              AppLocalization.of(context).translate("choose_option"),
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
@@ -78,7 +78,7 @@ class PolarQuestionBottomSheet extends StatelessWidget {
                 Expanded(
                   child: _getChip(
                     icon: Icons.check,
-                    text: AppLocalization.of(context).trans("yes"),
+                    text: AppLocalization.of(context).translate("yes"),
                     color: Colors.greenAccent.withOpacity(0.5),
                     callback: () {
                       Navigator.of(context).pop(true);
@@ -89,7 +89,7 @@ class PolarQuestionBottomSheet extends StatelessWidget {
                 Expanded(
                   child: _getChip(
                     icon: Icons.close,
-                    text: AppLocalization.of(context).trans("no"),
+                    text: AppLocalization.of(context).translate("no"),
                     color: Colors.redAccent.withOpacity(0.5),
                     callback: () {
                       Navigator.of(context).pop(false);

@@ -78,19 +78,19 @@ class SwitchBusinessBloc
     String bio = bioController.text.trim();
 
     companyNameErrorMessage = companyName.isEmpty
-        ? AppLocalization.of(context).trans("filed_required")
+        ? AppLocalization.of(context).translate("filed_required")
         : null;
 
     if (website.isEmpty) {
-      websiteErrorMessage = AppLocalization.of(context).trans("filed_required");
+      websiteErrorMessage = AppLocalization.of(context).translate("filed_required");
     } else if (!validator.isURL(website)) {
-      websiteErrorMessage = AppLocalization.of(context).trans("invalid_url");
+      websiteErrorMessage = AppLocalization.of(context).translate("invalid_url");
     } else {
       websiteErrorMessage = null;
     }
 
     bioErrorMessage = bio.isEmpty
-        ? AppLocalization.of(context).trans("filed_required")
+        ? AppLocalization.of(context).translate("filed_required")
         : null;
   }
 }

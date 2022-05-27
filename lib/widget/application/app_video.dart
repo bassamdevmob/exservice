@@ -59,7 +59,7 @@ class _AppVideoState extends State<AppVideo>
     if (_controller.value.hasError) {
       return Center(
         child: Text(
-          AppLocalization.of(context).trans('canNotDisplayVideo'),
+          AppLocalization.of(context).translate('canNotDisplayVideo'),
           style: AppTextStyle.mediumBlue,
           textAlign: TextAlign.center,
         ),

@@ -39,15 +39,15 @@ class _VerificationLayoutState extends State<VerificationLayout> {
       listener: (context, state) {
         if (state is VerificationWaitBeforeResendState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).trans("wait") +
+            msg: AppLocalization.of(context).translate("wait") +
                 " ${state.seconds} " +
-                AppLocalization.of(context).trans("wait_before_try"),
+                AppLocalization.of(context).translate("wait_before_try"),
           );
         } else if (state is VerificationErrorState) {
           Fluttertoast.showToast(msg: state.message);
         } else if (state is VerificationCommittedResendState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).trans("sent_successfully"),
+            msg: AppLocalization.of(context).translate("sent_successfully"),
           );
         } else if (state is VerificationCommittedState) {
           _bloc.factory.afterVerified(context);
@@ -67,7 +67,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
                     Center(
                       child: Text(
                         AppLocalization.of(context)
-                            .trans('enter_confirmation_code'),
+                            .translate('enter_confirmation_code'),
                         style: AppTextStyle.xLargeBlackBold,
                       ),
                     ),
@@ -101,7 +101,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
             controller: _bloc.pinController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).trans("confirmation_code"),
+              labelText: AppLocalization.of(context).translate("confirmation_code"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.pinErrorMessage,
@@ -123,7 +123,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
           child: state is VerificationAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).trans('next'),
+                  AppLocalization.of(context).translate('next'),
                   style: AppTextStyle.mediumWhite,
                 ),
           onPressed: state is VerificationAwaitState ? null : _verify,
@@ -143,7 +143,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           child: Text(
-            AppLocalization.of(context).trans('resend_code'),
+            AppLocalization.of(context).translate('resend_code'),
             style: (state is VerificationAwaitResendState
                     ? AppTextStyle.smallGrayBold
                     : AppTextStyle.smallBlueBold)

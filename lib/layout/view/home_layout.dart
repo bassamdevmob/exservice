@@ -86,7 +86,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           return Center(
             child: ReloadWidget.empty(
               content: Text(
-                AppLocalization.of(context).trans("empty"),
+                AppLocalization.of(context).translate("empty"),
                 textAlign: TextAlign.center,
               ),
               onPressed: () {
@@ -155,7 +155,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                         ),
                       ),
                       Text(
-                        '${AppLocalization.of(context).trans('loading')} ..',
+                        '${AppLocalization.of(context).translate('loading')} ..',
                         style: AppTextStyle.mediumGray,
                       )
                     ],

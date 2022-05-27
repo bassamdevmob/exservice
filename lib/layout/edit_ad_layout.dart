@@ -40,7 +40,7 @@ class _EditAdLayoutState extends State<EditAdLayout> {
           iconTheme: IconThemeData(color: AppColors.blue),
           centerTitle: true,
           title: Text(
-            AppLocalization.of(context).trans('app_name'),
+            AppLocalization.of(context).translate('app_name'),
             style: AppTextStyle.largeBlack,
           ),
         ),
@@ -68,7 +68,7 @@ class _EditAdLayoutState extends State<EditAdLayout> {
                               controller: _bloc.titleController,
                               decoration: InputDecoration(
                                 labelText:
-                                    AppLocalization.of(context).trans('title'),
+                                    AppLocalization.of(context).translate('title'),
                                 labelStyle: AppTextStyle.largeBlue,
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -87,7 +87,7 @@ class _EditAdLayoutState extends State<EditAdLayout> {
                               maxLines: null,
                               decoration: InputDecoration(
                                 labelText:
-                                    AppLocalization.of(context).trans('desc'),
+                                    AppLocalization.of(context).translate('desc'),
                                 labelStyle: AppTextStyle.largeBlue,
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -112,7 +112,7 @@ class _EditAdLayoutState extends State<EditAdLayout> {
                             child: state is EditAdAwaitState
                                 ? CupertinoActivityIndicator()
                                 : Text(
-                                    AppLocalization.of(context).trans('update'),
+                                    AppLocalization.of(context).translate('update'),
                                     style: AppTextStyle.mediumWhite,
                                   ),
                             onPressed: state is EditAdAwaitState ? null : _edit,
