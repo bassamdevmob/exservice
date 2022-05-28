@@ -48,9 +48,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     }
 
     usernameErrorMessage =
-        isLength(username, 6, 40) ? Localized("field_length_range") : null;
+        isLength(username, 6, 40) ? null : Localized("field_length_range");
     passwordErrorMessage =
-        isLength(password, 6, 40) ? Localized("field_length_range") : null;
+        isLength(password, 6, 40) ? null : Localized("field_length_range");
   }
 
   bool get valid =>

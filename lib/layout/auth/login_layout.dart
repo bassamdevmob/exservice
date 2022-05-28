@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/layout/auth/Intro_layout.dart';
@@ -29,17 +30,6 @@ class _LoginLayoutState extends State<LoginLayout> {
     super.initState();
   }
 
-  _navigateToForgotPassword() {
-    Navigator.of(context).push(
-      CupertinoPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => ForgotPasswordBloc(context),
-          child: ForgotPasswordLayout(),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
@@ -53,7 +43,7 @@ class _LoginLayoutState extends State<LoginLayout> {
             ),
           );
         } else if (state is LoginErrorState) {
-          Fluttertoast.showToast(msg: state.error.toString());
+          Fluttertoast.showToast(msg: Utils.resolveErrorMessage(state.error));
         }
       },
       child: Scaffold(
@@ -70,8 +60,8 @@ class _LoginLayoutState extends State<LoginLayout> {
                   children: <Widget>[
                     Center(
                       child: Text(
-                        AppLocalization.of(context).translate('app_name'),
-                        style: AppTextStyle.xxxxLargeBlackSatisfy,
+                        ApplicationCubit.info.appName,
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
                     SizedBox(height: 20),
@@ -85,14 +75,19 @@ class _LoginLayoutState extends State<LoginLayout> {
               ),
               Column(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: InkWell(
-                      onTap: _navigateToForgotPassword,
-                      child: Text(
-                        AppLocalization.of(context).translate('forget'),
-                        style: AppTextStyle.smallBlackBold,
-                      ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) => ForgotPasswordBloc(context),
+                            child: ForgotPasswordLayout(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      AppLocalization.of(context).translate('forget'),
                     ),
                   ),
                   Divider(height: 2),
@@ -106,9 +101,8 @@ class _LoginLayoutState extends State<LoginLayout> {
                       children: <Widget>[
                         Text(
                           AppLocalization.of(context).translate('no_account'),
-                          style: AppTextStyle.smallGray,
+                          style: Theme.of(context).primaryTextTheme.labelMedium,
                         ),
-                        SizedBox(width: 5),
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
@@ -119,7 +113,6 @@ class _LoginLayoutState extends State<LoginLayout> {
                           },
                           child: Text(
                             '${AppLocalization.of(context).translate('register')}.',
-                            style: AppTextStyle.smallBlackBold,
                           ),
                         )
                       ],
@@ -167,9 +160,7 @@ class _LoginLayoutState extends State<LoginLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).translate("account"),
-              labelStyle: AppTextStyle.largeBlue,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: AppLocalization.of(context).translate("email_phone_number"),
               errorText: _bloc.accountErrorMessage?.toString(),
             ),
           ),
@@ -190,9 +181,7 @@ class _LoginLayoutState extends State<LoginLayout> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: _bloc.obscurePassword,
           decoration: InputDecoration(
-            labelText: AppLocalization.of(context).translate("password"),
-            labelStyle: AppTextStyle.largeBlue,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: AppLocalization.of(context).translate("password"),
             suffixIcon: IconButton(
               onPressed: () {
                 _bloc.add(LoginSecurePasswordEvent());

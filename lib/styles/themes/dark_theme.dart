@@ -1,6 +1,7 @@
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:exservice/utils/sizer.dart';
 
 final ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
@@ -54,6 +55,11 @@ final ThemeData darkTheme = ThemeData(
     titleSmall: AppTextStyle.smallBlue,
   ),
   textTheme: TextTheme(
+    displayLarge: TextStyle(
+      fontSize: 40.sp,
+      color: AppColors.white,
+      fontFamily: "Satisfy"
+    ),
     bodyLarge: AppTextStyle.mediumWhite,
     titleMedium: AppTextStyle.mediumBlack,
   ),

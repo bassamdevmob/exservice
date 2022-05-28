@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/auth/register_bloc/register_bloc.dart';
 import 'package:exservice/layout/auth/login_layout.dart';
@@ -20,14 +21,13 @@ class IntroLayout extends StatelessWidget {
           children: <Widget>[
             SizedBox(),
             Text(
-              AppLocalization.of(context).translate('app_name'),
-              style: AppTextStyle.xxxxLargeBlackSatisfy,
+              ApplicationCubit.info.appName,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
             ElevatedButton(
               child: Text(
                 AppLocalization.of(context)
-                    .translate('register_email _or_phone_number'),
-                style: AppTextStyle.mediumWhite,
+                    .translate('register_email_phone_number'),
               ),
               onPressed: () {
                 Navigator.push(
@@ -49,32 +49,30 @@ class IntroLayout extends StatelessWidget {
                     horizontal: 15,
                     vertical: Sizer.vs1,
                   ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) => LoginBloc(),
-                            child: LoginLayout(),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          AppLocalization.of(context).translate('had_account'),
-                          style: AppTextStyle.smallGray,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalization.of(context).translate('had_account'),
+                        style: Theme.of(context).primaryTextTheme.labelMedium,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => BlocProvider(
+                                create: (context) => LoginBloc(),
+                                child: LoginLayout(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
                           '${AppLocalization.of(context).translate('login')}.',
-                          style: AppTextStyle.smallBlackBold,
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],

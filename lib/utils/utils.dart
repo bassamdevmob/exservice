@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:exservice/localization/app_localization.dart';
@@ -10,6 +12,15 @@ import 'package:url_launcher/url_launcher_string.dart';
 abstract class Utils {
   static final _phoneNumberUtil = PhoneNumberUtil();
 
+  static String resolveErrorMessage(error) {
+    if (error is SocketException) {
+      return "no_internet".translate();
+    } else if (error is TimeoutException) {
+      return "connection_timeout".translate();
+    } else {
+      return error.toString();
+    }
+  }
 
   static double estimateBruteforceStrength(String password) {
     if (password.isEmpty) return 0.0;

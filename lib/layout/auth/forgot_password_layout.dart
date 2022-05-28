@@ -3,6 +3,7 @@ import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
 import 'package:exservice/layout/auth/verification_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,10 +21,6 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
   void initState() {
     _bloc = BlocProvider.of<ForgotPasswordBloc>(context);
     super.initState();
-  }
-
-  void _sendCode() async {
-    _bloc.add(ForgotPasswordCommitEvent());
   }
 
   @override
@@ -49,45 +46,32 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
         }
       },
       child: Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Center(
-                          child: Text(
-                            AppLocalization.of(context).translate('forget'),
-                            style: AppTextStyle.xxLargeBlack,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            AppLocalization.of(context).translate('enter_account'),
-                            style: AppTextStyle.mediumGray,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        getAccountField(),
-                        SizedBox(height: 20),
-                        getSubmitButton(),
-                      ],
-                    ),
+        appBar: AppBar(
+          title: Text(AppLocalization.of(context).translate("forget_password")),
+        ),
+        body: ExpandedSingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    AppLocalization.of(context).translate('enter_account'),
+                    style: AppTextStyle.mediumGray,
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 20),
+                getAccountField(),
+                SizedBox(height: 20),
+                getSubmitButton(),
+              ],
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
   }
@@ -101,9 +85,7 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).translate("account"),
-              labelStyle: AppTextStyle.largeBlue,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: AppLocalization.of(context).translate("email_phone_number"),
               errorText: _bloc.accountErrorMessage,
             ),
           ),
@@ -123,10 +105,14 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
           child: state is ForgotPasswordAwaitState
               ? CupertinoActivityIndicator()
               : Text(
-                  AppLocalization.of(context).translate('send_code'),
+                  AppLocalization.of(context).translate('send'),
                   style: AppTextStyle.mediumWhite,
                 ),
-          onPressed: state is ForgotPasswordAwaitState ? null : _sendCode,
+          onPressed: state is ForgotPasswordAwaitState
+              ? null
+              : () {
+                  _bloc.add(ForgotPasswordCommitEvent());
+                },
         );
       },
     );

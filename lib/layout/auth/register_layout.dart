@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/auth/register_bloc/register_bloc.dart';
 import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'login_layout.dart';
 
@@ -32,7 +34,8 @@ class _RegisterLayoutState extends State<RegisterLayout> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
-      listenWhen: (_, current) => current is RegisterAcceptState,
+      listenWhen: (_, current) =>
+          current is RegisterAcceptState || current is RegisterErrorState,
       listener: (context, state) {
         if (state is RegisterAcceptState) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -46,6 +49,8 @@ class _RegisterLayoutState extends State<RegisterLayout> {
             ),
             (route) => false,
           );
+        } else if (state is RegisterErrorState) {
+          Fluttertoast.showToast(msg: Utils.resolveErrorMessage(state.error));
         }
       },
       child: Scaffold(
@@ -61,6 +66,12 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    Center(
+                      child: Text(
+                        ApplicationCubit.info.appName,
+                        style: Theme.of(context).textTheme.displayLarge,
+                      ),
+                    ),
                     SizedBox(height: 20),
                     getAccountField(),
                     SizedBox(height: 20),
@@ -87,7 +98,6 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                           AppLocalization.of(context).translate('had_account'),
                           style: AppTextStyle.smallGray,
                         ),
-                        SizedBox(width: 5),
                         TextButton(
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
@@ -103,7 +113,6 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                           },
                           child: Text(
                             '${AppLocalization.of(context).translate('login')}.',
-                            style: AppTextStyle.smallBlackBold,
                           ),
                         )
                       ],
@@ -127,13 +136,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
+              hintText:
+                  AppLocalization.of(context).translate("email_phone_number"),
               suffixIcon: GestureDetector(
                 child: Icon(Icons.clear, color: AppColors.gray),
                 onTap: () {
                   _bloc.accountController.clear();
                 },
               ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
               errorText: _bloc.accountErrorMessage?.toString(),
             ),
           ),
@@ -158,9 +168,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   _bloc.usernameController.clear();
                 },
               ),
-              labelText: AppLocalization.of(context).translate('fullName'),
-              labelStyle: AppTextStyle.largeBlue,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: AppLocalization.of(context).translate('username'),
               errorText: _bloc.usernameErrorMessage?.toString(),
             ),
           ),
@@ -183,9 +191,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
             keyboardType: TextInputType.visiblePassword,
             obscureText: _bloc.obscurePassword,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).translate("password"),
-              labelStyle: AppTextStyle.largeBlue,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: AppLocalization.of(context).translate('password'),
               suffixIcon: IconButton(
                 onPressed: () {
                   _bloc.add(RegisterSecurePasswordEvent());

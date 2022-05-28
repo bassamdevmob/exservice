@@ -300,11 +300,4 @@ class AppTextStyle {
     color: AppColors.black,
     fontWeight: FontWeight.bold,
   );
-
-  static final xxxxLargeBlackSatisfy = TextStyle(
-    fontSize: 32.sp,
-    color: AppColors.black,
-    fontFamily: "Satisfy",
-    fontWeight: FontWeight.bold,
-  );
 }
