@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/utils/global.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:phone_number/phone_number.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -120,4 +121,19 @@ abstract class Utils {
 
   static bool isPhoneNumber(String value) =>
       value != null && phoneRegex.hasMatch(value);
+}
+
+class UsernameFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(oldValue, newValue) {
+    var text = newValue.text.split(" ").map((word) {
+      if (word.length == 0) return word;
+      if (word.length == 1) return word.toUpperCase();
+      return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
+    });
+    return TextEditingValue(
+      text: text.join(" "),
+      selection: newValue.selection,
+    );
+  }
 }

@@ -34,7 +34,7 @@ class IntroLayout extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => RegisterBloc(context),
+                      create: (context) => RegisterBloc(),
                       child: RegisterLayout(),
                     ),
                   ),
@@ -55,7 +55,7 @@ class IntroLayout extends StatelessWidget {
                         context,
                         CupertinoPageRoute(
                           builder: (context) => BlocProvider(
-                            create: (context) => LoginBloc(context),
+                            create: (context) => LoginBloc(),
                             child: LoginLayout(),
                           ),
                         ),

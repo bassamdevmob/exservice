@@ -35,5 +35,3 @@ enum DisplayFormat {
   list,
   grid,
 }
-
-enum AccountRegistrationType { email, phone }

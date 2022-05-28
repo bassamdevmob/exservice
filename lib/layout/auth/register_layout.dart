@@ -1,11 +1,12 @@
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/auth/register_bloc/register_bloc.dart';
-import 'package:exservice/layout/auth/complete_register_layout.dart';
+import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
+import 'package:exservice/layout/auth/verification_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/enums.dart';
-import 'package:exservice/widget/button/page_button.dart';
+import 'package:exservice/utils/utils.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,156 +29,103 @@ class _RegisterLayoutState extends State<RegisterLayout> {
     super.initState();
   }
 
-  void _register() async {
-    _bloc.add(RegisterCheckAccountEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
-      listenWhen: (_, current) => current is RegisterUniqueAccountState,
+      listenWhen: (_, current) => current is RegisterAcceptState,
       listener: (context, state) {
-        if (state is RegisterUniqueAccountState) {
-          Navigator.of(context).push(
+        if (state is RegisterAcceptState) {
+          Navigator.of(context).pushAndRemoveUntil(
             CupertinoPageRoute(
-              builder: (context) => BlocProvider.value(
-                value: _bloc,
-                child: CompleteRegisterLayout(),
+              builder: (context) => BlocProvider(
+                create: (context) => VerificationBloc(
+                  VerificationOnAuthFactory(state.session),
+                ),
+                child: VerificationLayout(),
               ),
             ),
+            (route) => false,
           );
         }
       },
       child: Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: ExpandedSingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(),
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    getAccountField(),
+                    SizedBox(height: 20),
+                    getUsernameField(),
+                    SizedBox(height: 20),
+                    getPasswordField(),
+                    SizedBox(height: 20),
+                    getSubmitButton(),
+                  ],
+                ),
+              ),
+              Column(
                 children: <Widget>[
-                  SizedBox(),
+                  Divider(height: 2),
                   Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Center(
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                                AssetImage('assets/images/ic_user.png'),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        getTabBar(), //todo update
-                        SizedBox(height: 20),
-                        getAccountField(),
-                        SizedBox(height: 20),
-                        getSubmitButton(),
-                      ],
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 23,
                     ),
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Divider(height: 2),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 23,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate('had_account'),
+                          style: AppTextStyle.smallGray,
                         ),
-                        child: InkWell(
-                          onTap: () {
+                        SizedBox(width: 5),
+                        TextButton(
+                          onPressed: () {
                             Navigator.pushAndRemoveUntil(
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => BlocProvider(
-                                  create: (context) => LoginBloc(context),
+                                  create: (context) => LoginBloc(),
                                   child: LoginLayout(),
                                 ),
                               ),
                               (route) => false,
                             );
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                AppLocalization.of(context)
-                                    .translate('had_account'),
-                                style: AppTextStyle.smallGray,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                '${AppLocalization.of(context).translate('login')}.',
-                                style: AppTextStyle.smallBlackBold,
-                              )
-                            ],
+                          child: Text(
+                            '${AppLocalization.of(context).translate('login')}.',
+                            style: AppTextStyle.smallBlackBold,
                           ),
-                        ),
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          );
-        }),
+            ],
+          ),
+        ),
       ),
-    );
-  }
-
-  Widget getTabBar() {
-    return BlocBuilder<RegisterBloc, RegisterState>(
-      buildWhen: (_, current) => current is RegisterChangeIdentifierState,
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            PageButton(
-              text: AppLocalization.of(context).translate('phone'),
-              disabled: _bloc.identifier != AccountRegistrationType.phone,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                _bloc.add(RegisterChangeIdentifierEvent(
-                  AccountRegistrationType.phone,
-                ));
-              },
-            ),
-            PageButton(
-              text: AppLocalization.of(context).translate('email'),
-              disabled: _bloc.identifier != AccountRegistrationType.email,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                _bloc.add(RegisterChangeIdentifierEvent(
-                  AccountRegistrationType.email,
-                ));
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 
   Widget getAccountField() {
     return BlocBuilder<RegisterBloc, RegisterState>(
-      buildWhen: (_, current) =>
-          current is RegisterValidationState ||
-          current is RegisterChangeIdentifierState ||
-          current is RegisterInitial,
+      buildWhen: (_, current) => current is RegisterValidationState,
       builder: (context, state) {
         return Directionality(
           textDirection: TextDirection.ltr,
           child: TextField(
             controller: _bloc.accountController,
-            keyboardType:
-                _bloc.identifier == AccountRegistrationType.email
-                    ? TextInputType.emailAddress
-                    : TextInputType.phone,
             decoration: InputDecoration(
               suffixIcon: GestureDetector(
                 child: Icon(Icons.clear, color: AppColors.gray),
@@ -185,12 +133,72 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                   _bloc.accountController.clear();
                 },
               ),
-              labelText: _bloc.identifier == AccountRegistrationType.email
-                  ? AppLocalization.of(context).translate('email2')
-                  : AppLocalization.of(context).translate('phoneNumber'),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              errorText: _bloc.accountErrorMessage?.toString(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getUsernameField() {
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      buildWhen: (_, current) => current is RegisterValidationState,
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: TextField(
+            controller: _bloc.usernameController,
+            inputFormatters: [UsernameFormatter()],
+            decoration: InputDecoration(
+              suffixIcon: GestureDetector(
+                child: Icon(Icons.clear, color: AppColors.gray),
+                onTap: () {
+                  _bloc.usernameController.clear();
+                },
+              ),
+              labelText: AppLocalization.of(context).translate('fullName'),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              errorText: _bloc.accountErrorMessage,
+              errorText: _bloc.usernameErrorMessage?.toString(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget getPasswordField() {
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      buildWhen: (_, current) =>
+          current is RegisterValidationState ||
+          current is RegisterSecurePasswordState,
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: TextField(
+            textDirection: TextDirection.ltr,
+            controller: _bloc.passwordController,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: _bloc.obscurePassword,
+            decoration: InputDecoration(
+              labelText: AppLocalization.of(context).translate("password"),
+              labelStyle: AppTextStyle.largeBlue,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              suffixIcon: IconButton(
+                onPressed: () {
+                  _bloc.add(RegisterSecurePasswordEvent());
+                },
+                icon: Icon(
+                  _bloc.obscurePassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: AppColors.gray,
+                  size: Utils.iconSize(MediaQuery.of(context)),
+                ),
+              ),
+              errorText: _bloc.passwordErrorMessage?.toString(),
             ),
           ),
         );
@@ -201,19 +209,22 @@ class _RegisterLayoutState extends State<RegisterLayout> {
   Widget getSubmitButton() {
     return BlocBuilder<RegisterBloc, RegisterState>(
       buildWhen: (_, current) =>
-          current is RegisterAwaitCheckAccountState ||
-          current is RegisterUniqueAccountState ||
+          current is RegisterAcceptState ||
           current is RegisterErrorState ||
-          current is RegisterInitial,
+          current is RegisterAwaitState,
       builder: (context, state) {
         return ElevatedButton(
-          child: state is RegisterAwaitCheckAccountState
+          child: state is RegisterAwaitState
               ? CupertinoActivityIndicator()
               : Text(
                   AppLocalization.of(context).translate('next'),
                   style: AppTextStyle.mediumWhite,
                 ),
-          onPressed: state is RegisterAwaitCheckAccountState ? null : _register,
+          onPressed: state is RegisterAwaitState
+              ? null
+              : () {
+                  _bloc.add(RegisterCommitEvent());
+                },
         );
       },
     );

@@ -104,7 +104,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
               labelText: AppLocalization.of(context).translate("confirmation_code"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              errorText: _bloc.pinErrorMessage,
+              errorText: _bloc.pinErrorMessage?.toString(),
             ),
           ),
         );

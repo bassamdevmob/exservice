@@ -40,7 +40,6 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (context) => VerificationBloc(
-                  context,
                   VerificationOnResetPasswordFactory(state.session),
                 ),
                 child: VerificationLayout(),

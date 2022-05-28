@@ -7,6 +7,7 @@ import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/auth/reset_password_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,17 +21,31 @@ part 'verification_state.dart';
 class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   final pinController = TextEditingController();
   final VerificationFactory factory;
-  final BuildContext context;
 
   bool obscurePassword = true;
 
-  String pinErrorMessage;
+  Localized pinErrorMessage;
 
   Timer _timer;
   int _multi = 1;
   int _count = 1;
 
-  VerificationBloc(this.context, this.factory) : super(VerificationInitial()) {
+  bool get valid => pinErrorMessage == null;
+
+  void _validate() {
+    String pin = pinController.text.trim();
+
+    pinErrorMessage = pin.length != 6 ? Localized("invalid") : null;
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    pinController.dispose();
+    return super.close();
+  }
+
+  VerificationBloc(this.factory) : super(VerificationInitial()) {
     on((event, emit) async {
       if (event is VerificationResendPinEvent) {
         try {
@@ -71,21 +86,5 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
         }
       }
     });
-  }
-
-  bool get valid => pinErrorMessage == null;
-
-  void _validate() {
-    String pin = pinController.text.trim();
-
-    pinErrorMessage =
-        pin.length != 6 ? AppLocalization.of(context).translate("invalid") : null;
-  }
-
-  @override
-  Future<void> close() {
-    _timer?.cancel();
-    pinController.dispose();
-    return super.close();
   }
 }

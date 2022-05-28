@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/localization/app_localization.dart';
+import 'package:dio/dio.dart';
 import 'package:exservice/models/request/register_request.dart';
+import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
-import 'package:exservice/utils/enums.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:string_validator/string_validator.dart' as validator;
+import 'package:string_validator/string_validator.dart';
 
 part 'register_event.dart';
 
@@ -18,26 +19,48 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final accountController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  final BuildContext context;
 
   bool obscurePassword = true;
-  AccountRegistrationType identifier =
-      AccountRegistrationType.phone;
 
-  String accountErrorMessage;
-  String usernameErrorMessage;
-  String passwordErrorMessage;
+  Localized accountErrorMessage;
+  Localized usernameErrorMessage;
+  Localized passwordErrorMessage;
 
-  RegisterBloc(this.context) : super(RegisterInitial()) {
+  @override
+  Future<void> close() {
+    accountController.dispose();
+    passwordController.dispose();
+    usernameController.dispose();
+    return super.close();
+  }
+
+  void _validate() {
+    String username = usernameController.text.trim();
+    String password = passwordController.text.trim();
+    String account = accountController.text.trim();
+
+    if (account.isEmpty) {
+      accountErrorMessage = Localized("field_required");
+    } else if (!Utils.isPhoneNumber(account) && !isEmail(account)) {
+      accountErrorMessage = Localized("invalid_account");
+    } else {
+      accountErrorMessage = null;
+    }
+
+    usernameErrorMessage =
+        isLength(username, 6, 40) ? Localized("field_length_range") : null;
+    passwordErrorMessage =
+        isLength(password, 6, 40) ? Localized("field_length_range") : null;
+  }
+
+  bool get valid =>
+      accountErrorMessage == null &&
+      passwordErrorMessage == null &&
+      usernameErrorMessage == null;
+
+  RegisterBloc() : super(RegisterInitial()) {
     on((event, emit) async {
-      if (event is RegisterChangeIdentifierEvent) {
-        identifier = event.identifier;
-        accountController.clear();
-        emit(RegisterChangeIdentifierState());
-      } else if (event is RegisterValidateEvent) {
-        _validate();
-        emit(RegisterValidationState());
-      } else if (event is RegisterCommitEvent) {
+      if (event is RegisterCommitEvent) {
         _validate();
         emit(RegisterValidationState());
         if (valid) {
@@ -52,33 +75,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
                       account: account,
                       password: password,
                     ));
-            emit(RegisterCommittedState(response.data.session));
-          } catch (e) {
-            emit(RegisterErrorState("$e"));
-          }
-        }
-      } else if (event is RegisterValidateAccountEvent) {
-        _validateAccount();
-        emit(RegisterValidationState());
-      } else if (event is RegisterCheckAccountEvent) {
-        _validateAccount();
-        emit(RegisterValidationState());
-        if (accountErrorMessage == null) {
-          emit(RegisterAwaitCheckAccountState());
-          try {
-            var account = accountController.text.trim();
-            var response = await GetIt.I
-                .get<AuthRepository>()
-                .checkAccount(account);
-            if (response.data.exists) {
-              accountErrorMessage =
-                  AppLocalization.of(context).translate("already_exists");
-              emit(RegisterInitial());
+            emit(RegisterAcceptState(response.data.session));
+          } on DioError catch (ex) {
+            var error = ex.error;
+            if (error is ValidationException) {
+              accountErrorMessage = error.errors['account'];
+              usernameErrorMessage = error.errors['username'];
+              passwordErrorMessage = error.errors['password'];
+              emit(RegisterValidationState());
             } else {
-              emit(RegisterUniqueAccountState());
+              emit(RegisterErrorState(error));
             }
-          } catch (e) {
-            emit(RegisterErrorState("$e"));
           }
         }
       } else if (event is RegisterSecurePasswordEvent) {
@@ -86,48 +93,5 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         emit(RegisterSecurePasswordState());
       }
     });
-  }
-
-  void _validate() {
-    String password = passwordController.text.trim();
-    String username = usernameController.text.trim();
-
-    passwordErrorMessage = password.length < 6 || password.length > 40
-        ? AppLocalization.of(context).translate("allow_chars_number")
-        : null;
-
-    usernameErrorMessage = username.length < 6 || username.length > 40
-        ? AppLocalization.of(context).translate("allow_chars_number")
-        : null;
-  }
-
-  bool get valid =>
-      accountErrorMessage == null &&
-      passwordErrorMessage == null &&
-      usernameErrorMessage == null;
-
-  void _validateAccount() {
-    String account = accountController.text.trim();
-    if (account.isEmpty) {
-      accountErrorMessage = AppLocalization.of(context).translate("field_required");
-      return;
-    } else if (identifier == AccountRegistrationType.phone &&
-        !Utils.isPhoneNumber(account)) {
-      accountErrorMessage =
-          AppLocalization.of(context).translate('invalid_phone_number');
-    } else if (identifier == AccountRegistrationType.email &&
-        !validator.isEmail(account)) {
-      accountErrorMessage = AppLocalization.of(context).translate('invalid_email');
-    } else {
-      accountErrorMessage = null;
-    }
-  }
-
-  @override
-  Future<void> close() {
-    accountController.dispose();
-    passwordController.dispose();
-    usernameController.dispose();
-    return super.close();
   }
 }

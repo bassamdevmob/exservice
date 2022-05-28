@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 final currencyFormatter = NumberFormat.currency(name: "");
 final expireDateFormatter = DateFormat("yyyyMM");

@@ -7,6 +7,7 @@ import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/utils.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,105 +40,96 @@ class _LoginLayoutState extends State<LoginLayout> {
     );
   }
 
-  void _login() {
-    _bloc.add(LoginCommitEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listenWhen: (_, current) =>
-          current is LoginCommittedState || current is LoginErrorState,
+          current is LoginAcceptState || current is LoginErrorState,
       listener: (context, state) {
-        if (state is LoginCommittedState) {
+        if (state is LoginAcceptState) {
           Navigator.of(context).pushReplacement(
             CupertinoPageRoute(
               builder: (context) => WelcomeLayout(),
             ),
           );
         } else if (state is LoginErrorState) {
-          Fluttertoast.showToast(msg: state.message);
+          Fluttertoast.showToast(msg: state.error.toString());
         }
       },
       child: Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: ExpandedSingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(),
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Center(
+                      child: Text(
+                        AppLocalization.of(context).translate('app_name'),
+                        style: AppTextStyle.xxxxLargeBlackSatisfy,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    getAccountField(),
+                    SizedBox(height: 20),
+                    getPasswordField(),
+                    SizedBox(height: 20),
+                    getSubmitButton(),
+                  ],
+                ),
+              ),
+              Column(
                 children: <Widget>[
-                  SizedBox(),
                   Padding(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Center(
-                          child: Text(
-                            AppLocalization.of(context).translate('app_name'),
-                            style: AppTextStyle.xxxxLargeBlackSatisfy,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        getAccountField(),
-                        SizedBox(height: 20),
-                        getPasswordField(),
-                        SizedBox(height: 20),
-                        getSubmitButton(),
-                      ],
+                    padding: const EdgeInsets.all(15.0),
+                    child: InkWell(
+                      onTap: _navigateToForgotPassword,
+                      child: Text(
+                        AppLocalization.of(context).translate('forget'),
+                        style: AppTextStyle.smallBlackBold,
+                      ),
                     ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: InkWell(
-                          onTap: _navigateToForgotPassword,
-                          child: Text(
-                            AppLocalization.of(context).translate('forget'),
-                            style: AppTextStyle.smallBlackBold,
-                          ),
+                  Divider(height: 2),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 23,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate('no_account'),
+                          style: AppTextStyle.smallGray,
                         ),
-                      ),
-                      Divider(height: 2),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 23,
-                        ),
-                        child: InkWell(
-                          onTap: () {
+                        SizedBox(width: 5),
+                        TextButton(
+                          onPressed: () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => IntroLayout(),
                               ),
                             );
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                AppLocalization.of(context).translate('no_account'),
-                                style: AppTextStyle.smallGray,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                '${AppLocalization.of(context).translate('register')}.',
-                                style: AppTextStyle.smallBlackBold,
-                              )
-                            ],
+                          child: Text(
+                            '${AppLocalization.of(context).translate('register')}.',
+                            style: AppTextStyle.smallBlackBold,
                           ),
-                        ),
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          );
-        }),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -146,7 +138,7 @@ class _LoginLayoutState extends State<LoginLayout> {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (_, current) =>
           current is LoginAwaitState ||
-          current is LoginCommittedState ||
+          current is LoginAcceptState ||
           current is LoginErrorState,
       builder: (context, state) {
         return ElevatedButton(
@@ -156,7 +148,11 @@ class _LoginLayoutState extends State<LoginLayout> {
                   AppLocalization.of(context).translate('login'),
                   style: AppTextStyle.mediumWhite,
                 ),
-          onPressed: state is LoginAwaitState ? null : _login,
+          onPressed: state is LoginAwaitState
+              ? null
+              : () {
+                  _bloc.add(LoginCommitEvent());
+                },
         );
       },
     );
@@ -174,7 +170,7 @@ class _LoginLayoutState extends State<LoginLayout> {
               labelText: AppLocalization.of(context).translate("account"),
               labelStyle: AppTextStyle.largeBlue,
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              errorText: _bloc.accountErrorMessage,
+              errorText: _bloc.accountErrorMessage?.toString(),
             ),
           ),
         );
@@ -207,7 +203,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                 size: Utils.iconSize(MediaQuery.of(context)),
               ),
             ),
-            errorText: _bloc.passwordErrorMessage,
+            errorText: _bloc.passwordErrorMessage?.toString(),
           ),
         );
       },

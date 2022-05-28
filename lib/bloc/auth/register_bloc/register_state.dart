@@ -9,22 +9,16 @@ class RegisterValidationState extends RegisterState {}
 
 class RegisterAwaitState extends RegisterState {}
 
-class RegisterCommittedState extends RegisterState {
+class RegisterAcceptState extends RegisterState {
   final String session;
 
-  RegisterCommittedState(this.session);
+  RegisterAcceptState(this.session);
 }
-
-class RegisterAwaitCheckAccountState extends RegisterState {}
-
-class RegisterUniqueAccountState extends RegisterState {}
-
-class RegisterSecurePasswordState extends RegisterState {}
-
-class RegisterChangeIdentifierState extends RegisterState {}
 
 class RegisterErrorState extends RegisterState {
-  final String message;
+  final dynamic error;
 
-  RegisterErrorState(this.message);
+  RegisterErrorState(this.error);
 }
+
+class RegisterSecurePasswordState extends RegisterState {}

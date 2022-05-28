@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:exservice/controller/data_store.dart';
-import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,19 +16,34 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final accountController = TextEditingController();
   final passwordController = TextEditingController();
-  final BuildContext context;
 
   bool obscurePassword = true;
 
-  String accountErrorMessage;
-  String passwordErrorMessage;
+  Localized accountErrorMessage;
+  Localized passwordErrorMessage;
 
-  LoginBloc(this.context) : super(LoginInitial()) {
+  @override
+  Future<void> close() {
+    accountController.dispose();
+    passwordController.dispose();
+    return super.close();
+  }
+
+  bool get valid => accountErrorMessage == null && passwordErrorMessage == null;
+
+  void _validate() {
+    String account = accountController.text.trim();
+    String password = passwordController.text.trim();
+
+    accountErrorMessage = account.isEmpty ? Localized("field_required") : null;
+
+    passwordErrorMessage =
+        password.isEmpty ? Localized("field_required") : null;
+  }
+
+  LoginBloc() : super(LoginInitial()) {
     on((event, emit) async {
-      if (event is LoginValidateEvent) {
-        _validate();
-        emit(LoginValidationState());
-      } else if (event is LoginCommitEvent) {
+      if (event is LoginCommitEvent) {
         _validate();
         emit(LoginValidationState());
         if (valid) {
@@ -39,9 +56,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   password,
                 );
             DataStore.instance.setToken(response.data.token);
-            emit(LoginCommittedState());
-          } catch (e) {
-            emit(LoginErrorState("$e"));
+            emit(LoginAcceptState());
+          } on DioError catch (ex) {
+            var error = ex.error;
+            if (error is ValidationException) {
+              accountErrorMessage = error.errors['account'];
+              passwordErrorMessage = error.errors['password'];
+              emit(LoginValidationState());
+            } else {
+              emit(LoginErrorState(error));
+            }
           }
         }
       } else if (event is LoginSecurePasswordEvent) {
@@ -49,27 +73,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginSecurePasswordState());
       }
     });
-  }
-
-  bool get valid => accountErrorMessage == null && passwordErrorMessage == null;
-
-  void _validate() {
-    String account = accountController.text.trim();
-    String password = passwordController.text.trim();
-
-    accountErrorMessage = account.isEmpty
-        ? AppLocalization.of(context).translate("field_required")
-        : null;
-
-    passwordErrorMessage = password.isEmpty
-        ? AppLocalization.of(context).translate("field_required")
-        : null;
-  }
-
-  @override
-  Future<void> close() {
-    accountController.dispose();
-    passwordController.dispose();
-    return super.close();
   }
 }

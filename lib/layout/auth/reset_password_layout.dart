@@ -39,7 +39,7 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
           Navigator.of(context).pushAndRemoveUntil(
             CupertinoPageRoute(
               builder: (context) => BlocProvider(
-                create: (context) => LoginBloc(context),
+                create: (context) => LoginBloc(),
                 child: LoginLayout(),
               ),
             ),

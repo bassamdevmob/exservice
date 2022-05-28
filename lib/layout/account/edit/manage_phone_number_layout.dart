@@ -49,7 +49,6 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
               MaterialPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
-                    context,
                     VerificationOnChangePhoneNumberFactory(state.session),
                   ),
                   child: VerificationLayout(),

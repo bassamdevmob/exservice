@@ -7,7 +7,6 @@ part 'application_state.dart';
 
 class ApplicationCubit extends Cubit<ApplicationState> {
   static Key key = UniqueKey();
-  static final navigatorKey = GlobalKey<NavigatorState>();
   static PackageInfo info;
 
   static Future<void> init() async {

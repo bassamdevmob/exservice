@@ -1,7 +1,6 @@
 import 'package:exservice/models/request/register_request.dart';
 import 'package:exservice/models/request/reset_password_request.dart';
 import 'package:exservice/models/response/auth_response.dart';
-import 'package:exservice/models/response/check_account_response.dart';
 import 'package:exservice/models/response/session_response.dart';
 import 'package:exservice/models/response/simple_response.dart';
 import 'package:exservice/resources/api_client.dart';
@@ -64,15 +63,5 @@ class AuthRepository extends BaseClient {
       },
     );
     return SessionResponse.fromJson(response.data);
-  }
-
-  Future<CheckAccountResponse> checkAccount(String account) async {
-    final response = await client.post(
-      Links.CHECK_ACCOUNT_URL,
-      data: {
-        "account": account,
-      },
-    );
-    return CheckAccountResponse.fromJson(response.data);
   }
 }

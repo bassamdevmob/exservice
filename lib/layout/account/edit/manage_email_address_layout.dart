@@ -48,7 +48,6 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
               MaterialPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
-                    context,
                     VerificationOnChangeEmailAddressFactory(state.session),
                   ),
                   child: VerificationLayout(),

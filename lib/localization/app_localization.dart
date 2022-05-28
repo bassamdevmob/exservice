@@ -1,8 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:exservice/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+extension LocalizedTranslation on String {
+  String translate() {
+    var context = navigatorKey.currentContext;
+    return AppLocalization.of(context).translate(this);
+  }
+}
 
 class AppLocalization {
   AppLocalization(this.locale);
@@ -16,23 +24,15 @@ class AppLocalization {
   Map<String, String> _sentences;
 
   Future<bool> load() async {
-    String data = await rootBundle
-        .loadString('assets/lang/${this.locale.languageCode}.json');
+    String data =
+    await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
     Map<String, dynamic> _result = json.decode(data);
-
-    this._sentences = new Map();
-    _result.forEach((String key, dynamic value) {
-      this._sentences[key] = value.toString();
-    });
+    _sentences = _result.map((key, value) => MapEntry(key, value.toString()));
     return true;
   }
 
   String translate(String key) {
     return this._sentences[key] ?? '???';
-  }
-
-  String sentence(List<String> keys, [String separator = " "]) {
-    return keys.map((key) => translate(key)).join(separator);
   }
 }
 

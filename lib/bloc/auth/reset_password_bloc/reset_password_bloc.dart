@@ -61,7 +61,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     String confirm = confirmController.text.trim();
 
     passwordErrorMessage = password.length < 6 || password.length > 40
-        ? AppLocalization.of(context).translate("allow_chars_number")
+        ? AppLocalization.of(context).translate("field_length_range")
         : null;
 
     if (confirm.isEmpty) {

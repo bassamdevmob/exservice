@@ -11,6 +11,7 @@ import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/styles/themes/dark_theme.dart';
 import 'package:exservice/styles/themes/light_theme.dart';
+import 'package:exservice/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,7 @@ class AppMaterial extends StatelessWidget {
       builder: (context, state) {
         return MaterialApp(
           key: ApplicationCubit.key,
-          navigatorKey: ApplicationCubit.navigatorKey,
+          navigatorKey: navigatorKey,
           title: ApplicationCubit.info.appName,
           home: MainLayout(),
           themeMode: DataStore.instance.isDarkModeEnabled

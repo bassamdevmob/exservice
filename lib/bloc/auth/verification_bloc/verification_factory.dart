@@ -30,7 +30,7 @@ class VerificationOnAuthFactory extends VerificationFactory {
     Navigator.of(context).pushAndRemoveUntil(
       CupertinoPageRoute(
         builder: (context) => BlocProvider(
-          create: (context) => LoginBloc(context),
+          create: (context) => LoginBloc(),
           child: LoginLayout(),
         ),
       ),
@@ -82,7 +82,7 @@ class VerificationOnChangePhoneNumberFactory extends VerificationFactory {
     Navigator.of(context).pushAndRemoveUntil(
       CupertinoPageRoute(
         builder: (context) => BlocProvider(
-          create: (context) => LoginBloc(context),
+          create: (context) => LoginBloc(),
           child: LoginLayout(),
         ),
       ),
@@ -110,7 +110,7 @@ class VerificationOnChangeEmailAddressFactory extends VerificationFactory {
     Navigator.of(context).pushAndRemoveUntil(
       CupertinoPageRoute(
         builder: (context) => BlocProvider(
-          create: (context) => LoginBloc(context),
+          create: (context) => LoginBloc(),
           child: LoginLayout(),
         ),
       ),

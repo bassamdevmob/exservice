@@ -17,6 +17,7 @@ class ValidationException implements Exception {
 
 class BaseClient {
   static const UNAUTHORIZED = 401;
+  static const VALIDATION_FAILED = 425;
 
   Dio client = Dio();
 
@@ -96,7 +97,16 @@ class ClientInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (err.type == DioErrorType.response) {
       var response = err.response;
-      err.error = response.data["message"];
+      if (response.statusCode == BaseClient.VALIDATION_FAILED) {
+        var errors = response.data["errors"];
+        if (errors != null) {
+          err.error = ValidationException(response.data["errors"]);
+        } else {
+          err.error = response.data["message"];
+        }
+      } else {
+        err.error = response.data["message"];
+      }
     }
     handler.next(err);
   }

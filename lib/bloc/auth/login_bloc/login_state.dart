@@ -9,12 +9,12 @@ class LoginValidationState extends LoginState {}
 
 class LoginAwaitState extends LoginState {}
 
-class LoginCommittedState extends LoginState {}
+class LoginAcceptState extends LoginState {}
 
 class LoginSecurePasswordState extends LoginState {}
 
 class LoginErrorState extends LoginState {
-  final String message;
+  final dynamic error;
 
-  LoginErrorState(this.message);
+  LoginErrorState(this.error);
 }
