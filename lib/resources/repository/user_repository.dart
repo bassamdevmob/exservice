@@ -9,6 +9,12 @@ import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/links.dart';
 
 class UserRepository extends BaseClient {
+
+  Future<SimpleResponse> contactUs(String title, String content) async {
+    final response = await client.get(Links.CONTACT_US_URL);
+    return SimpleResponse.fromJson(response.data);
+  }
+
   Future<ProfileResponse> getProfile() async {
     final response = await client.get(Links.PROFILE_URL);
     return ProfileResponse.fromJson(response.data);

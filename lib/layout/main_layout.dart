@@ -4,6 +4,7 @@ import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
 import 'package:exservice/bloc/view/post_ad_bloc/post_ad_bloc.dart';
+import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/post/post_ad_layout.dart';
 import 'package:exservice/layout/view/account_layout.dart';
 import 'package:exservice/layout/view/favorites_layout.dart';
@@ -55,25 +56,20 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: AppColors.white,
-        centerTitle: true,
         title: Text(
           AppLocalization.of(context).translate('app_name'),
-          style: AppTextStyle.largeBlack,
         ),
         actions: [
           IconButton(
             icon: Icon(
               CupertinoIcons.list_bullet_indent,
-              color: AppColors.blue,
             ),
             onPressed: () {
-              // Navigator.of(context).push(
-              //   CupertinoPageRoute(
-              //     builder: (context) => DrawerLayout(),
-              //   ),
-              // );
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => DrawerLayout(),
+                ),
+              );
             },
           ),
         ],

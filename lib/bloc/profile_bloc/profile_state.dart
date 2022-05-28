@@ -5,6 +5,16 @@ abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
 
+class ProfileLogoutAwaitState extends ProfileState {}
+
+class ProfileLogoutAcceptState extends ProfileState {}
+
+class ProfileLogoutErrorState extends ProfileState {
+  final dynamic error;
+
+  ProfileLogoutErrorState(this.error);
+}
+
 class ProfileChangeTabState extends ProfileState {}
 
 class ProfileAwaitState extends ProfileState {}

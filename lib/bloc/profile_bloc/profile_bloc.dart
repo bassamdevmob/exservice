@@ -1,7 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/models/entity/user.dart';
+import 'package:exservice/resources/api_client.dart';
+import 'package:exservice/resources/repository/auth_repository.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   User model;
   ProfileTab currentTab = ProfileTab.info;
 
+  bool get isAuthenticated => DataStore.instance.hasToken;
 
   @override
   Future<void> close() {
@@ -63,6 +68,21 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         // } catch (e) {
         //   emit(ProfileErrorImageUploadState("$e"));
         // }
+      }else if(event is ProfileLogoutEvent){
+        try {
+          emit(ProfileLogoutAwaitState());
+          await GetIt.I.get<AuthRepository>().logout();
+          DataStore.instance.deleteCertificates();
+          emit(ProfileLogoutAcceptState());
+        } on DioError catch (ex) {
+          if (ex.response?.statusCode == BaseClient.UNAUTHORIZED) {
+            DataStore.instance.deleteCertificates();
+            emit(ProfileLogoutAcceptState());
+          } else {
+            var e = ex.error;
+            emit(ProfileLogoutErrorState(e));
+          }
+        }
       }
     });
   }

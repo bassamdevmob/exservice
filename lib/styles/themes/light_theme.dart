@@ -21,6 +21,7 @@ final ThemeData lightTheme = ThemeData(
   listTileTheme: const ListTileThemeData(
     style: ListTileStyle.drawer,
     contentPadding: EdgeInsets.symmetric(horizontal: 30),
+    iconColor: AppColors.blue,
   ),
   radioTheme: RadioThemeData(
     fillColor: MaterialStateProperty.all(AppColors.blue),
@@ -34,7 +35,10 @@ final ThemeData lightTheme = ThemeData(
     ),
     elevation: 0,
   ),
-  iconTheme: const IconThemeData(color: AppColors.black, size: 25),
+  iconTheme: const IconThemeData(
+    color: AppColors.black,
+    size: 25,
+  ),
   primaryTextTheme: TextTheme(
     displayLarge: AppTextStyle.xxxLargeBlack,
     displayMedium: AppTextStyle.xxLargeBlack,

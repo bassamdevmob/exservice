@@ -7,6 +7,8 @@ class ProfileFetchEvent extends ProfileEvent {}
 
 class ProfileRefreshEvent extends ProfileEvent {}
 
+class ProfileLogoutEvent extends ProfileEvent {}
+
 class ProfileChangeTabEvent extends ProfileEvent {
   final ProfileTab tab;
 
