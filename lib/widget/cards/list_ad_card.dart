@@ -4,42 +4,34 @@ import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/layout/publisher_layout.dart';
-import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/ad_media.dart';
-import 'package:exservice/widget/application/dotted_container.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:octo_image/octo_image.dart';
 
-class ListAdCard extends StatefulWidget {
+class ListAdCard extends StatelessWidget {
   final AdModel ad;
 
   const ListAdCard(this.ad, {Key key}) : super(key: key);
 
-  @override
-  State<ListAdCard> createState() => _ListAdCardState();
-}
-
-class _ListAdCardState extends State<ListAdCard> {
   void onSave() {
-    setState(() {
-      widget.ad.marked = !widget.ad.marked;
-      GetIt.I
-          .get<AdRepository>()
-          .bookmark(widget.ad.id, widget.ad.marked);
-    });
+    // setState(() {
+    //   ad.marked = !ad.marked;
+    //   GetIt.I
+    //       .get<AdRepository>()
+    //       .bookmark(ad.id, ad.marked);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    double size = 50;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -48,7 +40,7 @@ class _ListAdCardState extends State<ListAdCard> {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => PublisherCubit(widget.ad.owner.id),
+                  create: (context) => PublisherCubit(ad.owner.id),
                   child: PublisherLayout(),
                 ),
               ),
@@ -57,23 +49,18 @@ class _ListAdCardState extends State<ListAdCard> {
           child: Row(
             children: [
               Padding(
-                padding: EdgeInsets.all(10),
-                child: OutlineContainer(
-                  gradient: LinearGradient(
-                    colors: [AppColors.blue, AppColors.deepPurple],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  strokeWidth: 1,
-                  radius: size / 2,
-                  dimension: size,
-                  child: ClipOval(
-                    child: OctoImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(widget.ad.owner.profilePicture),
-                      progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                      errorBuilder: imageErrorBuilder,
-                    ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: Sizer.vs3,
+                ),
+                child: ClipOval(
+                  child: OctoImage(
+                    width: Sizer.avatarSizeSmall,
+                    height: Sizer.avatarSizeSmall,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(ad.owner.profilePicture),
+                    progressIndicatorBuilder: (ctx, _) => simpleShimmer,
+                    errorBuilder: imageErrorBuilder,
                   ),
                 ),
               ),
@@ -82,12 +69,12 @@ class _ListAdCardState extends State<ListAdCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.ad.owner.username,
-                      style: AppTextStyle.largeBlackBold,
+                      ad.owner.username,
+                      style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                     Text(
-                      widget.ad.owner.country,
-                      style: AppTextStyle.largeBlack,
+                      ad.owner.country,
+                      style: Theme.of(context).primaryTextTheme.bodyMedium,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -103,32 +90,42 @@ class _ListAdCardState extends State<ListAdCard> {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => AdDetailsBloc(widget.ad.id),
+                  create: (context) => AdDetailsBloc(ad.id),
                   child: AdDetailsLayout(),
                 ),
               ),
             );
           },
-          child: AdGallery(widget.ad),
+          child: AdGallery(ad),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           child: Builder(builder: (context) {
-            if (BlocProvider.of<ProfileBloc>(context).model.id == widget.ad.owner.id) {
-              return AdDetails(widget.ad);
+            if (BlocProvider.of<ProfileBloc>(context).model.id == ad.owner.id) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: AdDetails(ad),
+              );
             }
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(child: AdDetails(widget.ad)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: FavoriteButton(
-                    active: widget.ad.marked,
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: Sizer.vs3,
+                horizontal: Sizer.vs3,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: AdDetails(ad),
+                  ),
+                  FavoriteButton(
+                    active: ad.marked,
                     onTap: onSave,
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }),
         ),

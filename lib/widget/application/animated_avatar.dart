@@ -1,7 +1,5 @@
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/widget/application/dotted_container.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedAvatar extends ImplicitlyAnimatedWidget {
@@ -73,12 +71,13 @@ class _AnimatedAvatarState extends AnimatedWidgetBaseState<AnimatedAvatar> {
                 ),
               ),
             ),
+            SizedBox(height: 5),
             Text(
               widget.text,
               overflow: TextOverflow.ellipsis,
               style: widget.checked
-                  ? AppTextStyle.mediumBlue
-                  : AppTextStyle.mediumBlack,
+                  ? Theme.of(context).primaryTextTheme.titleMedium
+                  : Theme.of(context).primaryTextTheme.bodyMedium,
               maxLines: 1,
             ),
           ],

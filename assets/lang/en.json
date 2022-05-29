@@ -61,6 +61,7 @@
   "subscription_cost": "For %s per month, Cancel anytime.",
   "email_phone_number": "Email or phone number",
   "register_email_phone_number": "Register with email or phone number",
+  "no_description": "No description",
 
 
   "helloWorld": "Hello World",
@@ -204,7 +205,6 @@
   "active": "Active",
   "inactive": "Inactive",
   "expired": "Expired",
-  "noDesc": "No description",
   "sureUnCheck": "Are you sure you want to delete this ad from your save list ?",
   "canNotDisplayVideo": "Cannot display this video",
   "canNotGetLocation": "Cannot get location",

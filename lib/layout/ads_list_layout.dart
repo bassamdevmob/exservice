@@ -1,7 +1,7 @@
 import 'package:exservice/bloc/ads_list_bloc/ads_list_cubit.dart';
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/enums.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
@@ -42,12 +42,8 @@ class _AdsListLayoutState extends State<AdsListLayout> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.white,
-          iconTheme: IconThemeData(color: AppColors.blue),
-          centerTitle: true,
           title: Text(
-            AppLocalization.of(context).translate('app_name'),
-            style: AppTextStyle.largeBlack,
+            ApplicationCubit.info.appName,
           ),
         ),
         body: BlocBuilder<AdsListCubit, AdsListState>(

@@ -38,6 +38,10 @@ abstract class Sizer {
   /// icon size
   static double get logoSize => 100.sp;
 
+  static double get avatarSizeLarge => 70.sp;
+
+  static double get avatarSizeSmall => 50.sp;
+
   static double get iconSizeLarge => 30.sp;
 
   static double get iconSizeMedium => 20.sp;

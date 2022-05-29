@@ -11,7 +11,7 @@ import 'package:exservice/utils/enums.dart';
 class AdRepository extends BaseClient {
 
   Future<HomeResponse> home() async {
-    final response = await client.post(
+    final response = await client.get(
       Links.HOME_URL,
     );
     return HomeResponse.fromJson(response.data);

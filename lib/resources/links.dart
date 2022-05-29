@@ -1,6 +1,5 @@
 class Links {
-  static const BASE = 'http://localhost:3000/api/exservice/';
-
+  static const BASE = 'https://dummy-server-xyz.herokuapp.com/app/exservice/v1/';
 
   ///auth
   static const LOGIN_URL = "user/login";

@@ -61,6 +61,7 @@
   "subscription_cost": "بمقابل %s للشهر, تراجع في أي وقت",
   "email_phone_number": "البريد الإلكتروني أو رقم الهاتف",
   "register_email_phone_number": "سجل حساب بالبريد الإلكتروني أو رقم الهاتف",
+  "no_description": "لا يوجد شرح",
 
   "had_account": "Already have an account?",
   "register": "Sign up",
@@ -201,7 +202,6 @@
   "active": "Active",
   "inactive": "Inactive",
   "expired": "Expired",
-  "noDesc": "No description",
   "sureUnCheck": "Are you sure you want to delete this ad from your save list ?",
   "canNotDisplayVideo": "Cannot display this video",
   "canNotGetLocation": "Cannot get location",
