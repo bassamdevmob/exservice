@@ -1,5 +1,4 @@
 import 'package:exservice/models/response/chats_response.dart';
-import 'package:exservice/utils/constant.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/global.dart';

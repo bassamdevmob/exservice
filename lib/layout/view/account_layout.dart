@@ -118,7 +118,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => WelcomeBusinessLayout(),
                         ),
                       );

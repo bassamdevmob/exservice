@@ -1,14 +1,12 @@
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
-import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/constant.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/button/favorite_button.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:octo_image/octo_image.dart';
@@ -38,7 +36,7 @@ class _GridAdCardState extends State<GridAdCard> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => AdDetailsBloc(widget.ad.id),
               child: AdDetailsLayout(),

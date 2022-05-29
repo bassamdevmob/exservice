@@ -45,7 +45,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
         listener: (context, state) async {
           if (state is ManageEmailAddressCommittedState) {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
                     VerificationOnChangeEmailAddressFactory(state.session),

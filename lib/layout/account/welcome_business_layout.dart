@@ -3,6 +3,7 @@ import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/switch_business_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,7 @@ class WelcomeBusinessLayout extends StatelessWidget {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => BlocProvider(
                               create: (context) => SwitchBusinessBloc(context),
                               child: SwitchBusinessLayout(),

@@ -4,7 +4,6 @@ import 'package:expandable/expandable.dart';
 import 'package:exservice/bloc/chat/chat_bloc.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
-import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';

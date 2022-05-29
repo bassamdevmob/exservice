@@ -182,7 +182,7 @@
 //                   style: AppTextStyle.largeBlack,
 //                 ),
 //                 onTap: () {
-//                   Navigator.of(context).push(MaterialPageRoute(
+//                   Navigator.of(context).push(CupertinoPageRoute(
 //                     builder: (context) => ManagePayment(res.data.id),
 //                   ));
 //                 },
@@ -258,7 +258,7 @@
 //
 //   void submitPaid() {
 //     _submit(false).then((res) {
-//       Navigator.of(context).push(MaterialPageRoute(
+//       Navigator.of(context).push(CupertinoPageRoute(
 //         builder: (context) => ManagePayment(res.data.id),
 //       ));
 //     }).catchError((e) {

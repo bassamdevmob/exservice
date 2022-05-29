@@ -2,8 +2,8 @@ import 'package:exservice/bloc/ads_list_bloc/ads_list_cubit.dart';
 import 'package:exservice/layout/ads_list_layout.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/constant.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
@@ -25,7 +25,7 @@ class SummaryAdCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => AdsListCubit(),
               child: AdsListLayout(),

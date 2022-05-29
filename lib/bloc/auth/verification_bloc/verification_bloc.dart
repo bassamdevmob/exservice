@@ -5,7 +5,6 @@ import 'package:exservice/bloc/auth/reset_password_bloc/reset_password_bloc.dart
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/auth/reset_password_layout.dart';
-import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
 import 'package:exservice/utils/localized.dart';
 import 'package:flutter/cupertino.dart';

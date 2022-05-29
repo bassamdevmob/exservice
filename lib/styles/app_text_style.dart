@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:exservice/utils/sizer.dart';
 
 import 'app_colors.dart';
 import 'app_font_size.dart';

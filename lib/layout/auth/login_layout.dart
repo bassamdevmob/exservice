@@ -49,7 +49,6 @@ class _LoginLayoutState extends State<LoginLayout> {
       child: Scaffold(
         body: ExpandedSingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(),
@@ -106,7 +105,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                 builder: (context) => IntroLayout(),
                               ),
                             );

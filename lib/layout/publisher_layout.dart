@@ -1,4 +1,3 @@
-import 'package:exservice/utils/constant.dart';
 import 'package:exservice/bloc/chat/chat_bloc.dart';
 import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
@@ -305,7 +304,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
   }
 
   Widget getBody() {
-    var profile = _bloc.publisher;
+    // var profile = _bloc.publisher;
     return SizedBox();
     // switch (_bloc.format) {
     //   case DisplayFormat.grid:

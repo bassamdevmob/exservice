@@ -2,13 +2,11 @@ import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
-import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/layout/publisher_layout.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/constant.dart';
 import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/ad_media.dart';
 import 'package:exservice/widget/application/dotted_container.dart';
@@ -103,7 +101,7 @@ class _ListAdCardState extends State<ListAdCard> {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => AdDetailsBloc(widget.ad.id),
                   child: AdDetailsLayout(),

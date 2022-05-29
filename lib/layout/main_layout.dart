@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:exservice/layout/view/home_layout.dart';
 import 'package:exservice/layout/view/messenger_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +34,7 @@ class _MainLayoutState extends State<MainLayout> {
       create: (context) => FavoritesCubit(),
       child: FavoritesLayout(),
     ),
+    SizedBox(),
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ChatsListBloc()),
@@ -56,9 +57,7 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          AppLocalization.of(context).translate('app_name'),
-        ),
+        leading: Image.asset("assets/images/app_icon.png"),
         actions: [
           IconButton(
             icon: Icon(
@@ -114,9 +113,9 @@ class _MainLayoutState extends State<MainLayout> {
                 child: PostAdLayout(),
               ),
             ));
-          } else if(i > 2){
+          } else {
             setState(() {
-              _index = i - 1;
+              _index = i;
             });
           }
         },

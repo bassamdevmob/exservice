@@ -127,7 +127,7 @@ class _UserAdState extends State<UserAd> {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => AdDetailsBloc(widget.ad.id),
                   child: AdDetailsLayout(),

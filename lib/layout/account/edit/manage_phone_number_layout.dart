@@ -46,7 +46,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
         listener: (context, state) async {
           if (state is ManagePhoneNumberCommittedState) {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
                     VerificationOnChangePhoneNumberFactory(state.session),

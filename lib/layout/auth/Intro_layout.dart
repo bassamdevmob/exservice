@@ -4,7 +4,6 @@ import 'package:exservice/bloc/auth/register_bloc/register_bloc.dart';
 import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/auth/register_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +31,7 @@ class IntroLayout extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  CupertinoPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => RegisterBloc(),
                       child: RegisterLayout(),
