@@ -3,31 +3,27 @@ part of 'home_bloc.dart';
 @immutable
 abstract class HomeState {}
 
-abstract class HomeAwaitState extends HomeState {}
-
-abstract class HomeAccessibleState extends HomeState {}
-
 class HomeSelectCategoryState extends HomeState {}
 
 /// categories
 
-class HomeAwaitCategoriesState extends HomeAwaitState {}
+class HomeAwaitState extends HomeState {}
 
-class HomeReceiveCategoriesState extends HomeAccessibleState {}
+class HomeAcceptState extends HomeState {}
 
-class HomeErrorCategoriesState extends HomeState {
-  final String message;
+class HomeErrorState extends HomeState {
+  final dynamic error;
 
-  HomeErrorCategoriesState(this.message);
+  HomeErrorState(this.error);
 }
 
 /// ads
-class HomeAwaitAdsState extends HomeAwaitState {}
+class HomeAdsAwaitState extends HomeState {}
 
-class HomeReceiveAdsState extends HomeAccessibleState {}
+class HomeAdsAcceptState extends HomeState {}
 
-class HomeErrorAdsState extends HomeState {
-  final String message;
+class HomeAdsErrorState extends HomeState {
+  final dynamic error;
 
-  HomeErrorAdsState(this.message);
+  HomeAdsErrorState(this.error);
 }

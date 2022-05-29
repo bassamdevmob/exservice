@@ -7,16 +7,16 @@ class FavoritesInitial extends FavoritesState {}
 
 class FavoritesAwaitState extends FavoritesState {}
 
-class FavoritesReceivedState extends FavoritesState {}
+class FavoritesAcceptState extends FavoritesState {}
 
 class FavoritesErrorState extends FavoritesState {
-  final String message;
+  final dynamic error;
 
-  FavoritesErrorState(this.message);
+  FavoritesErrorState(this.error);
 }
 
 class FavoritesLazyErrorState extends FavoritesState {
-  final String message;
+  final dynamic error;
 
-  FavoritesLazyErrorState(this.message);
+  FavoritesLazyErrorState(this.error);
 }

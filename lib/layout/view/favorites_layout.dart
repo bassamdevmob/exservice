@@ -1,7 +1,8 @@
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
-import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:exservice/widget/cards/list_ad_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,7 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
           showErrorBottomSheet(
             context,
             AppLocalization.of(context).translate("error"),
-            state.message,
+            Utils.resolveErrorMessage(state.error),
           );
         }
       },
@@ -40,20 +41,22 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
         buildWhen: (_, current) =>
             current is FavoritesAwaitState ||
             current is FavoritesErrorState ||
-            current is FavoritesReceivedState,
+            current is FavoritesAcceptState,
         builder: (context, state) {
-          if (state is FavoritesErrorState) {
+          if (state is FavoritesAwaitState) {
             return Center(
-              child: ReloadWidget.error(
-                content: Text(state.message, textAlign: TextAlign.center),
-                onPressed: () {
+              child: CupertinoActivityIndicator(),
+            );
+          } else if (state is FavoritesErrorState) {
+            return Center(
+              child: ReloadIndicator(
+                error: state.error,
+                onTap: () {
                   _bloc.fetch();
                 },
               ),
             );
-          } else if (state is FavoritesAwaitState) {
-            return Center(child: CupertinoActivityIndicator());
-          } else if (_bloc.models == null || _bloc.models.isEmpty) {
+          } else if (_bloc.models.isEmpty) {
             return Center(
               child: EmptyIndicator(
                 onTap: () {
@@ -63,17 +66,23 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
             );
           }
           return SmartRefresher(
-            enablePullUp: true,
+            controller: _bloc.controller,
+            onRefresh: () => _bloc.refresh(),
+            onLoading: () => _bloc.loadMore(),
+            enablePullUp: _bloc.enablePullUp,
             enablePullDown: true,
-            footer: ClassicFooter(loadStyle: LoadStyle.ShowWhenLoading),
-            onRefresh: () {
-              return _bloc.fetchFirst();
-            },
-            onLoading: () {
-              return _bloc.fetchNext();
-            },
-            controller: _bloc.refreshController,
+            footer: ClassicFooter(
+              onClick: () {
+                if (_bloc.controller.footerStatus == LoadStatus.failed) {
+                  _bloc.controller.requestLoading();
+                }
+              },
+            ),
             child: ListView.builder(
+              padding: EdgeInsets.symmetric(
+                vertical: Sizer.vs3,
+                horizontal: Sizer.hs3,
+              ),
               itemCount: _bloc.models.length,
               itemBuilder: (context, index) {
                 return ListAdCard(_bloc.models[index]);

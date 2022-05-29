@@ -23,6 +23,7 @@ class Links {
   static const NOTIFICATION_URL = "user/notification";
 
   ///user ads
+  static const HOME_URL = "ad/home";
   static const AD_URL = "ad";
   static const CHANGE_AD_URL = "ad/status";
   static const BOOKMARK_AD_URL = "ad/bookmark";

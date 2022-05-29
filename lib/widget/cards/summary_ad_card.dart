@@ -1,5 +1,6 @@
 import 'package:exservice/bloc/ads_list_bloc/ads_list_cubit.dart';
 import 'package:exservice/layout/ads_list_layout.dart';
+import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
@@ -9,15 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SummaryAdCard extends StatelessWidget {
-  final String avatar;
-  final String title;
-  final List<String> images;
+  final AdModel model;
 
-  const SummaryAdCard({
+  const SummaryAdCard(this.model, {
     Key key,
-    this.avatar,
-    this.title,
-    this.images,
   }) : super(key: key);
 
   @override
@@ -26,10 +22,11 @@ class SummaryAdCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           CupertinoPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => AdsListCubit(),
-              child: AdsListLayout(),
-            ),
+            builder: (context) =>
+                BlocProvider(
+                  create: (context) => AdsListCubit(),
+                  child: AdsListLayout(),
+                ),
           ),
         );
       },
@@ -55,16 +52,16 @@ class SummaryAdCard extends StatelessWidget {
                   ),
                   child: OctoImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(avatar),
+                    image: NetworkImage(model.owner.profilePicture),
                     progressIndicatorBuilder: (context, progress) =>
-                        simpleShimmer,
+                    simpleShimmer,
                     errorBuilder: imageErrorBuilder,
                   ),
                 ),
               ),
             ),
             Text(
-              title,
+              model.title,
               textAlign: TextAlign.center,
               style: AppTextStyle.mediumBlackBold,
             ),
@@ -86,6 +83,7 @@ class SummaryAdCard extends StatelessWidget {
   }
 
   Widget getContent(BuildContext context) {
+    var images = model.media.gallery.map((e) => e.link).toList();
     switch (images.length) {
       case 0:
         return ColoredBox(

@@ -37,7 +37,7 @@ final ThemeData darkTheme = ThemeData(
     elevation: 0,
   ),
   iconTheme: const IconThemeData(
-    color: AppColors.black,
+    color: AppColors.white,
     size: 25,
   ),
   primaryTextTheme: TextTheme(

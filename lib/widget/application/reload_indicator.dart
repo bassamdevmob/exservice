@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:exservice/styles/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:lottie/lottie.dart';
@@ -62,9 +62,9 @@ class EmptyIndicator extends StatelessWidget {
             shape: BoxShape.circle,
             color: AppColors.blue,
           ),
-          child: SvgPicture.asset(
-            "assets/svg/refresh.svg",
-            height: 3.h,
+          child: Icon(
+            CupertinoIcons.refresh,
+            size: 3.h,
           ),
         ),
       ],
@@ -118,9 +118,9 @@ class ReloadIndicator extends StatelessWidget {
             shape: BoxShape.circle,
             color: AppColors.blue,
           ),
-          child: SvgPicture.asset(
-            "assets/svg/refresh.svg",
-            height: 3.h,
+          child: Icon(
+            CupertinoIcons.refresh,
+            size: 3.h,
           ),
         ),
       ],
@@ -151,9 +151,9 @@ class ReloadIndicator extends StatelessWidget {
             shape: BoxShape.circle,
             color: AppColors.blue,
           ),
-          child: SvgPicture.asset(
-            "assets/svg/refresh.svg",
-            height: 3.h,
+          child: Icon(
+            CupertinoIcons.refresh,
+            size: 3.h,
           ),
         ),
       ],
@@ -186,9 +186,9 @@ class ReloadIndicator extends StatelessWidget {
             shape: BoxShape.circle,
             color: AppColors.blue,
           ),
-          child: SvgPicture.asset(
-            "assets/svg/refresh.svg",
-            height: 3.h,
+          child: Icon(
+            CupertinoIcons.refresh,
+            size: 3.h,
           ),
         ),
       ],

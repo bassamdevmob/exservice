@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:exservice/models/entity/ad_model.dart';
+import 'package:exservice/models/entity/category.dart';
+import 'package:exservice/models/entity/meta.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/utils/constant.dart';
 import 'package:get_it/get_it.dart';
@@ -9,49 +12,58 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 part 'favorites_state.dart';
 
 class FavoritesCubit extends Cubit<FavoritesState> {
+  final controller = RefreshController();
   List<AdModel> models;
-  int _offset = 0;
-  final refreshController = RefreshController();
+  Meta _meta;
 
-  FavoritesCubit() : super(FavoritesInitial());
+  bool get enablePullUp => _meta?.nextPageUrl != null;
+
+  FavoritesCubit() : super(FavoritesAwaitState());
 
   @override
   Future<void> close() {
-    refreshController.dispose();
+    controller.dispose();
     return super.close();
   }
 
-  Future<void> fetch() {
-    emit(FavoritesAwaitState());
-    return fetchFirst();
-  }
-
-  Future<void> fetchFirst() async {
+  Future<void> fetch() async {
     try {
-      var response = await GetIt.I
-          .get<AdRepository>()
-          .bookmarkedAds();
+      emit(FavoritesAwaitState());
+      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      _meta = response.meta;
       models = response.data;
-      _offset = INITIAL_OFFSET;
-      emit(FavoritesReceivedState());
-    } catch (ex) {
-      emit(FavoritesErrorState("$ex"));
-    } finally {
-      refreshController.refreshCompleted();
+      emit(FavoritesAcceptState());
+      controller.refreshCompleted();
+    } on DioError catch (ex) {
+      emit(FavoritesErrorState(ex.error));
+      controller.refreshFailed();
     }
   }
 
-  Future<void> fetchNext() async {
+  Future<void> refresh() async {
     try {
-      var response =
-          await GetIt.I.get<AdRepository>().bookmarkedAds();
-      _offset += 1;
+      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      _meta = response.meta;
+      models = response.data;
+      emit(FavoritesAcceptState());
+      controller.refreshCompleted();
+    } on DioError catch (ex) {
+      emit(FavoritesLazyErrorState(ex.error));
+      controller.refreshFailed();
+    }
+  }
+
+  Future<void> loadMore() async {
+    try {
+      var response = await GetIt.I
+          .get<AdRepository>()
+          .bookmarkedAds(nextUrl: _meta.nextPageUrl);
+      _meta = response.meta;
       models.addAll(response.data);
-      emit(FavoritesReceivedState());
-    } catch (ex) {
-      emit(FavoritesLazyErrorState("$ex"));
-    } finally {
-      refreshController.loadComplete();
+      emit(FavoritesAcceptState());
+      controller.loadComplete();
+    } on DioError {
+      controller.loadFailed();
     }
   }
 }

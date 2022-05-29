@@ -1,14 +1,4 @@
-// To parse this JSON data, do
-//
-//     final adDetailsResponse = adDetailsResponseFromJson(jsonString);
-
-import 'dart:convert';
-
 import 'package:exservice/models/entity/ad_model.dart';
-
-AdDetailsResponse adDetailsResponseFromJson(String str) => AdDetailsResponse.fromJson(json.decode(str));
-
-String adDetailsResponseToJson(AdDetailsResponse data) => json.encode(data.toJson());
 
 class AdDetailsResponse {
   AdDetailsResponse({

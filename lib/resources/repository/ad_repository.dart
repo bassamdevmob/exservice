@@ -1,6 +1,7 @@
 import 'package:exservice/models/request/edit_ad_request.dart';
 import 'package:exservice/models/response/ad_details_response.dart';
 import 'package:exservice/models/response/ads_response.dart';
+import 'package:exservice/models/response/home_response.dart';
 import 'package:exservice/models/response/profile_response.dart';
 import 'package:exservice/models/response/simple_response.dart';
 import 'package:exservice/resources/api_client.dart';
@@ -8,6 +9,14 @@ import 'package:exservice/resources/links.dart';
 import 'package:exservice/utils/enums.dart';
 
 class AdRepository extends BaseClient {
+
+  Future<HomeResponse> home() async {
+    final response = await client.post(
+      Links.HOME_URL,
+    );
+    return HomeResponse.fromJson(response.data);
+  }
+
   Future<SimpleResponse> delete(int id) async {
     final response = await client.delete(
       Links.AD_URL,
@@ -32,9 +41,9 @@ class AdRepository extends BaseClient {
     return AdsResponse.fromJson(response.data);
   }
 
-  Future<AdsResponse> bookmarkedAds() async {
+  Future<AdsResponse> bookmarkedAds({String nextUrl}) async {
     final response = await client.get(
-      Links.AD_URL,
+      nextUrl ?? Links.AD_URL,
     );
     return AdsResponse.fromJson(response.data);
   }

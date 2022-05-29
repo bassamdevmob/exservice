@@ -5,7 +5,6 @@ import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/widget/application/animated_avatar.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
-import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/cards/summary_ad_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,15 +34,69 @@ class _HomeLayoutState extends State<HomeLayout> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (_, current) =>
-            current is HomeAwaitCategoriesState ||
-            current is HomeReceiveCategoriesState ||
-            current is HomeErrorCategoriesState,
+            current is HomeAwaitState ||
+            current is HomeAcceptState ||
+            current is HomeErrorState,
         builder: (context, state) {
-          if (state is HomeErrorCategoriesState) {
+          if (state is HomeAwaitState) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  Expanded(child: Center(child: CupertinoActivityIndicator())),
+                  SizedBox(height: 5),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(10, (index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.grayAccent,
+                                    width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.5),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey[300],
+                                    highlightColor: Colors.grey[100],
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${AppLocalization.of(context).translate('loading')} ..',
+                                style: AppTextStyle.mediumGray,
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (state is HomeErrorState) {
             return Center(
-              child: ReloadWidget.error(
-                content: Text(state.message, textAlign: TextAlign.center),
-                onPressed: () {
+              child: ReloadIndicator(
+                error: state.error,
+                onTap: () {
                   _bloc.add(HomeFetchEvent());
                 },
               ),
@@ -67,22 +120,22 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget getSlider() {
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (_, current) =>
-          current is HomeAwaitState ||
-          current is HomeAccessibleState ||
-          current is HomeErrorAdsState,
+          current is HomeAdsAwaitState ||
+          current is HomeAdsAcceptState ||
+          current is HomeAdsErrorState,
       builder: (context, state) {
-        if (state is HomeErrorAdsState) {
+        if (state is HomeAdsErrorState) {
           return Center(
-            child: ReloadWidget.error(
-              content: Text(state.message, textAlign: TextAlign.center),
-              onPressed: () {
+            child: ReloadIndicator(
+              error: state.error,
+              onTap: () {
                 _bloc.add(HomeFetchAdsEvent());
               },
             ),
           );
-        } else if (state is HomeAwaitState) {
+        } else if (state is HomeAdsAwaitState) {
           return Center(child: CupertinoActivityIndicator());
-        } else if (_bloc.models == null || _bloc.models.isEmpty) {
+        } else if (_bloc.ads == null || _bloc.ads.isEmpty) {
           return Center(
             child: EmptyIndicator(
               onTap: () {
@@ -96,13 +149,9 @@ class _HomeLayoutState extends State<HomeLayout> {
           scale: 0.74,
           duration: 100,
           loop: false,
-          itemCount: _bloc.models.length,
+          itemCount: _bloc.ads.length,
           itemBuilder: (context, index) {
-            return SummaryAdCard(
-              title: _bloc.models[index].title,
-              avatar: _bloc.models[index].owner.profilePicture,
-              images: _bloc.models[index].media.gallery.map((e) => e.link).toList(),
-            );
+            return SummaryAdCard(_bloc.ads[index]);
           },
         );
       },
@@ -111,59 +160,8 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   Widget getCategories() {
     return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (_, current) =>
-          current is HomeSelectCategoryState ||
-          current is HomeAwaitCategoriesState ||
-          current is HomeReceiveCategoriesState,
+      buildWhen: (_, current) => current is HomeSelectCategoryState,
       builder: (context, state) {
-        if (state is HomeAwaitCategoriesState) {
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(10, (index) {
-                return Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.grayAccent,
-                            width: 0.5,
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.5),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[100],
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '${AppLocalization.of(context).translate('loading')} ..',
-                        style: AppTextStyle.mediumGray,
-                      )
-                    ],
-                  ),
-                );
-              }),
-            ),
-          );
-        }
-        if (_bloc.categories == null || _bloc.categories.isEmpty) {
-          return SizedBox();
-        }
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(

@@ -90,8 +90,9 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/svg/
+    - assets/json/
     - assets/lang/
+    - assets/svg/
   fonts:
     - family: Satisfy
       fonts:
