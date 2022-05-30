@@ -1,19 +1,20 @@
 import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:exservice/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/layout/post/post_ad_details_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_font_size.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/global.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/animated_cross_icon.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -41,7 +42,8 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       listener: (context, state) {
         if (state is PostAdReachedMediaMaxLimitsErrorState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).translate("reached_max_media_limits"),
+            msg: AppLocalization.of(context)
+                .translate("reached_max_media_limits"),
           );
         }
       },
@@ -211,21 +213,14 @@ class _PostAdLayoutState extends State<PostAdLayout> {
     return BlocBuilder<PostAdBloc, PostAdState>(
       buildWhen: (_, current) => current is PostAdChangeDisplayModeState,
       builder: (context, state) {
-        var selected = _bloc.getSelectedMedias();
+        var media = _bloc.getSelectedMedias();
         return Hero(
           tag: "thumbnail",
-          child: Carousel(
-            boxFit: BoxFit.cover,
-            autoplay: false,
-            indicatorBgPadding: 10,
-            dotColor: Colors.grey,
-            dotIncreasedColor: AppColors.blue,
-            dotBgColor: Colors.transparent,
-            overlayShadowSize: 5.0,
-            dotSpacing: 8,
-            dotSize: 3.0,
-            images: List.generate(selected.length, (index) {
-              var entity = selected[index];
+          child: Swiper(
+            itemCount: media.length,
+            pagination: swiperPagination,
+            itemBuilder: (context, index) {
+              var entity = media[index];
               return FutureBuilder<Uint8List>(
                 future: _bloc.getThumbnail(entity),
                 builder: (context, snapshot) {
@@ -243,7 +238,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
                   );
                 },
               );
-            }),
+            },
           ),
         );
       },
@@ -305,7 +300,8 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       onTap: () {
         if (_bloc.selectedEntities.length < 1) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).translate("choose_one_media_at_least"),
+            msg: AppLocalization.of(context)
+                .translate("choose_one_media_at_least"),
           );
           return;
         }

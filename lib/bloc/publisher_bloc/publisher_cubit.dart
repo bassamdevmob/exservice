@@ -10,7 +10,6 @@ part 'publisher_state.dart';
 class PublisherCubit extends Cubit<PublisherState> {
   final int id;
   final scrollController = ScrollController();
-  DisplayFormat format = DisplayFormat.list;
   User publisher;
 
   @override
@@ -21,24 +20,12 @@ class PublisherCubit extends Cubit<PublisherState> {
 
   PublisherCubit(this.id) : super(PublisherAwaitState());
 
-  void changeFormat(DisplayFormat format) {
-    if (this.format == format) return;
-    this.format = format;
-    if (scrollController.hasClients)
-      scrollController.animateTo(
-        0,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeOut,
-      );
-    emit(PublisherChangeFormatState());
-  }
-
   Future<void> fetch() async {
     try {
       emit(PublisherAwaitState());
       var response = await GetIt.I.get<AdRepository>().publisher(id);
       publisher = response.data;
-      emit(PublisherReceivedState());
+      emit(PublisherAcceptState());
     } catch (e) {
       emit(PublisherErrorState("$e"));
     }

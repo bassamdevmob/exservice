@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 import 'package:string_validator/string_validator.dart';
 
 class PublisherLayout extends StatefulWidget {
@@ -53,7 +52,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
       body: BlocBuilder<PublisherCubit, PublisherState>(
         buildWhen: (_, current) =>
             current is PublisherAwaitState ||
-            current is PublisherReceivedState ||
+            current is PublisherAcceptState ||
             current is PublisherErrorState,
         builder: (context, state) {
           if (state is PublisherErrorState) {
@@ -149,16 +148,9 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                       ],
                     ]),
                   ),
-                  SliverPinnedHeader(child: getTabFormat()),
                 ];
               },
-              body: BlocBuilder<PublisherCubit, PublisherState>(
-                buildWhen: (_, current) =>
-                    current is PublisherChangeFormatState,
-                builder: (context, state) {
-                  return getBody();
-                },
-              ),
+              body: getBody(),
             ),
           );
         },
@@ -259,47 +251,6 @@ class _PublisherLayoutState extends State<PublisherLayout> {
             },
           ),
       ],
-    );
-  }
-
-  Widget getTabFormat() {
-    return BlocBuilder<PublisherCubit, PublisherState>(
-      buildWhen: (_, current) => current is PublisherChangeFormatState,
-      builder: (context, state) {
-        return ColoredBox(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _bloc.changeFormat(DisplayFormat.list);
-                  },
-                  child: Icon(
-                    Icons.view_day,
-                    color: _bloc.format == DisplayFormat.list
-                        ? AppColors.blue
-                        : AppColors.deepGray,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _bloc.changeFormat(DisplayFormat.grid);
-                  },
-                  child: Icon(
-                    Icons.dashboard,
-                    color: _bloc.format == DisplayFormat.grid
-                        ? AppColors.blue
-                        : AppColors.deepGray,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 

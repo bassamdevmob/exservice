@@ -30,8 +30,3 @@ enum ProfileTab {
   info,
   posts,
 }
-
-enum DisplayFormat {
-  list,
-  grid,
-}

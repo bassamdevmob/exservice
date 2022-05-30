@@ -12,6 +12,9 @@ part 'ad_details_state.dart';
 class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
   final int id;
 
+  AdModel details;
+  LatLng position;
+
   AdDetailsBloc(this.id) : super(AdDetailsAwaitState()) {
     on((event, emit) async {
       if (event is FetchAdDetailsEvent) {
@@ -20,8 +23,10 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
           var response = await GetIt.I.get<AdRepository>().view(id);
           details = response.data;
           if (details.location != null)
-            position = LatLng(double.parse(details.location.latitude),
-                double.parse(details.location.longitude));
+            position = LatLng(
+              double.parse(details.location.latitude),
+              double.parse(details.location.longitude),
+            );
           emit(AdDetailsReceivedState());
         } catch (e) {
           emit(AdDetailsErrorState("$e"));
@@ -33,7 +38,4 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
       }
     });
   }
-
-  AdModel details;
-  LatLng position;
 }

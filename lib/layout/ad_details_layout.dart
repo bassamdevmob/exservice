@@ -7,14 +7,14 @@ import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/constant.dart';
 import 'package:exservice/utils/enums.dart';
 import 'package:exservice/utils/global.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
+import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
-import 'package:exservice/widget/button/app_button.dart';
 import 'package:exservice/widget/button/favorite_button.dart';
 import 'package:exservice/widget/application/app_video.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,105 +46,165 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
-        title: Text(
-          AppLocalization.of(context).translate('app_name'),
-          style: AppTextStyle.largeBlack,
-        ),
+    return ExpandableTheme(
+      data: ExpandableThemeData(
+        iconColor: Theme.of(context).iconTheme.color,
+        headerAlignment: ExpandablePanelHeaderAlignment.center,
       ),
-      body: BlocBuilder<AdDetailsBloc, AdDetailsState>(
-        buildWhen: (_, current) =>
-            current is AdDetailsErrorState ||
-            current is AdDetailsReceivedState ||
-            current is AdDetailsAwaitState,
-        builder: (context, state) {
-          if (state is AdDetailsErrorState) {
-            return Center(
-              child: ReloadWidget.error(
-                content: Text(state.message, textAlign: TextAlign.center),
-                onPressed: () {
-                  _bloc.add(FetchAdDetailsEvent());
-                },
-              ),
-            );
-          }
-          if (state is AdDetailsAwaitState) {
-            return Center(child: CupertinoActivityIndicator());
-          }
-          return ListView(
-            children: <Widget>[
-              getOwnerHeader(),
-              AspectRatio(
-                aspectRatio: ASPECT_RATIO,
-                child: Swiper(
-                  itemCount: _bloc.details.media.gallery.length,
-                  loop: false,
-                  curve: Curves.linear,
-                  pagination: SwiperPagination(),
-                  itemBuilder: (BuildContext context, index) {
-                    if (_bloc.details.media.gallery[index].type == MediaType.image.name) {
-                      return OctoImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(_bloc.details.media.gallery[index].link),
-                        progressIndicatorBuilder: (context, _) => simpleShimmer,
-                        errorBuilder: imageErrorBuilder,
-                      );
-                    } else {
-                      return Center(
-                        child: AppVideo.network(
-                          '${_bloc.details.media.gallery[index].link}',
-                        ),
-                      );
-                    }
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.balcony),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.chat),
+              onPressed: () {},
+            )
+          ],
+        ),
+        body: BlocBuilder<AdDetailsBloc, AdDetailsState>(
+          buildWhen: (_, current) =>
+              current is AdDetailsErrorState ||
+              current is AdDetailsReceivedState ||
+              current is AdDetailsAwaitState,
+          builder: (context, state) {
+            if (state is AdDetailsAwaitState) {
+              return Center(
+                child: CupertinoActivityIndicator(),
+              );
+            }
+            if (state is AdDetailsErrorState) {
+              return Center(
+                child: ReloadWidget.error(
+                  content: Text(state.message, textAlign: TextAlign.center),
+                  onPressed: () {
+                    _bloc.add(FetchAdDetailsEvent());
                   },
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Builder(builder: (context) {
-                  final content = Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        text: TextSpan(
+              );
+            }
+            return ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Sizer.hs3,
+                          vertical: Sizer.vs3,
+                        ),
+                        child: ClipOval(
+                          child: OctoImage(
+                            width: Sizer.avatarSizeLarge,
+                            height: Sizer.avatarSizeLarge,
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              _bloc.details.owner.profilePicture,
+                            ),
+                            progressIndicatorBuilder: (ctx, _) => simpleShimmer,
+                            errorBuilder: imageErrorBuilder,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (_bloc.details.extra.room != null)
-                              TextSpan(
-                                text:
-                                    '${_bloc.details.extra.room.value} ${_bloc.details.extra.room.unit}  ',
-                                style: AppTextStyle.mediumBlueBold,
-                              ),
-                            if (_bloc.details.extra.bath != null)
-                              TextSpan(
-                                text:
-                                    '${_bloc.details.extra.bath.value} ${_bloc.details.extra.bath.unit}  ',
-                                style: AppTextStyle.mediumBlueBold,
-                              ),
-                            if (_bloc.details.extra.size != null)
-                              TextSpan(
-                                text:
-                                    '${_bloc.details.extra.size.value} ${_bloc.details.extra.size.unit}',
-                                style: AppTextStyle.mediumBlueBold,
-                              ),
+                            Text(
+                              _bloc.details.owner.username,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyMedium,
+                            ),
+                            Text(
+                              _bloc.details.owner.country,
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyMedium,
+                            ),
                           ],
                         ),
                       ),
-                      Text(
-                        '${_bloc.details.extra.price.value} ${_bloc.details.extra.price.unit}',
-                        textAlign: TextAlign.left,
-                        style: AppTextStyle.mediumBlueBold,
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            _bloc.details.views.toString(),
+                            style: Theme.of(context).primaryTextTheme.bodySmall,
+                          ),
+                          Text(
+                            AppLocalization.of(context).translate('views'),
+                            style:
+                                Theme.of(context).primaryTextTheme.labelSmall,
+                          ),
+                        ],
+                      ),
+                      //image slider
+                    ],
+                  ),
+                ),
+                AspectRatio(
+                  aspectRatio: ASPECT_RATIO,
+                  child: Swiper(
+                    itemCount: _bloc.details.media.gallery.length,
+                    pagination: swiperPagination,
+                    itemBuilder: (BuildContext context, index) {
+                      if (_bloc.details.media.gallery[index].type ==
+                          MediaType.image.name) {
+                        return OctoImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                              _bloc.details.media.gallery[index].link),
+                          progressIndicatorBuilder: (context, _) =>
+                              simpleShimmer,
+                          errorBuilder: imageErrorBuilder,
+                        );
+                      } else {
+                        return Center(
+                          child: AppVideo.network(
+                            '${_bloc.details.media.gallery[index].link}',
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: Sizer.vs3,
+                    horizontal: Sizer.vs3,
+                  ),
+                  child: Column(
+                    children: [
+                      Builder(builder: (context) {
+                        if (BlocProvider.of<ProfileBloc>(context).model.id ==
+                            _bloc.details.owner.id) {
+                          return AdDetails(_bloc.details);
+                        }
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: AdDetails(_bloc.details),
+                            ),
+                            FavoriteButton(
+                              active: _bloc.details.marked,
+                              onTap: () {},
+                            ),
+                          ],
+                        );
+                      }),
+                      SizedBox(
+                        height: Sizer.vs2,
                       ),
                       ReadMoreText(
                         _bloc.details.description,
-                        style: AppTextStyle.largeBlack,
-                        lessStyle: AppTextStyle.smallBlue,
-                        moreStyle: AppTextStyle.smallBlue,
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                        lessStyle:
+                            Theme.of(context).primaryTextTheme.titleSmall,
+                        moreStyle:
+                            Theme.of(context).primaryTextTheme.titleSmall,
                         trimLines: 2,
                         colorClickableText: AppColors.blue,
                         trimMode: TrimMode.Line,
@@ -153,71 +213,120 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         trimExpandedText:
                             AppLocalization.of(context).translate("less"),
                       ),
-                      if (_bloc.details.location != null)
-                        Text(
-                          "${_bloc.details.location.country}, ${_bloc.details.location.city}",
-                          textAlign: TextAlign.left,
-                          style: AppTextStyle.mediumGray,
+                      SizedBox(height: Sizer.vs2),
+                      ExpandablePanel(
+                        header: Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text(
+                            AppLocalization.of(context)
+                                .translate('specifications'),
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium,
+                          ),
                         ),
-                      Text(
-                        isoFormatter.format(_bloc.details.createdAt),
-                        textAlign: TextAlign.left,
-                        style: AppTextStyle.mediumGray,
-                      ),
-                    ],
-                  );
-                  if (BlocProvider.of<ProfileBloc>(context).model.id == _bloc.details.owner.id) {
-                    return content;
-                  }
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(child: content),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: BlocBuilder<AdDetailsBloc, AdDetailsState>(
-                          buildWhen: (_, current) =>
-                              current is UpdateSaveAdDetailsState,
-                          builder: (context, state) {
-                            return FavoriteButton(
-                              active: _bloc.details.marked,
-                              onTap: () {
-                                _bloc.add(SwitchSaveAdDetailsEvent());
-                              },
-                            );
-                          },
+                        collapsed: SizedBox(),
+                        expanded: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            if (_bloc.details.extra.trade != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context).translate('option'),
+                                "${_bloc.details.extra.trade.type} - ${_bloc.details.extra.trade.flag}",
+                              ),
+                            if (_bloc.details.extra.type != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context).translate('type'),
+                                "${_bloc.details.extra.type.type} - ${_bloc.details.extra.type.flag}",
+                              ),
+                            if (_bloc.details.extra.furniture != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context)
+                                    .translate('furniture'),
+                                "${_bloc.details.extra.furniture.type} - ${_bloc.details.extra.furniture.flag}",
+                              ),
+                            if (_bloc.details.extra.balcony != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context)
+                                    .translate('balcony'),
+                                "${_bloc.details.extra.balcony.value} ${_bloc.details.extra.balcony.unit}",
+                              ),
+                            if (_bloc.details.extra.garage != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context).translate('garage'),
+                                "${_bloc.details.extra.garage.value} ${_bloc.details.extra.garage.unit}",
+                              ),
+                            if (_bloc.details.extra.gym != null)
+                              getFeatureWidget(
+                                AppLocalization.of(context).translate('gym'),
+                                "${_bloc.details.extra.gym.value} ${_bloc.details.extra.gym.unit}",
+                              ),
+                          ],
                         ),
-                        // child: BookMark(_bloc.details.id, _bloc.details.saved),
                       ),
+                      Divider(),
+                      if (_bloc.position != null)
+                        ExpandablePanel(
+                          header: Text(
+                            AppLocalization.of(context).translate('location'),
+                            style:
+                                Theme.of(context).primaryTextTheme.bodyMedium,
+                          ),
+                          collapsed: SizedBox(),
+                          expanded: AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              child: GoogleMap(
+                                key: UniqueKey(),
+                                rotateGesturesEnabled: false,
+                                scrollGesturesEnabled: false,
+                                zoomGesturesEnabled: false,
+                                onMapCreated: (GoogleMapController controller) {
+                                  _controller.complete(controller);
+                                },
+                                initialCameraPosition: CameraPosition(
+                                  target: _bloc.position,
+                                  zoom: 12.0,
+                                ),
+                                mapType: MapType.normal,
+                                markers: Set.from([
+                                  Marker(
+                                    markerId: MarkerId('0'),
+                                    position: _bloc.position,
+                                  ),
+                                ]),
+                              ),
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: Sizer.vs2),
+                      if (BlocProvider.of<ProfileBloc>(context).model.id !=
+                          _bloc.details.owner.id)
+                        getContactToolbar(),
                     ],
-                  );
-                }),
-              ),
-              _getExpandableInfo(),
-              if (BlocProvider.of<ProfileBloc>(context).model.id == _bloc.details.owner.id)
-                getContactToolbar(),
-              SizedBox(height: 10),
-            ],
-          );
-        },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget getContactToolbar() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(
+        bottom: Sizer.vs2,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Expanded(
-            child: AppButton(
+            child: ElevatedButton(
               child: Text(
                 AppLocalization.of(context).translate('call'),
-                style: AppTextStyle.largeBlack,
-                textAlign: TextAlign.center,
               ),
-              onTap: () {
+              onPressed: () {
                 if (!Utils.isPhoneNumber(_bloc.details.owner.phoneNumber)) {
                   Fluttertoast.showToast(
                       msg: AppLocalization.of(context)
@@ -231,13 +340,11 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
           ),
           SizedBox(width: 10),
           Expanded(
-            child: AppButton(
+            child: ElevatedButton(
               child: Text(
                 AppLocalization.of(context).translate('chat'),
-                style: AppTextStyle.largeBlack,
-                textAlign: TextAlign.center,
               ),
-              onTap: () {
+              onPressed: () {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (context) => BlocProvider(
@@ -257,222 +364,19 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
     );
   }
 
-  Widget _getExpandableInfo() {
-    var details = _bloc.details;
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ExpandablePanel(
-            collapsed: SizedBox(),
-            header: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Text(
-                AppLocalization.of(context).translate('specifications'),
-                style: AppTextStyle.mediumBlack,
-              ),
-            ),
-            expanded: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Builder(builder: (context) {
-                final children = <Widget>[
-                  Divider(
-                    height: 5,
-                    color: AppColors.blue,
-                  ),
-                  SizedBox(height: 5),
-                  if (details.extra.trade != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('option'),
-                      details.extra.trade.type,
-                    ),
-                  if (details.extra.type != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('type'),
-                      details.extra.type.type,
-                    ),
-                  if (details.extra.furniture != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('furniture'),
-                      details.extra.furniture.type,
-                    ),
-                  if (details.extra.balcony != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('balcony'),
-                      details.extra.balcony.value.toString(),
-                    ),
-                  if (details.extra.garage != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('garage'),
-                      details.extra.garage.value.toString(),
-                    ),
-                  if (details.extra.gym != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('gym'),
-                      details.extra.gym.value.toString(),
-                    ),
-                  if (details.createdAt != null)
-                    _getFeature(
-                      AppLocalization.of(context).translate('createdAt'),
-                      isoFormatter.format(details.createdAt),
-                    ),
-                ];
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: children,
-                );
-              }),
-            ),
-          ),
-          Divider(
-            height: 1,
-            color: AppColors.black,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          ExpandablePanel(
-            collapsed: SizedBox(),
-            header: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Text(
-                AppLocalization.of(context).translate('location'),
-                style: AppTextStyle.mediumBlack,
-              ),
-            ),
-            expanded: Builder(builder: (context) {
-              if (_bloc.position == null) {
-                return SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: Text(
-                      AppLocalization.of(context)
-                          .translate("location_not_available"),
-                      style: AppTextStyle.largeBlack,
-                    ),
-                  ),
-                );
-              }
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                height: 170,
-                child: GoogleMap(
-                  key: UniqueKey(),
-                  rotateGesturesEnabled: false,
-                  scrollGesturesEnabled: false,
-                  zoomGesturesEnabled: false,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                  initialCameraPosition: CameraPosition(
-                    target: _bloc.position,
-                    zoom: 12.0,
-                  ),
-                  mapType: MapType.normal,
-                  markers: Set.from([
-                    Marker(
-                      markerId: MarkerId('0'),
-                      position: _bloc.position,
-                    ),
-                  ]),
-                ),
-              );
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _getFeature(String field, String value) {
+  Widget getFeatureWidget(String field, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
           field,
-          style: AppTextStyle.mediumBlack,
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
         ),
         Text(
           value,
-          style: AppTextStyle.mediumBlack,
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
         )
       ],
-    );
-  }
-
-  Widget getOwnerHeader() {
-    double width = 50;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 15, top: 10, bottom: 10, right: 10),
-            width: width,
-            height: width,
-            decoration: BoxDecoration(
-              border: Border.fromBorderSide(
-                BorderSide(
-                  color: AppColors.blue, // temp condition
-                  width: 2,
-                  style: BorderStyle.solid,
-                ),
-              ),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.network(
-                  "${_bloc.details.owner.profilePicture}",
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _bloc.details.owner.username,
-                  textAlign: TextAlign.left,
-                  style: AppTextStyle.largeBlackBold,
-                ),
-                if (_bloc.details.owner.country != null)
-                  Text(
-                    _bloc.details.owner.country,
-                    textAlign: TextAlign.left,
-                    style: AppTextStyle.largeBlack,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "${_bloc.details.views}",
-                  style: AppTextStyle.largeBlackBold,
-                ),
-                Text(
-                  AppLocalization.of(context).translate('views'),
-                  style: AppTextStyle.largeBlack,
-                ),
-              ],
-            ),
-          ),
-          //image slider
-        ],
-      ),
     );
   }
 }

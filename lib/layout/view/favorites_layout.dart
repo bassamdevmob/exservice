@@ -4,7 +4,7 @@ import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
-import 'package:exservice/widget/cards/list_ad_card.dart';
+import 'package:exservice/widget/cards/ad_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -79,13 +79,9 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
               },
             ),
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(
-                vertical: Sizer.vs3,
-                horizontal: Sizer.hs3,
-              ),
               itemCount: _bloc.models.length,
               itemBuilder: (context, index) {
-                return ListAdCard(_bloc.models[index]);
+                return AdCard(_bloc.models[index]);
               },
             ),
           );

@@ -29,11 +29,11 @@ abstract class Sizer {
   static double get vs3 => 2.h;
 
   /// horizontal spacing
-  static double get hs1 => 10.w;
+  static double get hs1 => 9.w;
 
-  static double get hs2 => 8.w;
+  static double get hs2 => 7.w;
 
-  static double get hs3 => 6.w;
+  static double get hs3 => 5.w;
 
   /// icon size
   static double get logoSize => 100.sp;

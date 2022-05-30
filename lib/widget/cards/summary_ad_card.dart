@@ -1,5 +1,5 @@
-import 'package:exservice/bloc/ads_list_bloc/ads_list_cubit.dart';
-import 'package:exservice/layout/ads_list_layout.dart';
+import 'package:exservice/bloc/ads_bloc/ads_cubit.dart';
+import 'package:exservice/layout/ads_layout.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
@@ -24,8 +24,8 @@ class SummaryAdCard extends StatelessWidget {
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => BlocProvider(
-              create: (context) => AdsListCubit(),
-              child: AdsListLayout(),
+              create: (context) => AdsCubit(),
+              child: AdsLayout(),
             ),
           ),
         );
