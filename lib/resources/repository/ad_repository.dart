@@ -1,6 +1,7 @@
 import 'package:exservice/models/request/edit_ad_request.dart';
 import 'package:exservice/models/response/ad_details_response.dart';
 import 'package:exservice/models/response/ads_response.dart';
+import 'package:exservice/models/response/bit_response.dart';
 import 'package:exservice/models/response/home_response.dart';
 import 'package:exservice/models/response/profile_response.dart';
 import 'package:exservice/models/response/simple_response.dart';
@@ -24,11 +25,11 @@ class AdRepository extends BaseClient {
     return SimpleResponse.fromJson(response.data);
   }
 
-  Future<SimpleResponse> bookmark(int id, bool value) async {
+  Future<BitResponse> bookmark(int id, bool value) async {
     final response = await client.post(Links.BOOKMARK_AD_URL, data: {
       "value": value,
     });
-    return SimpleResponse.fromJson(response.data);
+    return BitResponse.fromJson(response.data);
   }
 
   Future<AdsResponse> ads({int categoryId}) async {

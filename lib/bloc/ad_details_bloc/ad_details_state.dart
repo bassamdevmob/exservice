@@ -5,12 +5,20 @@ abstract class AdDetailsState {}
 
 class AdDetailsAwaitState extends AdDetailsState {}
 
-class AdDetailsReceivedState extends AdDetailsState {}
-
-class UpdateSaveAdDetailsState extends AdDetailsState {}
+class AdDetailsAcceptState extends AdDetailsState {}
 
 class AdDetailsErrorState extends AdDetailsState {
-  final String message;
+  final dynamic error;
 
-  AdDetailsErrorState(this.message);
+  AdDetailsErrorState(this.error);
+}
+
+class AdDetailsBookmarkAwaitState extends AdDetailsState {}
+
+class AdDetailsBookmarkAcceptState extends AdDetailsState {}
+
+class AdDetailsBookmarkErrorState extends AdDetailsState {
+  final dynamic error;
+
+  AdDetailsBookmarkErrorState(this.error);
 }
