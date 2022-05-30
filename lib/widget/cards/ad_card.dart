@@ -1,32 +1,51 @@
+import 'package:dio/dio.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/layout/publisher_layout.dart';
+import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/ad_media.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
-import 'package:exservice/widget/button/favorite_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:octo_image/octo_image.dart';
 
-class AdCard extends StatelessWidget {
+class AdCard extends StatefulWidget {
   final AdModel model;
 
   const AdCard(this.model, {Key key}) : super(key: key);
 
-  void onSave() {
-    // setState(() {
-    //   ad.marked = !ad.marked;
-    //   GetIt.I
-    //       .get<AdRepository>()
-    //       .bookmark(ad.id, ad.marked);
-    // });
+  @override
+  State<AdCard> createState() => _AdCardState();
+}
+
+class _AdCardState extends State<AdCard> {
+  bool awaitBookmark = false;
+
+  void bookmark() async {
+    try {
+      setState(() => awaitBookmark = true);
+      var response = await GetIt.I
+          .get<AdRepository>()
+          .bookmark(widget.model.id, !widget.model.marked);
+      widget.model.marked = response.data;
+      setState(() => awaitBookmark = false);
+    } on DioError catch (ex) {
+      Fluttertoast.showToast(
+        msg: Utils.resolveErrorMessage(ex.error),
+        toastLength: Toast.LENGTH_LONG,
+      );
+      setState(() => awaitBookmark = false);
+    }
   }
 
   @override
@@ -39,7 +58,7 @@ class AdCard extends StatelessWidget {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => PublisherCubit(model.owner.id),
+                  create: (context) => PublisherCubit(widget.model.owner.id),
                   child: PublisherLayout(),
                 ),
               ),
@@ -57,7 +76,7 @@ class AdCard extends StatelessWidget {
                     width: Sizer.avatarSizeSmall,
                     height: Sizer.avatarSizeSmall,
                     fit: BoxFit.cover,
-                    image: NetworkImage(model.owner.profilePicture),
+                    image: NetworkImage(widget.model.owner.profilePicture),
                     progressIndicatorBuilder: (ctx, _) => simpleShimmer,
                     errorBuilder: imageErrorBuilder,
                   ),
@@ -68,11 +87,11 @@ class AdCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      model.owner.username,
+                      widget.model.owner.username,
                       style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                     Text(
-                      model.owner.country,
+                      widget.model.owner.country,
                       style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                   ],
@@ -87,21 +106,22 @@ class AdCard extends StatelessWidget {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => AdDetailsBloc(model.id),
+                  create: (context) => AdDetailsBloc(widget.model.id),
                   child: AdDetailsLayout(),
                 ),
               ),
             );
           },
-          child: AdGallery(model),
+          child: AdGallery(widget.model),
         ),
         Builder(builder: (context) {
-          if (BlocProvider.of<ProfileBloc>(context).model.id == model.owner.id) {
+          if (BlocProvider.of<ProfileBloc>(context).model.id ==
+              widget.model.owner.id) {
             return Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              child: AdDetails(model),
+              child: AdDetails(widget.model),
             );
           }
           return Padding(
@@ -113,18 +133,28 @@ class AdCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                  child: AdDetails(model),
+                  child: AdDetails(widget.model),
                 ),
-                FavoriteButton(
-                  active: model.marked,
-                  onTap: onSave,
-                ),
+                getBookmarkButton(),
               ],
             ),
           );
         }),
         Divider(color: AppColors.deepGray),
       ],
+    );
+  }
+
+  Widget getBookmarkButton() {
+    var color = Theme.of(context).iconTheme.color;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: Icon(
+        widget.model.marked ? Icons.bookmark : Icons.bookmark_outline,
+        size: 25,
+        color: awaitBookmark ? color.withOpacity(0.5) : color,
+      ),
+      onTap: awaitBookmark ? null : bookmark,
     );
   }
 }

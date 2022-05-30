@@ -46,7 +46,7 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
           emit(AdDetailsBookmarkAwaitState());
           var response = await GetIt.I
               .get<AdRepository>()
-              .bookmark(details.id, details.marked);
+              .bookmark(details.id, !details.marked);
           details.marked = response.data;
           emit(AdDetailsBookmarkAcceptState());
         } on DioError catch (e) {

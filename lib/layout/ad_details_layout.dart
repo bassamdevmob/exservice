@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:expandable/expandable.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
@@ -29,7 +27,6 @@ class AdDetailsLayout extends StatefulWidget {
 }
 
 class _AdDetailsLayoutState extends State<AdDetailsLayout> {
-  final Completer<GoogleMapController> _controller = Completer();
   AdDetailsBloc _bloc;
 
   @override
@@ -261,10 +258,6 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                                 rotateGesturesEnabled: false,
                                 scrollGesturesEnabled: false,
                                 zoomGesturesEnabled: false,
-                                onMapCreated: (GoogleMapController controller) {
-                                  if (!_controller.isCompleted)
-                                    _controller.complete(controller);
-                                },
                                 initialCameraPosition: CameraPosition(
                                   target: _bloc.position,
                                   zoom: 12.0,
