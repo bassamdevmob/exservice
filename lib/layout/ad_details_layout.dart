@@ -131,23 +131,12 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                     itemCount: _bloc.details.media.length,
                     pagination: swiperPagination,
                     itemBuilder: (BuildContext context, index) {
-                      if (_bloc.details.media[index].type ==
-                          MediaType.image.name) {
-                        return OctoImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              _bloc.details.media[index].link),
-                          progressIndicatorBuilder: (context, _) =>
-                              simpleShimmer,
-                          errorBuilder: imageErrorBuilder,
-                        );
-                      } else {
-                        return Center(
-                          child: AppVideo.network(
-                            '${_bloc.details.media[index].link}',
-                          ),
-                        );
-                      }
+                      return OctoImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(_bloc.details.media[index].link),
+                        progressIndicatorBuilder: (context, _) => simpleShimmer,
+                        errorBuilder: imageErrorBuilder,
+                      );
                     },
                   ),
                 ),

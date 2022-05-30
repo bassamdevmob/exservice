@@ -23,16 +23,12 @@ class AdGallery extends StatelessWidget {
           itemCount: media.length,
           pagination: swiperPagination,
           itemBuilder: (context, index) {
-            if (media[index].type == MediaType.image.name) {
-              return OctoImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(media[index].link),
-                progressIndicatorBuilder: (ctx, _) => simpleShimmer,
-                errorBuilder: imageErrorBuilder,
-              );
-            } else {
-              return AppVideo.network(media[index].link);
-            }
+            return OctoImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(media[index].link),
+              progressIndicatorBuilder: (ctx, _) => simpleShimmer,
+              errorBuilder: imageErrorBuilder,
+            );
           },
         );
       }),
