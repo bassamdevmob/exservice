@@ -91,7 +91,7 @@ class _AdCardState extends State<AdCard> {
                       style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                     Text(
-                      widget.model.owner.country,
+                      "${widget.model.owner.location.country} ${widget.model.owner.location.city}",
                       style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                   ],

@@ -7,7 +7,6 @@ import 'package:exservice/layout/account/edit/edit_business_info_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:exservice/widget/application/dotted_container.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
@@ -207,19 +206,18 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                     //                 ),
                   },
                 ),
-                if (user.type == UserType.BUSINESS.name)
-                  ActionButton(
-                    AppLocalization.of(context).translate("business_info"),
-                    AppLocalization.of(context).translate("business_info_desc"),
-                    () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (context) => BusinessInfoBloc(context),
-                          child: EditBusinessInfoLayout(),
-                        ),
-                      ));
-                    },
-                  ),
+                ActionButton(
+                  AppLocalization.of(context).translate("business_info"),
+                  AppLocalization.of(context).translate("business_info_desc"),
+                  () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => BusinessInfoBloc(context),
+                        child: EditBusinessInfoLayout(),
+                      ),
+                    ));
+                  },
+                ),
                 ActionButton(
                   AppLocalization.of(context).translate("password"),
                   AppLocalization.of(context).translate("password_desc"),

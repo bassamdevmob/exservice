@@ -21,11 +21,3 @@ extension CapExtension on String {
         .toUpperCase();
   }
 }
-
-extension AdvancedList on List<Widget> {
-  List<Widget> withDivider(Widget divider) {
-    var length = this.length;
-    for (int i = 0; i < length - 1; i++) insert((i * 2) + 1, divider);
-    return this;
-  }
-}

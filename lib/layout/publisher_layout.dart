@@ -108,10 +108,10 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                               child: ClipOval(
                                 child: OctoImage(
                                   fit: BoxFit.cover,
-                                  image:
-                                  NetworkImage(_bloc.publisher.profilePicture),
+                                  image: NetworkImage(
+                                      _bloc.publisher.profilePicture),
                                   progressIndicatorBuilder: (context, _) =>
-                                  simpleShimmer,
+                                      simpleShimmer,
                                   errorBuilder: imageErrorBuilder,
                                 ),
                               ),
@@ -127,9 +127,9 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                                   style: AppTextStyle.largeBlack,
                                   maxLines: 1,
                                 ),
-                                if (_bloc.publisher.country != null)
+                                if (_bloc.publisher.location != null)
                                   Text(
-                                    _bloc.publisher.country,
+                                    "${_bloc.publisher.location.country} ${_bloc.publisher.location.city}",
                                     style: AppTextStyle.largeBlack,
                                     maxLines: 1,
                                   )
@@ -139,8 +139,7 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                         ],
                       ),
                       Divider(),
-                      if (_bloc.publisher.type == UserType.BUSINESS.name)
-                        ...getBusinessInfo(),
+                      ...getBusinessInfo(),
                       if (context.read<ProfileBloc>().model.id !=
                           _bloc.publisher.id) ...[
                         getContactToolbar(),
@@ -178,24 +177,23 @@ class _PublisherLayoutState extends State<PublisherLayout> {
               _bloc.publisher.type,
               style: AppTextStyle.largeBlack,
             ),
-            if (_bloc.publisher.business.website != null &&
-                isURL(_bloc.publisher.business.website))
+            if (_bloc.publisher.website != null &&
+                isURL(_bloc.publisher.website))
               InkWell(
                 onTap: () {
-                  Utils.launchWeb(context, _bloc.publisher.business.website)
+                  Utils.launchWeb(context, _bloc.publisher.website)
                       .catchError((e) {
                     Fluttertoast.showToast(msg: e);
                   });
                 },
                 child: Text(
-                  _bloc.publisher.business.website,
+                  _bloc.publisher.website,
                   style: AppTextStyle.mediumBlue,
                 ),
               ),
-            if (_bloc.publisher.business.bio != null &&
-                _bloc.publisher.business.bio.isNotEmpty)
+            if (_bloc.publisher.bio != null && _bloc.publisher.bio.isNotEmpty)
               Text(
-                _bloc.publisher.business.bio,
+                _bloc.publisher.bio,
                 style: AppTextStyle.mediumBlack,
               ),
           ],

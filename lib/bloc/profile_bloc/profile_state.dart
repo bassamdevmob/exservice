@@ -15,16 +15,15 @@ class ProfileLogoutErrorState extends ProfileState {
   ProfileLogoutErrorState(this.error);
 }
 
-class ProfileChangeTabState extends ProfileState {}
 
 class ProfileAwaitState extends ProfileState {}
 
-class ProfileAccessibleState extends ProfileState {}
+class ProfileAcceptState extends ProfileState {}
 
 class ProfileErrorState extends ProfileState {
-  final String message;
+  final dynamic error;
 
-  ProfileErrorState(this.message);
+  ProfileErrorState(this.error);
 }
 
 /// video

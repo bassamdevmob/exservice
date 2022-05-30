@@ -1,12 +1,3 @@
-class UserType {
-  final String name;
-
-  const UserType._(this.name);
-
-  static const NORMAL = UserType._("NORMAL");
-  static const BUSINESS = UserType._("BUSINESS");
-}
-
 class AdStatus {
   final String name;
 
@@ -24,9 +15,4 @@ class MediaType {
 
   static final MediaType image = MediaType._("IMAGE");
   static final MediaType video = MediaType._("VIDEO");
-}
-
-enum ProfileTab {
-  info,
-  posts,
 }

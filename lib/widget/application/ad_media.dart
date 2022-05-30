@@ -18,7 +18,7 @@ class AdGallery extends StatelessWidget {
     return AspectRatio(
       aspectRatio: ASPECT_RATIO,
       child: Builder(builder: (context) {
-        final media = model.media.gallery;
+        final media = model.media;
         return Swiper(
           itemCount: media.length,
           pagination: swiperPagination,

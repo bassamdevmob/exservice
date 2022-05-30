@@ -9,12 +9,6 @@ class ProfileRefreshEvent extends ProfileEvent {}
 
 class ProfileLogoutEvent extends ProfileEvent {}
 
-class ProfileChangeTabEvent extends ProfileEvent {
-  final ProfileTab tab;
-
-  ProfileChangeTabEvent(this.tab);
-}
-
 class ProfileUploadVideoEvent extends ProfileEvent {
   final String path;
 

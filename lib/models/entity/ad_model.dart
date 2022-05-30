@@ -1,3 +1,4 @@
+import 'package:exservice/models/entity/location.dart';
 import 'package:exservice/models/entity/user.dart';
 
 class AdModel {
@@ -25,7 +26,7 @@ class AdModel {
   String status;
   int views;
   Extra extra;
-  Media media;
+  List<MediaEntity> media;
 
   factory AdModel.fromJson(Map<String, dynamic> json) => AdModel(
     id: json["id"] == null ? null : json["id"],
@@ -38,7 +39,7 @@ class AdModel {
     status: json["status"] == null ? null : json["status"],
     views: json["views"] == null ? null : json["views"],
     extra: json["extra"] == null ? null : Extra.fromJson(json["extra"]),
-    media: json["media"] == null ? null : Media.fromJson(json["media"]),
+    media: json["media"] == null ? null : List<MediaEntity>.from(json["media"].map((x) => MediaEntity.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -52,7 +53,7 @@ class AdModel {
     "status": status == null ? null : status,
     "views": views == null ? null : views,
     "extra": extra == null ? null : extra.toJson(),
-    "media": media == null ? null : media.toJson(),
+    "media": media == null ? null : List<dynamic>.from(media.map((x) => x.toJson())),
   };
 }
 
@@ -149,54 +150,6 @@ class StandardValue {
   Map<String, dynamic> toJson() => {
     "type": type == null ? null : type,
     "flag": flag == null ? null : flag,
-  };
-}
-
-class Location {
-  Location({
-    this.country,
-    this.city,
-    this.longitude,
-    this.latitude,
-  });
-
-  String country;
-  String city;
-  String longitude;
-  String latitude;
-
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-    country: json["country"] == null ? null : json["country"],
-    city: json["city"] == null ? null : json["city"],
-    longitude: json["longitude"] == null ? null : json["longitude"],
-    latitude: json["latitude"] == null ? null : json["latitude"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "country": country == null ? null : country,
-    "city": city == null ? null : city,
-    "longitude": longitude == null ? null : longitude,
-    "latitude": latitude == null ? null : latitude,
-  };
-}
-
-class Media {
-  Media({
-    this.cover,
-    this.gallery,
-  });
-
-  MediaEntity cover;
-  List<MediaEntity> gallery;
-
-  factory Media.fromJson(Map<String, dynamic> json) => Media(
-    cover: json["cover"] == null ? null : MediaEntity.fromJson(json["cover"]),
-    gallery: json["gallery"] == null ? null : List<MediaEntity>.from(json["gallery"].map((x) => MediaEntity.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "cover": cover == null ? null : cover.toJson(),
-    "gallery": gallery == null ? null : List<dynamic>.from(gallery.map((x) => x.toJson())),
   };
 }
 

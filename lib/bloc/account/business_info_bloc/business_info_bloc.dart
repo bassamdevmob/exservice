@@ -59,14 +59,14 @@ class BusinessInfoBloc extends Bloc<BusinessInfoEvent, BusinessInfoState> {
 
   BusinessInfoBloc(this.context) : super(BusinessInfoInitial()) {
     var _accountBloc = BlocProvider.of<ProfileBloc>(context);
-    companyNameController.text = _accountBloc.model.business.companyName;
-    websiteController.text = _accountBloc.model.business.website;
-    bioController.text = _accountBloc.model.business.bio;
+    companyNameController.text = _accountBloc.model.companyName;
+    websiteController.text = _accountBloc.model.website;
+    bioController.text = _accountBloc.model.bio;
     on<BusinessInfoEvent>((event, emit) async {
       if (event is ResetBusinessInfoEvent) {
-        companyNameController.text = _accountBloc.model.business.companyName;
-        websiteController.text = _accountBloc.model.business.website;
-        bioController.text = _accountBloc.model.business.bio;
+        companyNameController.text = _accountBloc.model.companyName;
+        websiteController.text = _accountBloc.model.website;
+        bioController.text = _accountBloc.model.bio;
         emit(BusinessInfoResetState());
       } else if (event is UpdateBusinessInfoEvent) {
         try {
@@ -78,7 +78,7 @@ class BusinessInfoBloc extends Bloc<BusinessInfoEvent, BusinessInfoState> {
             String website = websiteController.text.trim();
             String bio = bioController.text.trim();
             await GetIt.I.get<UserRepository>().updateProfile();
-            _accountBloc.model.business
+            _accountBloc.model
               ..companyName = companyName
               ..website = website
               ..bio = bio;

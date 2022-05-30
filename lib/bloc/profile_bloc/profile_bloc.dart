@@ -19,7 +19,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ScrollController scrollController = ScrollController();
 
   User model;
-  ProfileTab currentTab = ProfileTab.info;
 
   bool get isAuthenticated => DataStore.instance.hasToken;
 
@@ -37,15 +36,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           var response =
               await GetIt.I.get<UserRepository>().getProfile();
           model = response.data;
-          emit(ProfileAccessibleState());
-        } catch (e) {
-          emit(ProfileErrorState("$e"));
+          emit(ProfileAcceptState());
+        } on DioError catch (ex) {
+          emit(ProfileErrorState(ex.error));
         }
       } else if (event is ProfileRefreshEvent) {
         emit(ProfileInitial());
-      } else if (event is ProfileChangeTabEvent) {
-        currentTab = event.tab;
-        emit(ProfileChangeTabState());
       } else if (event is ProfileUploadVideoEvent) {
         // emit(ProfileAwaitVideoUploadState());
         // try {

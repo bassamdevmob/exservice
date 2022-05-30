@@ -89,7 +89,7 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 ),
               ),
               title: Text(
-                model.user.business.companyName ?? model.user.username,
+                model.user.username,
                 style: AppTextStyle.largeBlackBold,
               ),
               subtitle: Text(

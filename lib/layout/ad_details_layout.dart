@@ -98,7 +98,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                                 Theme.of(context).primaryTextTheme.bodyMedium,
                           ),
                           Text(
-                            _bloc.details.owner.country,
+                            "${_bloc.details.owner.location.country} ${_bloc.details.owner.location.city}",
                             style:
                                 Theme.of(context).primaryTextTheme.bodyMedium,
                           ),
@@ -128,15 +128,15 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                 AspectRatio(
                   aspectRatio: ASPECT_RATIO,
                   child: Swiper(
-                    itemCount: _bloc.details.media.gallery.length,
+                    itemCount: _bloc.details.media.length,
                     pagination: swiperPagination,
                     itemBuilder: (BuildContext context, index) {
-                      if (_bloc.details.media.gallery[index].type ==
+                      if (_bloc.details.media[index].type ==
                           MediaType.image.name) {
                         return OctoImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                              _bloc.details.media.gallery[index].link),
+                              _bloc.details.media[index].link),
                           progressIndicatorBuilder: (context, _) =>
                               simpleShimmer,
                           errorBuilder: imageErrorBuilder,
@@ -144,7 +144,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                       } else {
                         return Center(
                           child: AppVideo.network(
-                            '${_bloc.details.media.gallery[index].link}',
+                            '${_bloc.details.media[index].link}',
                           ),
                         );
                       }

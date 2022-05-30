@@ -1,3 +1,5 @@
+import 'package:exservice/models/entity/location.dart';
+
 class User {
   User({
     this.id,
@@ -5,10 +7,12 @@ class User {
     this.fcmToken,
     this.email,
     this.phoneNumber,
-    this.country,
+    this.location,
     this.countryCode,
     this.type,
-    this.business,
+    this.bio,
+    this.website,
+    this.companyName,
     this.profilePicture,
     this.profileVideo,
     this.statistics,
@@ -19,10 +23,12 @@ class User {
   String fcmToken;
   String email;
   String phoneNumber;
-  String country;
+  Location location;
   String countryCode;
   String type;
-  Business business;
+  String bio;
+  String website;
+  String companyName;
   String profilePicture;
   String profileVideo;
   Statistics statistics;
@@ -33,10 +39,12 @@ class User {
     fcmToken: json["fcm_token"] == null ? null : json["fcm_token"],
     email: json["email"] == null ? null : json["email"],
     phoneNumber: json["phone_number"] == null ? null : json["phone_number"],
-    country: json["country"] == null ? null : json["country"],
+    location: json["location"] == null ? null : Location.fromJson(json["location"]),
     countryCode: json["country_code"] == null ? null : json["country_code"],
     type: json["type"] == null ? null : json["type"],
-    business: json["business"] == null ? null : Business.fromJson(json["business"]),
+    bio: json["bio"] == null ? null : json["bio"],
+    website: json["website"] == null ? null : json["website"],
+    companyName: json["company_name"] == null ? null : json["company_name"],
     profilePicture: json["profile_picture"] == null ? null : json["profile_picture"],
     profileVideo: json["profile_video"] == null ? null : json["profile_video"],
     statistics: json["statistics"] == null ? null : Statistics.fromJson(json["statistics"]),
@@ -48,41 +56,15 @@ class User {
     "fcm_token": fcmToken == null ? null : fcmToken,
     "email": email == null ? null : email,
     "phone_number": phoneNumber == null ? null : phoneNumber,
-    "country": country == null ? null : country,
+    "location": location == null ? null : location.toJson(),
     "country_code": countryCode == null ? null : countryCode,
     "type": type == null ? null : type,
-    "business": business == null ? null : business.toJson(),
-    "profile_picture": profilePicture == null ? null : profilePicture,
-    "profile_video": profileVideo == null ? null : profileVideo,
-    "statistics": statistics == null ? null : statistics.toJson(),
-  };
-}
-
-class Business {
-  Business({
-    this.publicPhone,
-    this.bio,
-    this.website,
-    this.companyName,
-  });
-
-  String publicPhone;
-  String bio;
-  String website;
-  String companyName;
-
-  factory Business.fromJson(Map<String, dynamic> json) => Business(
-    publicPhone: json["public_phone"] == null ? null : json["public_phone"],
-    bio: json["bio"] == null ? null : json["bio"],
-    website: json["website"] == null ? null : json["website"],
-    companyName: json["company_name"] == null ? null : json["company_name"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "public_phone": publicPhone == null ? null : publicPhone,
     "bio": bio == null ? null : bio,
     "website": website == null ? null : website,
     "company_name": companyName == null ? null : companyName,
+    "profile_picture": profilePicture == null ? null : profilePicture,
+    "profile_video": profileVideo == null ? null : profileVideo,
+    "statistics": statistics == null ? null : statistics.toJson(),
   };
 }
 

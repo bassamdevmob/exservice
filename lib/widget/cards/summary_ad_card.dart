@@ -108,7 +108,7 @@ class SummaryAdCard extends StatelessWidget {
   }
 
   Widget getContent(BuildContext context) {
-    var images = model.media.gallery.map((e) => e.link).toList();
+    var images = model.media.map((e) => e.link).toList();
     switch (images.length) {
       case 0:
         return ColoredBox(
