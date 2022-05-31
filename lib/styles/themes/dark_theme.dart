@@ -61,31 +61,25 @@ final ThemeData darkTheme = ThemeData(
       fontFamily: "Satisfy"
     ),
     bodyLarge: AppTextStyle.mediumWhite,
-    titleMedium: AppTextStyle.mediumBlack,
+    titleMedium: AppTextStyle.mediumWhite,
   ),
   inputDecorationTheme: InputDecorationTheme(
-    fillColor: AppColors.grayAccent,
-    filled: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-    enabledBorder: OutlineInputBorder(
+    enabledBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(10),
     ),
-    border: OutlineInputBorder(
+    border: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(10),
     ),
-    focusedBorder: OutlineInputBorder(
+    focusedBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(10),
     ),
-    errorBorder: OutlineInputBorder(
+    errorBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.red),
-      borderRadius: BorderRadius.circular(10),
     ),
-    hintStyle: AppTextStyle.mediumGray,
-    errorStyle: AppTextStyle.mediumRed,
     labelStyle: AppTextStyle.mediumBlue,
+    hintStyle: AppTextStyle.mediumGray,
+    errorStyle: AppTextStyle.smallRed,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:string_validator/string_validator.dart';
@@ -13,68 +14,52 @@ part 'manage_email_address_state.dart';
 
 class ManageEmailAddressBloc
     extends Bloc<ManageEmailAddressEvent, ManageEmailAddressState> {
-  final mobileNumberController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final BuildContext context;
 
   @override
   Future<void> close() async {
-    mobileNumberController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.close();
   }
 
-  String mobileNumberMsg;
-  String passwordMsg;
+  Localized emailErrorMessage;
+  Localized passwordErrorMessage;
 
-  bool get validMobileNumber => mobileNumberMsg == null;
-
-  bool get validPassword => mobileNumberMsg == null;
-
-  bool get valid => validMobileNumber && validPassword;
-
-  String validateMobileNumber() {
-    String mobileNumber = mobileNumberController.text.trim();
-    if (mobileNumber.isEmpty)
-      return AppLocalization.of(context).translate("filed_required");
-    if (!isEmail(mobileNumber))
-      return AppLocalization.of(context).translate("error_email_msg");
-    return null;
-  }
-
-  String validatePassword() {
-    String password = passwordController.text.trim();
-    if (password.isEmpty)
-      return AppLocalization.of(context).translate("filed_required");
-    return null;
-  }
+  bool get valid => emailErrorMessage == null && emailErrorMessage == null;
 
   void _validate() {
-    mobileNumberMsg = validateMobileNumber();
-    passwordMsg = validatePassword();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty) {
+      emailErrorMessage = Localized("field_required");
+    } else if (!isEmail(email)) {
+      emailErrorMessage = Localized("invalid_email");
+    } else {
+      emailErrorMessage = null;
+    }
+    passwordErrorMessage = password.isEmpty ? Localized("field_required") : null;
   }
 
   bool obscurePassword = true;
 
-  ManageEmailAddressBloc(this.context) : super(ManageEmailAddressInitial()) {
+  ManageEmailAddressBloc() : super(ManageEmailAddressInitial()) {
     on<ManageEmailAddressEvent>((event, emit) async {
-      if (event is ManageEmailAddressValidateEvent) {
-        _validate();
-        emit(ValidationUpdateNumberState());
-      } else if (event is ManageEmailAddressCommitEvent) {
+      if (event is ManageEmailAddressCommitEvent) {
         try {
           _validate();
-          emit(ValidationUpdateNumberState());
+          emit(ManageEmailAddressValidateState());
           if (valid) {
             emit(ManageEmailAddressAwaitState());
-            String mobileNumber = mobileNumberController.text.trim();
+            String mobileNumber = emailController.text.trim();
             String password = passwordController.text.trim();
-            var response =
-                await GetIt.I.get<UserRepository>().updateEmail(
-                      email: mobileNumber,
-                      password: password,
-                    );
-            emit(ManageEmailAddressCommittedState(response.data.session));
+            var response = await GetIt.I.get<UserRepository>().updateEmail(
+                  email: mobileNumber,
+                  password: password,
+                );
+            emit(ManageEmailAddressAcceptState(response.data.session));
           }
         } catch (e) {
           emit(ManageEmailAddressErrorState("$e"));

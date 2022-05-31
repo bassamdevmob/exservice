@@ -16,7 +16,7 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         AppLocalization.of(context).translate('error'),
-        style: AppTextStyle.mediumRed,
+        style: AppTextStyle.smallRed,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

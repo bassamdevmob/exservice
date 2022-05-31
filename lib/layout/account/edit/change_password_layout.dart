@@ -20,12 +20,7 @@ class ChangePasswordLayout extends StatefulWidget {
 
 class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
   ChangePasswordBloc _bloc;
-  var border = UnderlineInputBorder(
-    borderSide: const BorderSide(color: AppColors.grayAccent),
-  );
-  var errorBorder = UnderlineInputBorder(
-    borderSide: const BorderSide(color: AppColors.red),
-  );
+
 
   @override
   void initState() {
@@ -106,19 +101,12 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           current is ChangePasswordValidationState ||
           current is ChangePasswordShowNewPasswordState,
       builder: (context, state) {
-        var style = Theme.of(context).primaryTextTheme.bodyMedium;
         return DirectionalTextField(
           controller: _bloc.newPasswordController,
           keyboardType: TextInputType.visiblePassword,
           maxLines: 1,
-          style: style,
           obscureText: _bloc.obscureNewPassword,
           decoration: InputDecoration(
-            filled: false,
-            border: border,
-            enabledBorder: border,
-            focusedBorder: border,
-            errorBorder: errorBorder,
             labelText: AppLocalization.of(context).translate("new_password"),
             suffixIcon: IconButton(
               onPressed: () {
@@ -144,20 +132,12 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           current is ChangePasswordValidationState ||
           current is ChangePasswordShowOldPasswordState,
       builder: (context, state) {
-        var style = Theme.of(context).primaryTextTheme.bodyMedium;
-
         return DirectionalTextField(
           controller: _bloc.oldPasswordController,
           keyboardType: TextInputType.visiblePassword,
           maxLines: 1,
-          style: style,
           obscureText: _bloc.obscureOldPassword,
           decoration: InputDecoration(
-            filled: false,
-            border: border,
-            enabledBorder: border,
-            focusedBorder: border,
-            errorBorder: errorBorder,
             labelText: AppLocalization.of(context).translate("old_password"),
             suffixIcon: IconButton(
               onPressed: () {
@@ -178,7 +158,6 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
   }
 
   Widget getConfirmField() {
-    var style = Theme.of(context).primaryTextTheme.bodyMedium;
     return BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
       buildWhen: (_, current) =>
           current is ChangePasswordValidationState ||
@@ -187,15 +166,9 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
         return DirectionalTextField(
           controller: _bloc.confirmPasswordController,
           keyboardType: TextInputType.visiblePassword,
-          style: style,
           obscureText: _bloc.obscureConfirmPassword,
           maxLines: 1,
           decoration: InputDecoration(
-            filled: false,
-            border: border,
-            enabledBorder: border,
-            focusedBorder: border,
-            errorBorder: errorBorder,
             labelText:
                 AppLocalization.of(context).translate("confirm_password"),
             suffixIcon: IconButton(

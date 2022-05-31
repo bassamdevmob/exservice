@@ -35,6 +35,7 @@
   "description": "الشرح",
   "other": "المزيد",
   "share_app": "مشاركة التطبيق",
+  "settings": "الإعدادات",
   "security": "الحماية و الأمان",
   "about_us": "من نحن",
   "version": "الإصدار",
@@ -85,10 +86,18 @@
   "edit_profile": "تعديل الملف الشخصي",
   "change_profile_photo": "تغيير صورة الملف الشخصي",
   "personal_information_settings": "إعدادات معلومات الإتصال",
+  "password_security": "كلمة المرور والحماية",
   "change_password": "تغيير كلمة المرور",
   "password_updated": "تم تغيير كلمة المرور",
   "invalid_url": "الرابط غير صالح",
   "new_password": "كلمة المرور الجديدة",
   "old_password": "كلمة المرور القديمة",
-  "confirm_password": "تأكيد كلمة المرور"
+  "confirm_password": "تأكيد كلمة المرور",
+  "mobile": "رقم الجوال",
+  "update_email_address": "تحديث البريد الإلكتروني",
+  "confirmation_code": "رمز التحقق",
+  "resend_code": "إعادة إرسال الرمز",
+  "code_sent": "تم إرسال الرمز",
+  "for_try_again": "لإعادة المحاولة",
+  "enter_confirmation_code": "لإتمام عملية التحقق أدخل الرمز المرسل إليك"
 }

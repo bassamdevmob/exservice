@@ -9,21 +9,22 @@ class VerificationValidationState extends VerificationState {}
 
 class VerificationAwaitState extends VerificationState {}
 
-class VerificationCommittedState extends VerificationState {}
+class VerificationAcceptState extends VerificationState {}
 
 class VerificationErrorState extends VerificationState {
-  final String message;
+  final dynamic error;
 
-  VerificationErrorState(this.message);
+  VerificationErrorState(this.error);
 }
 
 /// resend pin
+
+class VerificationResendAwaitState extends VerificationState {}
+
+class VerificationResendAcceptState extends VerificationState {}
+
 class VerificationWaitBeforeResendState extends VerificationState {
   final int seconds;
 
   VerificationWaitBeforeResendState(this.seconds);
 }
-
-class VerificationAwaitResendState extends VerificationState {}
-
-class VerificationCommittedResendState extends VerificationState {}

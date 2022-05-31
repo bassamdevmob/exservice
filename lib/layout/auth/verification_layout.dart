@@ -1,6 +1,9 @@
 import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/utils.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,58 +37,58 @@ class _VerificationLayoutState extends State<VerificationLayout> {
       listenWhen: (_, current) =>
           current is VerificationWaitBeforeResendState ||
           current is VerificationErrorState ||
-          current is VerificationCommittedState ||
-          current is VerificationCommittedResendState,
+          current is VerificationAcceptState ||
+          current is VerificationResendAcceptState,
       listener: (context, state) {
         if (state is VerificationWaitBeforeResendState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).translate("wait") +
-                " ${state.seconds} " +
-                AppLocalization.of(context).translate("wait_before_try"),
+            msg:
+                "${state.seconds} sec ${AppLocalization.of(context).translate("for_try_again")}",
           );
         } else if (state is VerificationErrorState) {
-          Fluttertoast.showToast(msg: state.message);
-        } else if (state is VerificationCommittedResendState) {
           Fluttertoast.showToast(
-            msg: AppLocalization.of(context).translate("sent_successfully"),
+            msg: Utils.resolveErrorMessage(state.error),
+            toastLength: Toast.LENGTH_LONG,
           );
-        } else if (state is VerificationCommittedState) {
+        } else if (state is VerificationResendAcceptState) {
+          Fluttertoast.showToast(
+            msg: AppLocalization.of(context).translate("code_sent"),
+          );
+        } else if (state is VerificationAcceptState) {
           _bloc.factory.afterVerified(context);
         }
       },
       child: Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Padding(
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Center(
-                      child: Text(
-                        AppLocalization.of(context)
-                            .translate('enter_confirmation_code'),
-                        style: AppTextStyle.xLargeBlackBold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    getPinField(),
-                    SizedBox(height: 20),
-                    getSubmitButton(),
-                    SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: getResendButton(),
-                    ),
-                  ],
-                ),
-              ),
+        appBar: AppBar(),
+        body: ExpandedSingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Sizer.hs3,
             ),
-          );
-        }),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    AppLocalization.of(context)
+                        .translate('enter_confirmation_code'),
+                    style: Theme.of(context).primaryTextTheme.labelLarge,
+                  ),
+                ),
+                SizedBox(height: 20),
+                getPinField(),
+                SizedBox(height: 20),
+                getSubmitButton(),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: getResendButton(),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -101,9 +104,8 @@ class _VerificationLayoutState extends State<VerificationLayout> {
             controller: _bloc.pinController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: AppLocalization.of(context).translate("confirmation_code"),
-              labelStyle: AppTextStyle.largeBlue,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
+              labelText:
+                  AppLocalization.of(context).translate("confirmation_code"),
               errorText: _bloc.pinErrorMessage?.toString(),
             ),
           ),
@@ -116,7 +118,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
     return BlocBuilder<VerificationBloc, VerificationState>(
       buildWhen: (_, current) =>
           current is VerificationErrorState ||
-          current is VerificationCommittedState ||
+          current is VerificationAcceptState ||
           current is VerificationAwaitState,
       builder: (context, state) {
         return ElevatedButton(
@@ -135,21 +137,21 @@ class _VerificationLayoutState extends State<VerificationLayout> {
   Widget getResendButton() {
     return BlocBuilder<VerificationBloc, VerificationState>(
       buildWhen: (_, current) =>
-          current is VerificationCommittedResendState ||
+          current is VerificationResendAcceptState ||
           current is VerificationErrorState ||
-          current is VerificationAwaitResendState,
+          current is VerificationResendAwaitState,
       builder: (context, state) {
         print(state.runtimeType);
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           child: Text(
             AppLocalization.of(context).translate('resend_code'),
-            style: (state is VerificationAwaitResendState
+            style: (state is VerificationResendAwaitState
                     ? AppTextStyle.smallGrayBold
                     : AppTextStyle.smallBlueBold)
                 .copyWith(decoration: TextDecoration.underline),
           ),
-          onTap: state is VerificationAwaitResendState ? null : _resend,
+          onTap: state is VerificationResendAwaitState ? null : _resend,
         );
       },
     );

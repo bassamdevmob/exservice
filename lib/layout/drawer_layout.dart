@@ -1,10 +1,9 @@
-import 'package:exservice/bloc/account/change_password_bloc/change_password_bloc.dart';
 import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/contact_us_bloc/contact_us_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
-import 'package:exservice/layout/account/edit/change_password_layout.dart';
+import 'package:exservice/layout/account/settings_layout.dart';
 import 'package:exservice/layout/app/about_us_layout.dart';
 import 'package:exservice/layout/app/contact_us_layout.dart';
 import 'package:exservice/layout/app/info_layout.dart';
@@ -197,22 +196,19 @@ class DrawerLayout extends StatelessWidget {
                 ));
               },
             ),
-            if (isAuthenticated)
+            // if (isAuthenticated)//todo
               ListTile(
                 leading: Icon(
-                  Icons.security_outlined,
+                  Icons.settings_outlined,
                   size: Sizer.iconSizeLarge,
                 ),
                 title: Text(
-                  AppLocalization.of(context).translate("password"),
+                  AppLocalization.of(context).translate("settings"),
                 ),
                 trailing: getTrailing(context),
                 onTap: () {
                   Navigator.of(context).push(CupertinoPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (context) => ChangePasswordBloc(),
-                      child: ChangePasswordLayout(),
-                    ),
+                    builder: (context) => SettingsLayout(),
                   ));
                 },
               ),

@@ -86,6 +86,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                               child: TextField(
                                 controller: _bloc.mobileNumberController,
                                 keyboardType: TextInputType.phone,
+                                maxLines: 1,
                                 inputFormatters: [phoneNumberFormatter],
                                 decoration: InputDecoration(
                                   errorText: _bloc.mobileNumberMsg,
@@ -98,7 +99,6 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                               ),
                             ),
                             SizedBox(height: Sizer.vs2),
-
                             DirectionalTextField(
                               controller: _bloc.passwordController,
                               obscureText: _bloc.obscurePassword,
@@ -127,7 +127,6 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                           ],
                         ),
                         SizedBox(height: Sizer.vs2),
-
                         ElevatedButton(
                           onPressed: state is ManagePhoneNumberAwaitState
                               ? null
@@ -137,7 +136,8 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                           child: state is ManagePhoneNumberAwaitState
                               ? CupertinoActivityIndicator()
                               : Text(
-                                  AppLocalization.of(context).translate("update"),
+                                  AppLocalization.of(context)
+                                      .translate("update"),
                                 ),
                         ),
                       ],

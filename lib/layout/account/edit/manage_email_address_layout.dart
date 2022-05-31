@@ -5,8 +5,8 @@ import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/sizer.dart';
-import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/directional_text_field.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,21 +30,33 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
 
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
         title: Text(
-          AppLocalization.of(context).translate("app_name"),
-          style: AppTextStyle.largeLobsterBlack,
+          AppLocalization.of(context).translate("email"),
         ),
+        actions: [
+          BlocBuilder<ManageEmailAddressBloc, ManageEmailAddressState>(
+            builder: (context, state) {
+              return IconButton(
+                splashRadius: 25,
+                icon: state is ManageEmailAddressAwaitState
+                    ? CupertinoActivityIndicator()
+                    : Icon(Icons.check),
+                onPressed: state is ManageEmailAddressAwaitState
+                    ? null
+                    : () {
+                        _bloc.add(ManageEmailAddressCommitEvent());
+                      },
+              );
+            },
+          ),
+        ],
       ),
-      body: BlocListener<ManageEmailAddressBloc, ManageEmailAddressState>(
-        listenWhen: (_, current) => current is ManageEmailAddressCommittedState,
+      body: BlocConsumer<ManageEmailAddressBloc, ManageEmailAddressState>(
+        listenWhen: (_, current) => current is ManageEmailAddressAcceptState,
         listener: (context, state) async {
-          if (state is ManageEmailAddressCommittedState) {
+          if (state is ManageEmailAddressAcceptState) {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
@@ -57,96 +69,59 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
             );
           }
         },
-        child: BlocBuilder<ManageEmailAddressBloc, ManageEmailAddressState>(
-          builder: (context, state) {
-            return LayoutBuilder(builder: (context, constraint) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraint.maxHeight,
+        builder: (context, state) {
+          return ExpandedSingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    AppLocalization.of(context)
+                        .translate('update_email_address'),
+                    style: Theme.of(context).primaryTextTheme.labelLarge,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              AppLocalization.of(context)
-                                  .translate('update_email_address'),
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            SizedBox(height: Sizer.vs2),
-
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: TextField(
-                                controller: _bloc.mobileNumberController,
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                  errorText: _bloc.mobileNumberMsg,
-                                  labelText:
-                                  "${AppLocalization.of(context).translate("email_address")}*",
-                                  floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
-                                  labelStyle: AppTextStyle.xlargeBlue,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: Sizer.vs2),
-
-                            DirectionalTextField(
-                              controller: _bloc.passwordController,
-                              obscureText: _bloc.obscurePassword,
-                              keyboardType: TextInputType.visiblePassword,
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    _bloc.add(
-                                        ManageEmailAddressShowPasswordEvent());
-                                  },
-                                  icon: Icon(
-                                    _bloc.obscurePassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: AppColors.gray,
-                                  ),
-                                ),
-                                errorText: _bloc.passwordMsg,
-                                labelText:
-                                "${AppLocalization.of(context).translate("password")}*",
-                                floatingLabelBehavior:
-                                FloatingLabelBehavior.always,
-                                labelStyle: AppTextStyle.xlargeBlue,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: Sizer.vs2),
-
-                        ElevatedButton(
-                          onPressed: state is ManageEmailAddressAwaitState
-                              ? null
-                              : () {
-                            _bloc.add(ManageEmailAddressCommitEvent());
-                          },
-                          child: state is ManageEmailAddressAwaitState
-                              ? CupertinoActivityIndicator()
-                              : Text(
-                            AppLocalization.of(context).translate("update"),
-                          ),
-                        ),
-                      ],
+                  SizedBox(height: Sizer.vs2),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: TextField(
+                      controller: _bloc.emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        errorText: _bloc.emailErrorMessage?.toString(),
+                        labelText:
+                            "${AppLocalization.of(context).translate("email")}*",
+                      ),
                     ),
                   ),
-                ),
-              );
-            });
-          },
-        ),
+                  SizedBox(height: Sizer.vs2),
+                  DirectionalTextField(
+                    controller: _bloc.passwordController,
+                    obscureText: _bloc.obscurePassword,
+                    maxLines: 1,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          _bloc.add(ManageEmailAddressShowPasswordEvent());
+                        },
+                        icon: Icon(
+                          _bloc.obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: AppColors.gray,
+                        ),
+                      ),
+                      errorText: _bloc.passwordErrorMessage?.toString(),
+                      labelText:
+                          "${AppLocalization.of(context).translate("password")}*",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

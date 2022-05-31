@@ -7,10 +7,10 @@ class ManageEmailAddressInitial extends ManageEmailAddressState {}
 
 class ManageEmailAddressAwaitState extends ManageEmailAddressState {}
 
-class ManageEmailAddressCommittedState extends ManageEmailAddressState {
+class ManageEmailAddressAcceptState extends ManageEmailAddressState {
   final String session;
 
-  ManageEmailAddressCommittedState(this.session);
+  ManageEmailAddressAcceptState(this.session);
 }
 
 class ManageEmailAddressErrorState extends ManageEmailAddressState {
@@ -19,4 +19,4 @@ class ManageEmailAddressErrorState extends ManageEmailAddressState {
   ManageEmailAddressErrorState(this.message);
 }
 
-class ValidationUpdateNumberState extends ManageEmailAddressState {}
+class ManageEmailAddressValidateState extends ManageEmailAddressState {}

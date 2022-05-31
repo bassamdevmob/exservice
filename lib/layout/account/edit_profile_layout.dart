@@ -1,5 +1,4 @@
 import 'package:exservice/bloc/account/edit_profile_bloc/edit_profile_bloc.dart';
-import 'package:exservice/layout/account/contact_info_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
@@ -37,13 +36,6 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
 
   @override
   Widget build(BuildContext context) {
-    var style = Theme.of(context).primaryTextTheme.bodyMedium;
-    var border = UnderlineInputBorder(
-      borderSide: const BorderSide(color: AppColors.grayAccent),
-    );
-    var errorBorder = UnderlineInputBorder(
-      borderSide: const BorderSide(color: AppColors.red),
-    );
     return BlocListener<EditProfileBloc, EditProfileState>(
       listenWhen: (_, current) => current is EditProfileErrorState,
       listener: (context, state) {
@@ -119,15 +111,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                 DirectionalTextField(
                   controller: _bloc.usernameController,
                   keyboardType: TextInputType.text,
-                  style: style,
                   decoration: InputDecoration(
                     labelText:
                         AppLocalization.of(context).translate("username"),
-                    filled: false,
-                    border: border,
-                    enabledBorder: border,
-                    focusedBorder: border,
-                    errorBorder: errorBorder,
                     errorText: _bloc.usernameErrorMessage?.toString(),
                   ),
                 ),
@@ -135,15 +121,9 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                 DirectionalTextField(
                   controller: _bloc.companyNameController,
                   keyboardType: TextInputType.text,
-                  style: style,
                   decoration: InputDecoration(
                     labelText:
                         AppLocalization.of(context).translate("company_name"),
-                    filled: false,
-                    border: border,
-                    enabledBorder: border,
-                    focusedBorder: border,
-                    errorBorder: errorBorder,
                     errorText: _bloc.companyNameErrorMessage?.toString(),
                   ),
                 ),
@@ -151,46 +131,20 @@ class _EditAccountLayoutState extends State<EditAccountLayout> {
                 DirectionalTextField(
                   controller: _bloc.websiteController,
                   keyboardType: TextInputType.url,
-                  style: style,
                   decoration: InputDecoration(
                     labelText: AppLocalization.of(context).translate("website"),
-                    filled: false,
-                    border: border,
-                    enabledBorder: border,
-                    focusedBorder: border,
-                    errorBorder: errorBorder,
                     errorText: _bloc.websiteErrorMessage?.toString(),
                   ),
                 ),
                 SizedBox(height: Sizer.vs3),
                 DirectionalTextField(
                   controller: _bloc.bioController,
-                  style: style,
                   decoration: InputDecoration(
                     labelText: AppLocalization.of(context).translate("bio"),
-                    filled: false,
-                    border: border,
-                    enabledBorder: border,
-                    focusedBorder: border,
-                    errorBorder: errorBorder,
                     errorText: _bloc.bioErrorMessage?.toString(),
                   ),
                 ),
-                SizedBox(height: Sizer.vs3),
-                Center(
-                  child: TextButton(
-                    child: Text(
-                      AppLocalization.of(context)
-                          .translate("personal_information_settings"),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => ContactInfoLayout(),
-                      ));
-                    },
-                  ),
-                ),
-                SizedBox(height: Sizer.vs2),
+                SizedBox(height: Sizer.vs1),
               ],
             );
           },

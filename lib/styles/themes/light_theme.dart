@@ -64,28 +64,22 @@ final ThemeData lightTheme = ThemeData(
     titleMedium: AppTextStyle.mediumBlack,
   ),
   inputDecorationTheme: InputDecorationTheme(
-    fillColor: AppColors.grayAccent,
-    filled: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-    enabledBorder: OutlineInputBorder(
+    enabledBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(15),
     ),
-    border: OutlineInputBorder(
+    border: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(15),
     ),
-    focusedBorder: OutlineInputBorder(
+    focusedBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.grayAccent),
-      borderRadius: BorderRadius.circular(15),
     ),
-    errorBorder: OutlineInputBorder(
+    errorBorder: UnderlineInputBorder(
       borderSide: const BorderSide(color: AppColors.red),
-      borderRadius: BorderRadius.circular(15),
     ),
-    hintStyle: AppTextStyle.mediumGray,
-    errorStyle: AppTextStyle.mediumRed,
     labelStyle: AppTextStyle.mediumBlue,
+    hintStyle: AppTextStyle.mediumGray,
+    errorStyle: AppTextStyle.smallRed,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

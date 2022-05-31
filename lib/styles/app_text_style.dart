@@ -177,8 +177,8 @@ class AppTextStyle {
     fontWeight: FontWeight.bold,
   );
 
-  static final mediumRed = TextStyle(
-    fontSize: AppFontSize.medium,
+  static final smallRed = TextStyle(
+    fontSize: AppFontSize.small,
     color: AppColors.red,
   );
 

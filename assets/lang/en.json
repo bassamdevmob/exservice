@@ -35,6 +35,7 @@
   "description": "Description",
   "other": "Other",
   "share_app": "Share app",
+  "settings": "Settings",
   "security": "Security",
   "about_us": "About us",
   "version": "Version",
@@ -85,10 +86,18 @@
   "edit_profile": "Edit profile",
   "change_profile_photo": "Change profile photo",
   "personal_information_settings": "Personal information settings",
+  "password_security": "Password & security",
   "change_password": "Change password",
   "password_updated": "Password updated",
   "invalid_url": "Invalid URL",
   "new_password": "New password",
   "old_password": "Old password",
-  "confirm_password": "Confirm password"
+  "confirm_password": "Confirm password",
+  "mobile": "Mobile",
+  "update_email_address": "Update email address",
+  "confirmation_code": "Confirmation code",
+  "resend_code": "Resend code",
+  "code_sent": "The code sent",
+  "for_try_again": "to try again",
+  "enter_confirmation_code": "Confirm the process and enter the code sent to you"
 }

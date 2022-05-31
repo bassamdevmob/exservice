@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/auth/reset_password_bloc/reset_password_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
@@ -52,7 +53,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
             emit(VerificationWaitBeforeResendState(_count));
             return;
           }
-          emit(VerificationAwaitResendState());
+          emit(VerificationResendAwaitState());
           _count = _multi * 20;
           _multi *= 2;
           _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
@@ -63,9 +64,9 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
             }
           });
           await factory.onResend();
-          emit(VerificationCommittedResendState());
-        } catch (e) {
-          emit(VerificationErrorState("$e"));
+          emit(VerificationResendAcceptState());
+        } on DioError catch (ex) {
+          emit(VerificationErrorState(ex.error));
         }
       } else if (event is VerificationValidateEvent) {
         _validate();
@@ -78,9 +79,9 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
           try {
             var code = pinController.text.trim();
             await factory.onVerify(code);
-            emit(VerificationCommittedState());
-          } catch (e) {
-            emit(VerificationErrorState("$e"));
+            emit(VerificationAcceptState());
+          } on DioError catch (ex) {
+            emit(VerificationErrorState(ex.error));
           }
         }
       }
