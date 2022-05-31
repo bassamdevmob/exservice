@@ -1,5 +1,5 @@
 import 'package:exservice/models/request/change_password_request.dart';
-import 'package:exservice/models/request/switch_business_request.dart';
+import 'package:exservice/models/request/edit_profile_request.dart';
 import 'package:exservice/models/response/chats_response.dart';
 import 'package:exservice/models/response/notifications_response.dart';
 import 'package:exservice/models/response/profile_response.dart';
@@ -33,20 +33,10 @@ class UserRepository extends BaseClient {
     return SimpleResponse.fromJson(response.data);
   }
 
-  Future<ProfileResponse> updateProfile() async {
+  Future<ProfileResponse> updateProfile(EditProfileRequest request) async {
     final response = await client.put(
       Links.PROFILE_URL,
-      data: {
-
-      },
-    );
-    return ProfileResponse.fromJson(response.data);
-  }
-
-  Future<ProfileResponse> switchToBusiness(SwitchBusinessRequest request) async {
-    final response = await client.put(
-      Links.SWITCH_BUSINESS_URL,
-      data: request.toJson(),
+      data: await request.toFormData(),
     );
     return ProfileResponse.fromJson(response.data);
   }

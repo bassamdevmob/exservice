@@ -7,6 +7,12 @@ class ProfileFetchEvent extends ProfileEvent {}
 
 class ProfileRefreshEvent extends ProfileEvent {}
 
+class ProfileUpdateEvent extends ProfileEvent {
+  final User model;
+
+  ProfileUpdateEvent(this.model);
+}
+
 class ProfileLogoutEvent extends ProfileEvent {}
 
 class ProfileUploadVideoEvent extends ProfileEvent {

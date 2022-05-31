@@ -5,13 +5,11 @@ import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/dotted_container.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/button/app_button.dart';
-import 'package:exservice/widget/application/app_video.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -159,14 +157,14 @@ class _PublisherLayoutState extends State<PublisherLayout> {
 
   List<Widget> getBusinessInfo() {
     return [
-      if (_bloc.publisher.profileVideo != null)
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: AppVideo.network(
-            "${_bloc.publisher.profileVideo}",
-            fit: false,
-          ),
-        ),
+      // if (_bloc.publisher.profileVideo != null)
+      //   Padding(
+      //     padding: const EdgeInsets.all(10),
+      //     child: AppVideo.network(
+      //       "${_bloc.publisher.profileVideo}",
+      //       fit: false,
+      //     ),
+      //   ),
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: Column(

@@ -63,7 +63,6 @@ class ContactInfoLayout extends StatelessWidget {
             ),
             trailing: Icon(
               Icons.arrow_forward_ios_outlined,
-              size: Utils.iconSize(mediaQuery),
               color: AppColors.blue,
             ),
             onTap: () {
@@ -117,7 +116,6 @@ class ContactInfoLayout extends StatelessWidget {
             ),
             trailing: Icon(
               Icons.arrow_forward_ios_outlined,
-              size: Utils.iconSize(mediaQuery),
               color: AppColors.blue,
             ),
             onTap: () {

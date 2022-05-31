@@ -14,7 +14,6 @@ class User {
     this.website,
     this.companyName,
     this.profilePicture,
-    this.profileVideo,
     this.statistics,
   });
 
@@ -30,7 +29,6 @@ class User {
   String website;
   String companyName;
   String profilePicture;
-  String profileVideo;
   Statistics statistics;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -46,7 +44,6 @@ class User {
     website: json["website"] == null ? null : json["website"],
     companyName: json["company_name"] == null ? null : json["company_name"],
     profilePicture: json["profile_picture"] == null ? null : json["profile_picture"],
-    profileVideo: json["profile_video"] == null ? null : json["profile_video"],
     statistics: json["statistics"] == null ? null : Statistics.fromJson(json["statistics"]),
   );
 
@@ -63,7 +60,6 @@ class User {
     "website": website == null ? null : website,
     "company_name": companyName == null ? null : companyName,
     "profile_picture": profilePicture == null ? null : profilePicture,
-    "profile_video": profileVideo == null ? null : profileVideo,
     "statistics": statistics == null ? null : statistics.toJson(),
   };
 }

@@ -32,8 +32,8 @@ class _AdsLayoutState extends State<AdsLayout> {
         if (state is AdsLazyErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).translate("error"),
-            Utils.resolveErrorMessage(state.error),
+            title: AppLocalization.of(context).translate("error"),
+            message: Utils.resolveErrorMessage(state.error),
           );
         }
       },

@@ -108,7 +108,6 @@ class _ResetPasswordLayoutState extends State<ResetPasswordLayout> {
               icon: Icon(
                 _bloc.obscurePassword ? Icons.visibility : Icons.visibility_off,
                 color: AppColors.gray,
-                size: Utils.iconSize(MediaQuery.of(context)),
               ),
             ),
             errorText: _bloc.passwordErrorMessage,

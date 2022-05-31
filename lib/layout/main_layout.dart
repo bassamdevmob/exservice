@@ -8,7 +8,7 @@ import 'package:exservice/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/post/post_ad_layout.dart';
 import 'package:exservice/layout/view/account_layout.dart';
-import 'package:exservice/layout/view/favorites_layout.dart';
+import 'package:exservice/layout/view/bookmarks_layout.dart';
 import 'package:exservice/layout/view/home_layout.dart';
 import 'package:exservice/layout/view/messenger_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -32,7 +32,7 @@ class _MainLayoutState extends State<MainLayout> {
     ),
     BlocProvider(
       create: (context) => FavoritesCubit(),
-      child: FavoritesLayout(),
+      child: BookmarksLayout(),
     ),
     SizedBox(),
     MultiBlocProvider(
@@ -79,14 +79,14 @@ class _MainLayoutState extends State<MainLayout> {
         selectedItemColor: AppColors.blue,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: AppColors.gray),
+            icon: Icon(Icons.home_outlined, color: AppColors.gray),
             activeIcon: Icon(Icons.home, color: AppColors.blue),
             label: AppLocalization.of(context).translate('home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border, color: AppColors.gray),
-            activeIcon: Icon(Icons.favorite_border, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('favorite'),
+            icon: Icon(Icons.bookmark_outline, color: AppColors.gray),
+            activeIcon: Icon(Icons.bookmark, color: AppColors.blue),
+            label: AppLocalization.of(context).translate('marks'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add, color: AppColors.gray),
@@ -95,12 +95,12 @@ class _MainLayoutState extends State<MainLayout> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.mail_outline, color: AppColors.gray),
-            activeIcon: Icon(Icons.mail_outline, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('message'),
+            activeIcon: Icon(Icons.mail, color: AppColors.blue),
+            label: AppLocalization.of(context).translate('messages'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline, color: AppColors.gray),
-            activeIcon: Icon(Icons.person_outline, color: AppColors.blue),
+            activeIcon: Icon(Icons.person, color: AppColors.blue),
             label: AppLocalization.of(context).translate('account'),
           ),
         ],

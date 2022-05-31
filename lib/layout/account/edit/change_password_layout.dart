@@ -1,9 +1,11 @@
 import 'package:exservice/bloc/account/change_password_bloc/change_password_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/directional_text_field.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +20,12 @@ class ChangePasswordLayout extends StatefulWidget {
 
 class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
   ChangePasswordBloc _bloc;
-  MediaQueryData mediaQuery;
+  var border = UnderlineInputBorder(
+    borderSide: const BorderSide(color: AppColors.grayAccent),
+  );
+  var errorBorder = UnderlineInputBorder(
+    borderSide: const BorderSide(color: AppColors.red),
+  );
 
   @override
   void initState() {
@@ -28,89 +35,66 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
 
   @override
   Widget build(BuildContext context) {
-    mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
         title: Text(
-          AppLocalization.of(context).translate('app_name'),
-          style: AppTextStyle.largeBlack,
+          AppLocalization.of(context).translate('change_password'),
         ),
+        actions: [
+          BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
+            builder: (context, state) {
+              return IconButton(
+                splashRadius: 25,
+                icon: state is ChangePasswordAwaitState
+                    ? CupertinoActivityIndicator()
+                    : Icon(Icons.check),
+                onPressed: state is ChangePasswordAwaitState
+                    ? null
+                    : () {
+                        _bloc.add(ChangePasswordCommitEvent());
+                      },
+              );
+            },
+          ),
+        ],
       ),
-      backgroundColor: AppColors.white,
       body: BlocListener<ChangePasswordBloc, ChangePasswordState>(
         listener: (context, state) {
-          if (state is OnChangePasswordState) {
+          if (state is ChangePasswordAcceptState) {
             Fluttertoast.showToast(
               msg: AppLocalization.of(context).translate("password_updated"),
+              toastLength: Toast.LENGTH_LONG,
             );
           } else if (state is ChangePasswordErrorState) {
-            Fluttertoast.showToast(msg: state.message);
+            showErrorBottomSheet(
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: Utils.resolveErrorMessage(state.error),
+            );
           }
         },
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraint.maxHeight,
+        child: ExpandedSingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(Sizer.vs2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: Sizer.vs2),
+                    getOldPasswordField(),
+                    SizedBox(height: Sizer.vs2),
+                    getNewPasswordField(),
+                    SizedBox(height: Sizer.vs2),
+                    getConfirmField(),
+                    SizedBox(height: Sizer.vs2),
+                  ],
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(mediaQuery.size.width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppLocalization.of(context)
-                                .translate('change_password'),
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          SizedBox(
-                            height: Utils.verticalSpace(mediaQuery) * 3,
-                          ),
-                          getOldPasswordField(),
-                          SizedBox(
-                            height: Utils.verticalSpace(mediaQuery) * 2,
-                          ),
-                          getNewPasswordField(),
-                          SizedBox(
-                            height: Utils.verticalSpace(mediaQuery) * 2,
-                          ),
-                          getConfirmField(),
-                          SizedBox(
-                            height: Utils.verticalSpace(mediaQuery) * 2,
-                          ),
-                        ],
-                      ),
-                      BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: state is ChangePasswordAwaitState
-                                ? null
-                                : () {
-                                    _bloc.add(OnChangePasswordEvent());
-                                  },
-                            child: state is ChangePasswordAwaitState
-                                ? CupertinoActivityIndicator()
-                                : Text(
-                                    AppLocalization.of(context)
-                                        .translate("change_password"),
-                                  ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -118,30 +102,37 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
 
   Widget getNewPasswordField() {
     return BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
-      buildWhen: (previous, current) {
-        return current is ChangePasswordFormValidationState ||
-            current is ChangePasswordShowNewPasswordState;
-      },
+      buildWhen: (_, current) =>
+          current is ChangePasswordValidationState ||
+          current is ChangePasswordShowNewPasswordState,
       builder: (context, state) {
+        var style = Theme.of(context).primaryTextTheme.bodyMedium;
+
         return DirectionalTextField(
-          controller: this._bloc.newPasswordController,
+          controller: _bloc.newPasswordController,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: this._bloc.obscureNewPassword,
+          maxLines: 1,
+          style: style,
+          obscureText: _bloc.obscureNewPassword,
           decoration: InputDecoration(
-            labelText: "${AppLocalization.of(context).translate("new_password")}*",
+            filled: false,
+            border: border,
+            enabledBorder: border,
+            focusedBorder: border,
+            errorBorder: errorBorder,
+            labelText: AppLocalization.of(context).translate("new_password"),
             suffixIcon: IconButton(
               onPressed: () {
-                this._bloc.add(ChangePasswordObscureNewPasswordEvent());
+                _bloc.add(ChangePasswordObscureNewPasswordEvent());
               },
               icon: Icon(
-                this._bloc.obscureNewPassword
+                _bloc.obscureNewPassword
                     ? Icons.visibility
                     : Icons.visibility_off,
                 color: AppColors.gray,
-                size: Utils.iconSize(mediaQuery),
               ),
             ),
-            errorText: _bloc.errorNewPasswordMsg,
+            errorText: _bloc.errorNewPasswordMsg?.toString(),
           ),
         );
       },
@@ -150,30 +141,37 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
 
   Widget getOldPasswordField() {
     return BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
-      buildWhen: (previous, current) {
-        return current is ChangePasswordFormValidationState ||
-            current is ChangePasswordShowOldPasswordState;
-      },
+      buildWhen: (_, current) =>
+          current is ChangePasswordValidationState ||
+          current is ChangePasswordShowOldPasswordState,
       builder: (context, state) {
+        var style = Theme.of(context).primaryTextTheme.bodyMedium;
+
         return DirectionalTextField(
-          controller: this._bloc.oldPasswordController,
+          controller: _bloc.oldPasswordController,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: this._bloc.obscureOldPassword,
+          maxLines: 1,
+          style: style,
+          obscureText: _bloc.obscureOldPassword,
           decoration: InputDecoration(
-            labelText: "${AppLocalization.of(context).translate("old_password")}*",
+            filled: false,
+            border: border,
+            enabledBorder: border,
+            focusedBorder: border,
+            errorBorder: errorBorder,
+            labelText: AppLocalization.of(context).translate("old_password"),
             suffixIcon: IconButton(
               onPressed: () {
-                this._bloc.add(ChangePasswordObscureOldPasswordEvent());
+                _bloc.add(ChangePasswordObscureOldPasswordEvent());
               },
               icon: Icon(
-                this._bloc.obscureOldPassword
+                _bloc.obscureOldPassword
                     ? Icons.visibility
                     : Icons.visibility_off,
                 color: AppColors.gray,
-                size: Utils.iconSize(mediaQuery),
               ),
             ),
-            errorText: _bloc.errorOldPasswordMsg,
+            errorText: _bloc.errorOldPasswordMsg?.toString(),
           ),
         );
       },
@@ -181,32 +179,38 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
   }
 
   Widget getConfirmField() {
+    var style = Theme.of(context).primaryTextTheme.bodyMedium;
     return BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
-      buildWhen: (previous, current) {
-        return current is ChangePasswordFormValidationState ||
-            current is ChangePasswordShowConfirmPasswordState;
-      },
+      buildWhen: (_, current) =>
+          current is ChangePasswordValidationState ||
+          current is ChangePasswordShowConfirmPasswordState,
       builder: (context, state) {
         return DirectionalTextField(
-          controller: this._bloc.confirmPasswordController,
+          controller: _bloc.confirmPasswordController,
           keyboardType: TextInputType.visiblePassword,
-          obscureText: this._bloc.obscureConfirmPassword,
+          style: style,
+          obscureText: _bloc.obscureConfirmPassword,
+          maxLines: 1,
           decoration: InputDecoration(
+            filled: false,
+            border: border,
+            enabledBorder: border,
+            focusedBorder: border,
+            errorBorder: errorBorder,
             labelText:
-                "${AppLocalization.of(context).translate("confirm_password")}*",
+                AppLocalization.of(context).translate("confirm_password"),
             suffixIcon: IconButton(
               onPressed: () {
-                this._bloc.add(ChangePasswordObscureConfirmPasswordEvent());
+                _bloc.add(ChangePasswordObscureConfirmPasswordEvent());
               },
               icon: Icon(
-                this._bloc.obscureConfirmPassword
+                _bloc.obscureConfirmPassword
                     ? Icons.visibility
                     : Icons.visibility_off,
                 color: AppColors.gray,
-                size: Utils.iconSize(mediaQuery),
               ),
             ),
-            errorText: _bloc.errorConfirmPasswordMsg,
+            errorText: _bloc.errorConfirmPasswordMsg?.toString(),
           ),
         );
       },

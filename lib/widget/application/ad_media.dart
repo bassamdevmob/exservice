@@ -1,9 +1,7 @@
 import 'package:exservice/utils/constant.dart';
 import 'package:exservice/models/entity/ad_model.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:exservice/utils/global.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
-import 'package:exservice/widget/application/app_video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:octo_image/octo_image.dart';

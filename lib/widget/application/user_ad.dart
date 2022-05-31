@@ -56,7 +56,10 @@ class _UserAdState extends State<UserAd> {
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).translate("error"), "$e");
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: "$e",
+            );
           }).whenComplete(() {
             setState(() => deleteLoading = false);
           });
@@ -82,7 +85,10 @@ class _UserAdState extends State<UserAd> {
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).translate("error"), "$e");
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: "$e",
+            );
           }).whenComplete(() {
             setState(() => statusLoading = false);
           });
@@ -108,7 +114,10 @@ class _UserAdState extends State<UserAd> {
             );
           }).catchError((e) {
             showErrorBottomSheet(
-                context, AppLocalization.of(context).translate("error"), "$e");
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: "$e",
+            );
           }).whenComplete(() {
             setState(() => statusLoading = false);
           });

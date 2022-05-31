@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:exservice/localization/app_localization.dart';
+import 'package:dio/dio.dart';
 import 'package:exservice/models/request/change_password_request.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -12,25 +13,59 @@ part 'change_password_state.dart';
 
 class ChangePasswordBloc
     extends Bloc<ChangePasswordEvent, ChangePasswordState> {
-  final BuildContext context;
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  ChangePasswordBloc(this.context) : super(ChangePasswordInitial()) {
+  bool obscureOldPassword = true;
+  bool obscureNewPassword = true;
+  bool obscureConfirmPassword = true;
+
+  Localized errorOldPasswordMsg;
+  Localized errorNewPasswordMsg;
+  Localized errorConfirmPasswordMsg;
+
+  void _validate() {
+    String oldPassword = oldPasswordController.text.trim();
+    String newPassword = newPasswordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+
+    errorOldPasswordMsg =
+        oldPassword.isEmpty ? Localized("field_required") : null;
+
+    print(Utils.estimateBruteforceStrength(newPassword));
+
+    if (newPassword.isEmpty) {
+      errorNewPasswordMsg = Localized("field_required");
+    } else if (Utils.estimateBruteforceStrength(newPassword) < 0.3) {
+      errorNewPasswordMsg = Localized("weak_password");
+    } else {
+      errorNewPasswordMsg = null;
+    }
+
+    errorConfirmPasswordMsg =
+        confirmPassword.isEmpty ? Localized("field_required") : null;
+  }
+
+  bool get valid =>
+      errorConfirmPasswordMsg == null &&
+      errorNewPasswordMsg == null &&
+      errorOldPasswordMsg == null;
+
+  ChangePasswordBloc() : super(ChangePasswordInitial()) {
     on((event, emit) async {
-      if (event is ChangePasswordFormValidationEvent) {
-        _validate();
-        emit(ChangePasswordFormValidationState());
-      } else if (event is ChangePasswordObscureOldPasswordEvent) {
-        this.obscureOldPassword = !this.obscureOldPassword;
+      if (event is ChangePasswordObscureOldPasswordEvent) {
+        obscureOldPassword = !obscureOldPassword;
         emit(ChangePasswordShowOldPasswordState());
       } else if (event is ChangePasswordObscureNewPasswordEvent) {
-        this.obscureNewPassword = !this.obscureNewPassword;
+        obscureNewPassword = !obscureNewPassword;
         emit(ChangePasswordShowNewPasswordState());
       } else if (event is ChangePasswordObscureConfirmPasswordEvent) {
-        this.obscureConfirmPassword = !this.obscureConfirmPassword;
+        obscureConfirmPassword = !obscureConfirmPassword;
         emit(ChangePasswordShowConfirmPasswordState());
-      } else if (event is OnChangePasswordEvent) {
+      } else if (event is ChangePasswordCommitEvent) {
         _validate();
-        emit(ChangePasswordFormValidationState());
+        emit(ChangePasswordValidationState());
         if (valid) {
           try {
             emit(ChangePasswordAwaitState());
@@ -41,54 +76,12 @@ class ChangePasswordBloc
                   newPassword: newPasswordController.text,
                   confirmPassword: confirmPasswordController.text,
                 ));
-            emit(OnChangePasswordState());
-          } catch (e) {
-            emit(ChangePasswordErrorState("$e"));
+            emit(ChangePasswordAcceptState());
+          } on DioError catch (ex) {
+            emit(ChangePasswordErrorState(ex.error));
           }
         }
       }
     });
   }
-
-  // if password text field is obscure text or not
-  bool obscureOldPassword = true;
-  bool obscureNewPassword = true;
-  bool obscureConfirmPassword = true;
-
-  // Text field controller
-  final oldPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
-  // Form error message
-  String errorOldPasswordMsg;
-  String errorNewPasswordMsg;
-  String errorConfirmPasswordMsg;
-
-  void _validate() {
-    String oldPassword = this.oldPasswordController.text.trim();
-    String newPassword = this.newPasswordController.text.trim();
-    String confirmPassword = this.confirmPasswordController.text.trim();
-
-    this.errorOldPasswordMsg = oldPassword.isEmpty
-        ? AppLocalization.of(context).translate("field_required")
-        : null;
-
-    this.errorNewPasswordMsg = newPassword.isEmpty
-        ? AppLocalization.of(context).translate("field_required")
-        : null;
-    var strengthPassword = Utils.estimateBruteforceStrength(newPassword);
-    if (!(strengthPassword > 0.3 && strengthPassword <= 1)) {
-      errorNewPasswordMsg = AppLocalization.of(context).translate("weak_password");
-    }
-
-    this.errorConfirmPasswordMsg = confirmPassword.isEmpty
-        ? AppLocalization.of(context).translate("field_required")
-        : null;
-  }
-
-  bool get valid =>
-      errorConfirmPasswordMsg == null &&
-      errorNewPasswordMsg == null &&
-      errorOldPasswordMsg == null;
 }

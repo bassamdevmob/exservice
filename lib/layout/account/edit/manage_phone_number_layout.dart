@@ -5,6 +5,7 @@ import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/global.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/directional_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,9 +80,7 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                                   .translate('update_mobile_number'),
                               style: Theme.of(context).textTheme.headline6,
                             ),
-                            SizedBox(
-                              height: Utils.verticalSpace(_mediaQuery) * 3,
-                            ),
+                            SizedBox(height: Sizer.vs2),
                             Directionality(
                               textDirection: TextDirection.ltr,
                               child: TextField(
@@ -98,9 +97,8 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: Utils.verticalSpace(_mediaQuery) * 3,
-                            ),
+                            SizedBox(height: Sizer.vs2),
+
                             DirectionalTextField(
                               controller: _bloc.passwordController,
                               obscureText: _bloc.obscurePassword,
@@ -116,8 +114,6 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     color: AppColors.gray,
-                                    size:
-                                        Utils.iconSize(MediaQuery.of(context)),
                                   ),
                                 ),
                                 errorText: _bloc.passwordMsg,
@@ -130,9 +126,8 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: Utils.verticalSpace(_mediaQuery),
-                        ),
+                        SizedBox(height: Sizer.vs2),
+
                         ElevatedButton(
                           onPressed: state is ManagePhoneNumberAwaitState
                               ? null

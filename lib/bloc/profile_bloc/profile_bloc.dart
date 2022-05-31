@@ -7,7 +7,6 @@ import 'package:exservice/models/entity/user.dart';
 import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,13 +32,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (event is ProfileFetchEvent) {
         try {
           emit(ProfileAwaitState());
-          var response =
-              await GetIt.I.get<UserRepository>().getProfile();
+          var response = await GetIt.I.get<UserRepository>().getProfile();
           model = response.data;
           emit(ProfileAcceptState());
         } on DioError catch (ex) {
           emit(ProfileErrorState(ex.error));
         }
+      } else if (event is ProfileUpdateEvent) {
+        model = event.model;
+        emit(ProfileInitial());
       } else if (event is ProfileRefreshEvent) {
         emit(ProfileInitial());
       } else if (event is ProfileUploadVideoEvent) {
@@ -64,7 +65,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         // } catch (e) {
         //   emit(ProfileErrorImageUploadState("$e"));
         // }
-      }else if(event is ProfileLogoutEvent){
+      } else if (event is ProfileLogoutEvent) {
         try {
           emit(ProfileLogoutAwaitState());
           await GetIt.I.get<AuthRepository>().logout();
@@ -82,5 +83,4 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
   }
-
 }

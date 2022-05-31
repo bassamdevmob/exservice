@@ -201,7 +201,6 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                       ? Icons.visibility
                       : Icons.visibility_off,
                   color: AppColors.gray,
-                  size: Utils.iconSize(MediaQuery.of(context)),
                 ),
               ),
               errorText: _bloc.passwordErrorMessage?.toString(),

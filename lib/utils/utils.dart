@@ -68,38 +68,6 @@ abstract class Utils {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  static EdgeInsets forgetPasswordBottomSheetPadding(
-      MediaQueryData mediaQuery) {
-    return EdgeInsets.only(
-      right: mediaQuery.size.width * (6 / 100),
-      left: mediaQuery.size.width * (6 / 100),
-      bottom: mediaQuery.size.height * (3 / 100),
-    );
-  }
-
-  static double verticalSpace(MediaQueryData mediaQuery) {
-    return mediaQuery.size.height * (2 / 100);
-  }
-
-  static double iconSize(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (6 / 100);
-  }
-
-  static passwordValidatorWidth(MediaQueryData mediaQuery) {
-    return mediaQuery.size.width * (15 / 100);
-  }
-
-  static BorderRadius bottomSheetBorderRadius(MediaQueryData mediaQuery) {
-    return BorderRadius.only(
-      topLeft: Radius.circular(mediaQuery.size.width * 0.1),
-      topRight: Radius.circular(mediaQuery.size.width * 0.1),
-    );
-  }
-
-  static double cardBorderRadius(mediaQuery) {
-    return mediaQuery.size.height * (1.5 / 100);
-  }
-
   static Future<void> launchWeb(BuildContext context, String url) async {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(

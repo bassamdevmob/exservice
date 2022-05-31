@@ -9,6 +9,7 @@ class DirectionalTextField extends StatefulWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool obscureText;
+  final TextStyle style;
   final InputDecoration decoration;
   final List<TextInputFormatter> inputFormatters;
 
@@ -16,6 +17,7 @@ class DirectionalTextField extends StatefulWidget {
     Key key,
     this.controller,
     this.focusNode,
+    this.style,
     this.maxLines,
     this.keyboardType,
     this.obscureText = false,
@@ -71,6 +73,7 @@ class _DirectionalTextFieldState extends State<DirectionalTextField>{
     return TextField(
       maxLines: widget.maxLines,
       focusNode: widget.focusNode,
+      style: widget.style,
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText,

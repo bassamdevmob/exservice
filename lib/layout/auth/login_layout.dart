@@ -188,7 +188,6 @@ class _LoginLayoutState extends State<LoginLayout> {
               icon: Icon(
                 _bloc.obscurePassword ? Icons.visibility : Icons.visibility_off,
                 color: AppColors.gray,
-                size: Utils.iconSize(MediaQuery.of(context)),
               ),
             ),
             errorText: _bloc.passwordErrorMessage?.toString(),

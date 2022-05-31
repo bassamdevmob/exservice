@@ -1,6 +1,5 @@
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
-import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
@@ -9,12 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class FavoritesLayout extends StatefulWidget {
+class BookmarksLayout extends StatefulWidget {
   @override
-  _FavoritesLayoutState createState() => _FavoritesLayoutState();
+  _BookmarksLayoutState createState() => _BookmarksLayoutState();
 }
 
-class _FavoritesLayoutState extends State<FavoritesLayout> {
+class _BookmarksLayoutState extends State<BookmarksLayout> {
   FavoritesCubit _bloc;
 
   @override
@@ -32,8 +31,8 @@ class _FavoritesLayoutState extends State<FavoritesLayout> {
         if (state is FavoritesLazyErrorState) {
           showErrorBottomSheet(
             context,
-            AppLocalization.of(context).translate("error"),
-            Utils.resolveErrorMessage(state.error),
+            title: AppLocalization.of(context).translate("error"),
+            message: Utils.resolveErrorMessage(state.error),
           );
         }
       },

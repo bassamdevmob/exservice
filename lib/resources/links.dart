@@ -14,7 +14,6 @@ class Links {
   ///user
   static const CONTACT_US_URL = "user/contact_us";
   static const PROFILE_URL = "user/profile";
-  static const SWITCH_BUSINESS_URL = "user/switch";
   static const CHATS_URL = "user/chats";
   static const PASSWORD_URL = "user/password";
   static const PHONE_NUMBER_URL = "user/phone_number";

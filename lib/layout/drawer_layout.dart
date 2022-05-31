@@ -1,8 +1,10 @@
+import 'package:exservice/bloc/account/change_password_bloc/change_password_bloc.dart';
 import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/contact_us_bloc/contact_us_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/layout/account/edit/change_password_layout.dart';
 import 'package:exservice/layout/app/about_us_layout.dart';
 import 'package:exservice/layout/app/contact_us_layout.dart';
 import 'package:exservice/layout/app/info_layout.dart';
@@ -159,7 +161,7 @@ class DrawerLayout extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.warning_amber_outlined,
+                Icons.error_outline,
                 size: Sizer.iconSizeLarge,
               ),
               title: Text(
@@ -178,7 +180,7 @@ class DrawerLayout extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.error_outline,
+                Icons.lock_outline,
                 size: Sizer.iconSizeLarge,
               ),
               title: Text(
@@ -197,6 +199,24 @@ class DrawerLayout extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
+                Icons.security_outlined,
+                size: Sizer.iconSizeLarge,
+              ),
+              title: Text(
+                AppLocalization.of(context).translate("security"),
+              ),
+              trailing: getTrailing(context),
+              onTap: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => ChangePasswordBloc(),
+                    child: ChangePasswordLayout(),
+                  ),
+                ));
+              },
+            ),
+            ListTile(
+              leading: Icon(
                 Icons.share_outlined,
                 size: Sizer.iconSizeLarge,
               ),
@@ -204,7 +224,8 @@ class DrawerLayout extends StatelessWidget {
                 AppLocalization.of(context).translate("share_app"),
               ),
               trailing: getTrailing(context),
-              onTap: () {},
+              onTap: () {
+              },
             ),
             if (isAuthenticated)
               ListTile(

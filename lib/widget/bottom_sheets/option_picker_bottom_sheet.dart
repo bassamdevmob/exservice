@@ -1,4 +1,5 @@
 import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
@@ -42,14 +43,14 @@ class OptionPickerBottomSheet<T> extends StatelessWidget {
         ),
         shrinkWrap: true,
         children: [
-          SizedBox(height: Utils.verticalSpace(mediaQuery)),
+          SizedBox(height: Sizer.vs2),
           BottomSheetStroke(),
-          SizedBox(height: Utils.verticalSpace(mediaQuery)),
+          SizedBox(height: Sizer.vs2),
           Text(
             AppLocalization.of(context).translate("choose_option"),
             style: Theme.of(context).textTheme.headline3,
           ),
-          SizedBox(height: Utils.verticalSpace(mediaQuery)),
+          SizedBox(height: Sizer.vs2),
           Material(
             child: Wrap(
               alignment: WrapAlignment.spaceAround,

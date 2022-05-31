@@ -1,7 +1,8 @@
 import 'package:exservice/bloc/account/account_ads_bloc/account_ads_cubit.dart';
+import 'package:exservice/bloc/account/edit_profile_bloc/edit_profile_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/account/account_ads_layout.dart';
-import 'package:exservice/layout/account/edit_account_layout.dart';
+import 'package:exservice/layout/account/edit_profile_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/enums.dart';
@@ -85,11 +86,15 @@ class _AccountLayoutState extends State<AccountLayout> {
                 children: [
                   OutlinedButton(
                     child: Text(
-                      AppLocalization.of(context).translate('edit'),
+                      AppLocalization.of(context).translate('edit_profile'),
                     ),
                     onPressed: () {
+                      var profileBloc = BlocProvider.of<ProfileBloc>(context);
                       Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => EditAccountLayout(),
+                        builder: (context) => BlocProvider(
+                          create: (context) => EditProfileBloc(profileBloc),
+                          child: EditAccountLayout(),
+                        ),
                       ));
                     },
                   ),
@@ -107,7 +112,8 @@ class _AccountLayoutState extends State<AccountLayout> {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (context) => BlocProvider(
-                                create: (context) => AccountAdsCubit(AdStatus.active),
+                                create: (context) =>
+                                    AccountAdsCubit(AdStatus.active),
                                 child: AccountAdsLayout(),
                               ),
                             ),
@@ -125,7 +131,8 @@ class _AccountLayoutState extends State<AccountLayout> {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (context) => BlocProvider(
-                                create: (context) => AccountAdsCubit(AdStatus.paused),
+                                create: (context) =>
+                                    AccountAdsCubit(AdStatus.paused),
                                 child: AccountAdsLayout(),
                               ),
                             ),
@@ -155,25 +162,66 @@ class _AccountLayoutState extends State<AccountLayout> {
                     ],
                   ),
                   SizedBox(height: Sizer.vs3),
-                  getInfoTile(
-                    AppLocalization.of(context).translate("companyName"),
-                    _bloc.model.companyName,
-                  ),
-                  SizedBox(height: Sizer.vs3),
-                  getInfoTile(
-                    AppLocalization.of(context).translate("website"),
-                    _bloc.model.website,
-                  ),
-                  SizedBox(height: Sizer.vs3),
-                  getInfoTile(
-                    AppLocalization.of(context).translate("location"),
-                    "${_bloc.model.location.country} ${_bloc.model.location.city}",
-                  ),
-                  SizedBox(height: Sizer.vs3),
-                  getInfoTile(
-                    AppLocalization.of(context).translate("desc"),
-                    _bloc.model.bio,
-                  ),
+                  if (_bloc.model.companyName != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate("company_name"),
+                          style: Theme.of(context).primaryTextTheme.titleMedium,
+                        ),
+                        Text(
+                          _bloc.model.companyName,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                        SizedBox(height: Sizer.vs3),
+                      ],
+                    ),
+                  if (_bloc.model.website != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate("website"),
+                          style: Theme.of(context).primaryTextTheme.titleMedium,
+                        ),
+                        Text(
+                          _bloc.model.website,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                        SizedBox(height: Sizer.vs3),
+                      ],
+                    ),
+                  if (_bloc.model.location != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate("location"),
+                          style: Theme.of(context).primaryTextTheme.titleMedium,
+                        ),
+                        Text(
+                          "${_bloc.model.location.country} ${_bloc.model.location.city}",
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                        SizedBox(height: Sizer.vs3),
+                      ],
+                    ),
+                  if (_bloc.model.bio != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          AppLocalization.of(context).translate("bio"),
+                          style: Theme.of(context).primaryTextTheme.titleMedium,
+                        ),
+                        Text(
+                          _bloc.model.bio,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                        SizedBox(height: Sizer.vs3),
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -212,6 +260,7 @@ class _AccountLayoutState extends State<AccountLayout> {
                   ),
                 ),
               ),
+              SizedBox(height: Sizer.vs3),
               Text(
                 _bloc.model.username,
                 style: Theme.of(context).primaryTextTheme.bodySmall,
@@ -251,22 +300,6 @@ class _AccountLayoutState extends State<AccountLayout> {
         Text(
           title,
           style: Theme.of(context).primaryTextTheme.bodySmall,
-        ),
-      ],
-    );
-  }
-
-  Widget getInfoTile(String key, String val) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          key,
-          style: Theme.of(context).primaryTextTheme.titleMedium,
-        ),
-        Text(
-          val,
-          style: Theme.of(context).primaryTextTheme.bodyMedium,
         ),
       ],
     );

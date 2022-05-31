@@ -1,6 +1,7 @@
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
@@ -59,9 +60,9 @@ class PolarQuestionBottomSheet extends StatelessWidget {
       child: ListView(
         shrinkWrap: true,
         children: [
-          SizedBox(height: Utils.verticalSpace(mediaQuery)),
+          SizedBox(height: Sizer.vs2),
           BottomSheetStroke(),
-          SizedBox(height: Utils.verticalSpace(mediaQuery)),
+          SizedBox(height: Sizer.vs2),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: mediaQuery.size.width * 0.05,

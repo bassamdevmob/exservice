@@ -83,9 +83,9 @@ final ThemeData darkTheme = ThemeData(
       borderSide: const BorderSide(color: AppColors.red),
       borderRadius: BorderRadius.circular(10),
     ),
-    floatingLabelBehavior: FloatingLabelBehavior.always,
     hintStyle: AppTextStyle.mediumGray,
     errorStyle: AppTextStyle.mediumRed,
+    labelStyle: AppTextStyle.mediumBlue,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
