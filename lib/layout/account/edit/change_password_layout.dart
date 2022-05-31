@@ -107,7 +107,6 @@ class _ChangePasswordLayoutState extends State<ChangePasswordLayout> {
           current is ChangePasswordShowNewPasswordState,
       builder: (context, state) {
         var style = Theme.of(context).primaryTextTheme.bodyMedium;
-
         return DirectionalTextField(
           controller: _bloc.newPasswordController,
           keyboardType: TextInputType.visiblePassword,

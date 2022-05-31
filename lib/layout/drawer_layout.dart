@@ -197,24 +197,25 @@ class DrawerLayout extends StatelessWidget {
                 ));
               },
             ),
-            ListTile(
-              leading: Icon(
-                Icons.security_outlined,
-                size: Sizer.iconSizeLarge,
+            if (isAuthenticated)
+              ListTile(
+                leading: Icon(
+                  Icons.security_outlined,
+                  size: Sizer.iconSizeLarge,
+                ),
+                title: Text(
+                  AppLocalization.of(context).translate("password"),
+                ),
+                trailing: getTrailing(context),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => ChangePasswordBloc(),
+                      child: ChangePasswordLayout(),
+                    ),
+                  ));
+                },
               ),
-              title: Text(
-                AppLocalization.of(context).translate("security"),
-              ),
-              trailing: getTrailing(context),
-              onTap: () {
-                Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => ChangePasswordBloc(),
-                    child: ChangePasswordLayout(),
-                  ),
-                ));
-              },
-            ),
             ListTile(
               leading: Icon(
                 Icons.share_outlined,
@@ -224,8 +225,7 @@ class DrawerLayout extends StatelessWidget {
                 AppLocalization.of(context).translate("share_app"),
               ),
               trailing: getTrailing(context),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             if (isAuthenticated)
               ListTile(
@@ -240,8 +240,10 @@ class DrawerLayout extends StatelessWidget {
                   ActionBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("logout"),
-                    subtitle: AppLocalization.of(context).translate("logout_desc"),
-                    confirmText: AppLocalization.of(context).translate("logout"),
+                    subtitle:
+                        AppLocalization.of(context).translate("logout_desc"),
+                    confirmText:
+                        AppLocalization.of(context).translate("logout"),
                     onTap: () {
                       _bloc.add(ProfileLogoutEvent());
                     },
