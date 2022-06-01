@@ -52,7 +52,7 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
   Future<void> fetch() async {
     try {
       emit(AccountAdsAwaitState());
-      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      var response = await GetIt.I.get<AdRepository>().ads();
       _meta = response.meta;
       models = response.data;
       emit(AccountAdsAcceptState());
@@ -65,7 +65,7 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
 
   Future<void> refresh() async {
     try {
-      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      var response = await GetIt.I.get<AdRepository>().ads();
       _meta = response.meta;
       models = response.data;
       emit(AccountAdsAcceptState());
@@ -80,7 +80,7 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
     try {
       var response = await GetIt.I
           .get<AdRepository>()
-          .bookmarkedAds(nextUrl: _meta.nextPageUrl);
+          .ads(nextUrl: _meta.nextPageUrl);
       _meta = response.meta;
       models.addAll(response.data);
       emit(AccountAdsAcceptState());

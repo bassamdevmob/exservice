@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/models/entity/meta.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -31,7 +30,7 @@ class AdsCubit extends Cubit<AdsState> {
   Future<void> fetch() async {
     try {
       emit(AdsAwaitState());
-      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      var response = await GetIt.I.get<AdRepository>().ads();
       _meta = response.meta;
       models = response.data;
       emit(AdsAcceptState());
@@ -44,7 +43,7 @@ class AdsCubit extends Cubit<AdsState> {
 
   Future<void> refresh() async {
     try {
-      var response = await GetIt.I.get<AdRepository>().bookmarkedAds();
+      var response = await GetIt.I.get<AdRepository>().ads();
       _meta = response.meta;
       models = response.data;
       emit(AdsAcceptState());
@@ -59,7 +58,7 @@ class AdsCubit extends Cubit<AdsState> {
     try {
       var response = await GetIt.I
           .get<AdRepository>()
-          .bookmarkedAds(nextUrl: _meta.nextPageUrl);
+          .ads(nextUrl: _meta.nextPageUrl);
       _meta = response.meta;
       models.addAll(response.data);
       emit(AdsAcceptState());

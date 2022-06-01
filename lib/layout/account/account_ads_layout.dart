@@ -66,7 +66,7 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
                 ),
               );
             }
-            if (_bloc.models == null || _bloc.models.isEmpty)
+            if (_bloc.models.isEmpty)
               return Center(
                 child: EmptyIndicator(
                   onTap: () {

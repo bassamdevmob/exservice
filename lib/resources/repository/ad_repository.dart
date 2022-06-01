@@ -32,9 +32,9 @@ class AdRepository extends BaseClient {
     return BitResponse.fromJson(response.data);
   }
 
-  Future<AdsResponse> ads({int categoryId}) async {
+  Future<AdsResponse> ads({int categoryId, String nextUrl}) async {
     final response = await client.get(
-      Links.AD_URL,
+      nextUrl ?? Links.AD_URL,
       queryParameters: {
         "category_id": categoryId,
       },
