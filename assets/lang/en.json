@@ -102,5 +102,6 @@
   "resend_code": "Resend code",
   "code_sent": "The code sent",
   "for_try_again": "to try again",
-  "enter_confirmation_code": "Confirm the process and enter the code sent to you"
+  "enter_confirmation_code": "Confirm the process and enter the code sent to you",
+  "listings": "Listings"
 }

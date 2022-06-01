@@ -1,9 +1,7 @@
 import 'package:exservice/bloc/account/account_ads_bloc/account_ads_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
-import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
+import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
-import 'package:exservice/widget/application/reload_widget.dart';
 import 'package:exservice/widget/application/user_ad.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AccountAdsLayout extends StatefulWidget {
+  const AccountAdsLayout({Key key}) : super(key: key);
+
   @override
   _AccountAdsLayoutState createState() => _AccountAdsLayoutState();
 }
@@ -35,38 +35,36 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
           showErrorBottomSheet(
             context,
             title: AppLocalization.of(context).translate("error"),
-            message: state.message,
+            message: Utils.resolveErrorMessage(state.error),
           );
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.white,
-          iconTheme: IconThemeData(color: AppColors.blue),
-          centerTitle: true,
           title: Text(
-            AppLocalization.of(context).translate('app_name'),
-            style: AppTextStyle.largeBlack,
+            AppLocalization.of(context).translate('listings'),
           ),
         ),
         body: BlocBuilder<AccountAdsCubit, AccountAdsState>(
           buildWhen: (_, current) =>
               current is AccountAdsErrorState ||
               current is AccountAdsAwaitState ||
-              current is AccountAdsReceivedState,
+              current is AccountAdsAcceptState,
           builder: (context, state) {
+            if (state is AccountAdsAwaitState) {
+              return Center(
+                child: CupertinoActivityIndicator(),
+              );
+            }
             if (state is AccountAdsErrorState) {
               return Center(
-                child: ReloadWidget.error(
-                  content: Text(state.message, textAlign: TextAlign.center),
-                  onPressed: () {
+                child: ReloadIndicator(
+                  error: state.error,
+                  onTap: () {
                     _bloc.fetch();
                   },
                 ),
               );
-            }
-            if (state is AccountAdsAwaitState) {
-              return Center(child: CupertinoActivityIndicator());
             }
             if (_bloc.models == null || _bloc.models.isEmpty)
               return Center(
@@ -77,16 +75,19 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
                 ),
               );
             return SmartRefresher(
-              enablePullUp: true,
-              enablePullDown: true,
-              onRefresh: () {
-                return _bloc.fetchFirst();
-              },
-              onLoading: () {
-                return _bloc.fetchNext();
-              },
-              footer: ClassicFooter(loadStyle: LoadStyle.ShowWhenLoading),
               controller: _bloc.refreshController,
+              onRefresh: () => _bloc.refresh(),
+              onLoading: () => _bloc.loadMore(),
+              enablePullUp: _bloc.enablePullUp,
+              enablePullDown: true,
+              footer: ClassicFooter(
+                onClick: () {
+                  if (_bloc.refreshController.footerStatus ==
+                      LoadStatus.failed) {
+                    _bloc.refreshController.requestLoading();
+                  }
+                },
+              ),
               child: ListView.builder(
                 itemCount: _bloc.models.length,
                 itemBuilder: (context, index) {

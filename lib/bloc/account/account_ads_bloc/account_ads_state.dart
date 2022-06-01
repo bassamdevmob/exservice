@@ -5,16 +5,16 @@ abstract class AccountAdsState {}
 
 class AccountAdsAwaitState extends AccountAdsState {}
 
-class AccountAdsReceivedState extends AccountAdsState {}
+class AccountAdsAcceptState extends AccountAdsState {}
 
 class AccountAdsErrorState extends AccountAdsState {
-  final String message;
+  final dynamic error;
 
-  AccountAdsErrorState(this.message);
+  AccountAdsErrorState(this.error);
 }
 
 class AccountAdsLazyErrorState extends AccountAdsState {
-  final String message;
+  final dynamic error;
 
-  AccountAdsLazyErrorState(this.message);
+  AccountAdsLazyErrorState(this.error);
 }
