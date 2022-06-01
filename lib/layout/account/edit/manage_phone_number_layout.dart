@@ -1,13 +1,14 @@
 import 'package:exservice/bloc/account/manage_phone_number_bloc/manage_phone_number_bloc.dart';
 import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/auth/verification_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/global.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/directional_text_field.dart';
+import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,123 +32,123 @@ class _ManagePhoneNumberLayoutState extends State<ManagePhoneNumberLayout> {
 
   @override
   Widget build(BuildContext context) {
-    var _mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
         title: Text(
-          AppLocalization.of(context).translate("app_name"),
-          style: AppTextStyle.largeLobsterBlack,
+          AppLocalization.of(context).translate("mobile"),
         ),
+        actions: [
+          BlocBuilder<ManagePhoneNumberBloc, ManagePhoneNumberState>(
+            buildWhen: (_, current) =>
+                current is ManagePhoneNumberAwaitState ||
+                current is ManagePhoneNumberErrorState ||
+                current is ManagePhoneNumberAcceptState,
+            builder: (context, state) {
+              return IconButton(
+                splashRadius: 25,
+                icon: state is ManagePhoneNumberAwaitState
+                    ? CupertinoActivityIndicator()
+                    : Icon(Icons.check),
+                onPressed: state is ManagePhoneNumberAwaitState
+                    ? null
+                    : () {
+                        _bloc.add(ManagePhoneNumberCommitEvent());
+                      },
+              );
+            },
+          ),
+        ],
       ),
-      body: BlocListener<ManagePhoneNumberBloc, ManagePhoneNumberState>(
-        listenWhen: (_, current) => current is ManagePhoneNumberCommittedState,
+      body: BlocConsumer<ManagePhoneNumberBloc, ManagePhoneNumberState>(
+        listenWhen: (_, current) =>
+            current is ManagePhoneNumberAcceptState ||
+            current is ManagePhoneNumberErrorState,
         listener: (context, state) async {
-          if (state is ManagePhoneNumberCommittedState) {
+          if (state is ManagePhoneNumberAcceptState) {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
-                    VerificationOnChangePhoneNumberFactory(state.session),
+                    VerificationOnChangePhoneNumberFactory(
+                      state.session,
+                      context.read<ProfileBloc>(),
+                    ),
                   ),
                   child: VerificationLayout(),
                 ),
               ),
             );
+          } else if (state is ManagePhoneNumberErrorState) {
+            showErrorBottomSheet(
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: Utils.resolveErrorMessage(state.error),
+            );
           }
         },
-        child: BlocBuilder<ManagePhoneNumberBloc, ManagePhoneNumberState>(
-          builder: (context, state) {
-            return LayoutBuilder(builder: (context, constraint) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraint.maxHeight,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              AppLocalization.of(context)
-                                  .translate('update_mobile_number'),
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                            SizedBox(height: Sizer.vs2),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: TextField(
-                                controller: _bloc.mobileNumberController,
-                                keyboardType: TextInputType.phone,
-                                maxLines: 1,
-                                inputFormatters: [phoneNumberFormatter],
-                                decoration: InputDecoration(
-                                  errorText: _bloc.mobileNumberMsg,
-                                  labelText:
-                                      "${AppLocalization.of(context).translate("mobile_number")}*",
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  labelStyle: AppTextStyle.xlargeBlue,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: Sizer.vs2),
-                            DirectionalTextField(
-                              controller: _bloc.passwordController,
-                              obscureText: _bloc.obscurePassword,
-                              keyboardType: TextInputType.visiblePassword,
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    _bloc.add(
-                                        ManagePhoneNumberShowPasswordEvent());
-                                  },
-                                  icon: Icon(
-                                    _bloc.obscurePassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: AppColors.gray,
-                                  ),
-                                ),
-                                errorText: _bloc.passwordMsg,
-                                labelText:
-                                    "${AppLocalization.of(context).translate("password")}*",
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                labelStyle: AppTextStyle.xlargeBlue,
-                              ),
-                            ),
-                          ],
+        buildWhen: (_, current) =>
+            current is ManagePhoneNumberValidateState ||
+            current is ManagePhoneNumberSecurePasswordState,
+        builder: (context, state) {
+          return ExpandedSingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        AppLocalization.of(context)
+                            .translate('update_mobile_number'),
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      SizedBox(height: Sizer.vs2),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: TextField(
+                          controller: _bloc.mobileNumberController,
+                          keyboardType: TextInputType.phone,
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            errorText: _bloc.mobileErrorMessage?.toString(),
+                            labelText:
+                                "${AppLocalization.of(context).translate("mobile_number")}*",
+                          ),
                         ),
-                        SizedBox(height: Sizer.vs2),
-                        ElevatedButton(
-                          onPressed: state is ManagePhoneNumberAwaitState
-                              ? null
-                              : () {
-                                  _bloc.add(ManagePhoneNumberCommitEvent());
-                                },
-                          child: state is ManagePhoneNumberAwaitState
-                              ? CupertinoActivityIndicator()
-                              : Text(
-                                  AppLocalization.of(context)
-                                      .translate("update"),
-                                ),
+                      ),
+                      SizedBox(height: Sizer.vs2),
+                      DirectionalTextField(
+                        controller: _bloc.passwordController,
+                        obscureText: _bloc.obscurePassword,
+                        maxLines: 1,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _bloc.add(ManagePhoneNumberShowPasswordEvent());
+                            },
+                            icon: Icon(
+                              _bloc.obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: AppColors.gray,
+                            ),
+                          ),
+                          errorText: _bloc.passwordErrorMessage?.toString(),
+                          labelText:
+                              "${AppLocalization.of(context).translate("password")}*",
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-              );
-            });
-          },
-        ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

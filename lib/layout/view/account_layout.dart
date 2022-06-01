@@ -33,7 +33,7 @@ class _AccountLayoutState extends State<AccountLayout> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       buildWhen: (_, current) =>
-          current is ProfileInitial ||
+          current is ProfileRefreshState ||
           current is ProfileAwaitState ||
           current is ProfileAcceptState ||
           current is ProfileErrorState,

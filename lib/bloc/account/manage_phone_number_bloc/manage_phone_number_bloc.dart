@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:exservice/localization/app_localization.dart';
+import 'package:dio/dio.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
-import 'package:exservice/utils/global.dart';
-import 'package:exservice/utils/utils.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -17,7 +17,7 @@ class ManagePhoneNumberBloc
     extends Bloc<ManagePhoneNumberEvent, ManagePhoneNumberState> {
   final mobileNumberController = TextEditingController();
   final passwordController = TextEditingController();
-  final BuildContext context;
+  final ProfileBloc profile;
 
   @override
   Future<void> close() async {
@@ -26,49 +26,30 @@ class ManagePhoneNumberBloc
     super.close();
   }
 
-  String mobileNumberMsg;
-  String passwordMsg;
+  Localized mobileErrorMessage;
+  Localized passwordErrorMessage;
 
-  bool get validMobileNumber => mobileNumberMsg == null;
-
-  bool get validPassword => mobileNumberMsg == null;
-
-  bool get valid => validMobileNumber && validPassword;
-
-  String validateMobileNumber() {
-    String mobileNumber =
-        phoneNumberFormatter.unmaskText(mobileNumberController.text.trim());
-    if (mobileNumber.isEmpty)
-      return AppLocalization.of(context).translate("filed_required");
-    if (!Utils.isPhoneNumber(mobileNumber))
-      return AppLocalization.of(context).translate("error_mobile_number_msg");
-    return null;
-  }
-
-  String validatePassword() {
-    String password = passwordController.text.trim();
-    if (password.isEmpty)
-      return AppLocalization.of(context).translate("filed_required");
-    return null;
-  }
+  bool get valid => mobileErrorMessage == null && passwordErrorMessage == null;
 
   void _validate() {
-    mobileNumberMsg = validateMobileNumber();
-    passwordMsg = validatePassword();
+    String mobile = mobileNumberController.text.trim();
+    String password = passwordController.text.trim();
+
+    mobileErrorMessage = mobile.isEmpty ? Localized("field_required") : null;
+    passwordErrorMessage =
+        password.isEmpty ? Localized("field_required") : null;
   }
 
   bool obscurePassword = true;
 
-  ManagePhoneNumberBloc(this.context) : super(ManagePhoneNumberInitial()) {
+  ManagePhoneNumberBloc(this.profile) : super(ManagePhoneNumberInitial()) {
+    mobileNumberController.text = profile.model.phoneNumber;
     on<ManagePhoneNumberEvent>((event, emit) async {
-      if (event is ManagePhoneNumberValidateEvent) {
+      if (event is ManagePhoneNumberCommitEvent) {
         _validate();
-        emit(ValidationUpdateNumberState());
-      } else if (event is ManagePhoneNumberCommitEvent) {
-        try {
-          _validate();
-          emit(ValidationUpdateNumberState());
-          if (valid) {
+        emit(ManagePhoneNumberValidateState());
+        if (valid) {
+          try {
             emit(ManagePhoneNumberAwaitState());
             String mobileNumber = mobileNumberController.text.trim();
             String password = passwordController.text.trim();
@@ -77,14 +58,14 @@ class ManagePhoneNumberBloc
                       phoneNumber: mobileNumber,
                       password: password,
                     );
-            emit(ManagePhoneNumberCommittedState(response.data.session));
+            emit(ManagePhoneNumberAcceptState(response.data.session));
+          } on DioError catch (ex) {
+            emit(ManagePhoneNumberErrorState(ex.error));
           }
-        } catch (e) {
-          emit(ManagePhoneNumberErrorState("$e"));
         }
       } else if (event is ManagePhoneNumberShowPasswordEvent) {
         obscurePassword = !obscurePassword;
-        emit(ManagePhoneNumberInitial());
+        emit(ManagePhoneNumberSecurePasswordState());
       }
     });
   }

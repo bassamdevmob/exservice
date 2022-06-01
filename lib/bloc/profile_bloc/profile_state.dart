@@ -3,7 +3,7 @@ part of 'profile_bloc.dart';
 @immutable
 abstract class ProfileState {}
 
-class ProfileInitial extends ProfileState {}
+class ProfileRefreshState extends ProfileState {}
 
 class ProfileLogoutAwaitState extends ProfileState {}
 
@@ -14,7 +14,6 @@ class ProfileLogoutErrorState extends ProfileState {
 
   ProfileLogoutErrorState(this.error);
 }
-
 
 class ProfileAwaitState extends ProfileState {}
 

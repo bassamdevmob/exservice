@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
 import 'package:exservice/bloc/auth/reset_password_bloc/reset_password_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/layout/account/settings_layout.dart';
 import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/auth/reset_password_layout.dart';
+import 'package:exservice/models/response/profile_response.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
+import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/utils/localized.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +39,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   void _validate() {
     String pin = pinController.text.trim();
 
-    pinErrorMessage = pin.length != 6 ? Localized("invalid") : null;
+    pinErrorMessage = pin.length != 6 ? Localized("invalid_pin") : null;
   }
 
   @override

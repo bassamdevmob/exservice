@@ -5,18 +5,20 @@ abstract class ManagePhoneNumberState {}
 
 class ManagePhoneNumberInitial extends ManagePhoneNumberState {}
 
+class ManagePhoneNumberSecurePasswordState extends ManagePhoneNumberState {}
+
+class ManagePhoneNumberValidateState extends ManagePhoneNumberState {}
+
 class ManagePhoneNumberAwaitState extends ManagePhoneNumberState {}
 
-class ManagePhoneNumberCommittedState extends ManagePhoneNumberState {
+class ManagePhoneNumberAcceptState extends ManagePhoneNumberState {
   final String session;
 
-  ManagePhoneNumberCommittedState(this.session);
+  ManagePhoneNumberAcceptState(this.session);
 }
 
 class ManagePhoneNumberErrorState extends ManagePhoneNumberState {
-  final String message;
+  final dynamic error;
 
-  ManagePhoneNumberErrorState(this.message);
+  ManagePhoneNumberErrorState(this.error);
 }
-
-class ValidationUpdateNumberState extends ManagePhoneNumberState {}

@@ -6,10 +6,13 @@ class Links {
   static const REGISTER_URL = "user/register";
   static const LOGOUT_URL = "user/logout";
   static const FORGET_PASSWORD_URL = "user/forget_password";
-  static const RESET_PASSWORD_URL = "user/forget_password";
-  static const VERIFY_URL = "user/verify";
-  static const RESEND_URL = "user/verify";
-  static const CHECK_ACCOUNT_URL = "user/check_account";
+  static const RESET_PASSWORD_URL = "user/reset_password";
+
+  static const AUTH_VERIFY_URL = "auth/verify";
+  static const AUTH_RESEND_URL = "auth/resend";
+
+  static const USER_VERIFY_URL = "user/verify";
+  static const USER_RESEND_URL = "user/resend";
 
   ///user
   static const CONTACT_US_URL = "user/contact_us";

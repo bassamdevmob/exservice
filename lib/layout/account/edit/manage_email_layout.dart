@@ -1,30 +1,31 @@
-import 'package:exservice/bloc/account/manage_email_address_bloc/manage_email_address_bloc.dart';
+import 'package:exservice/bloc/account/manage_email_bloc/manage_email_bloc.dart';
 import 'package:exservice/bloc/auth/verification_bloc/verification_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/auth/verification_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/directional_text_field.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ManageEmailAddressLayout extends StatefulWidget {
-  const ManageEmailAddressLayout({Key key}) : super(key: key);
+class ManageEmailLayout extends StatefulWidget {
+  const ManageEmailLayout({Key key}) : super(key: key);
 
   @override
-  _ManageEmailAddressLayoutState createState() =>
-      _ManageEmailAddressLayoutState();
+  _ManageEmailLayoutState createState() => _ManageEmailLayoutState();
 }
 
-class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
-  ManageEmailAddressBloc _bloc;
+class _ManageEmailLayoutState extends State<ManageEmailLayout> {
+  ManageEmailBloc _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<ManageEmailAddressBloc>(context);
+    _bloc = BlocProvider.of<ManageEmailBloc>(context);
     super.initState();
   }
 
@@ -36,39 +37,57 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
           AppLocalization.of(context).translate("email"),
         ),
         actions: [
-          BlocBuilder<ManageEmailAddressBloc, ManageEmailAddressState>(
+          BlocBuilder<ManageEmailBloc, ManageEmailState>(
+            buildWhen: (_, current) =>
+                current is ManageEmailAwaitState ||
+                current is ManageEmailErrorState ||
+                current is ManageEmailAcceptState,
             builder: (context, state) {
               return IconButton(
                 splashRadius: 25,
-                icon: state is ManageEmailAddressAwaitState
+                icon: state is ManageEmailAwaitState
                     ? CupertinoActivityIndicator()
                     : Icon(Icons.check),
-                onPressed: state is ManageEmailAddressAwaitState
+                onPressed: state is ManageEmailAwaitState
                     ? null
                     : () {
-                        _bloc.add(ManageEmailAddressCommitEvent());
+                        _bloc.add(ManageEmailCommitEvent());
                       },
               );
             },
           ),
         ],
       ),
-      body: BlocConsumer<ManageEmailAddressBloc, ManageEmailAddressState>(
-        listenWhen: (_, current) => current is ManageEmailAddressAcceptState,
+      body: BlocConsumer<ManageEmailBloc, ManageEmailState>(
+        listenWhen: (_, current) =>
+            current is ManageEmailAcceptState ||
+            current is ManageEmailErrorState,
         listener: (context, state) async {
-          if (state is ManageEmailAddressAcceptState) {
+          if (state is ManageEmailAcceptState) {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider<VerificationBloc>(
                   create: (context) => VerificationBloc(
-                    VerificationOnChangeEmailAddressFactory(state.session),
+                    VerificationOnChangeEmailFactory(
+                      state.session,
+                      context.read<ProfileBloc>(),
+                    ),
                   ),
                   child: VerificationLayout(),
                 ),
               ),
             );
+          } else if (state is ManageEmailErrorState) {
+            showErrorBottomSheet(
+              context,
+              title: AppLocalization.of(context).translate("error"),
+              message: Utils.resolveErrorMessage(state.error),
+            );
           }
         },
+        buildWhen: (_, current) =>
+            current is ManageEmailValidateState ||
+            current is ManageEmailSecurePasswordState,
         builder: (context, state) {
           return ExpandedSingleChildScrollView(
             child: Padding(
@@ -103,7 +122,7 @@ class _ManageEmailAddressLayoutState extends State<ManageEmailAddressLayout> {
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          _bloc.add(ManageEmailAddressShowPasswordEvent());
+                          _bloc.add(ManageEmailShowPasswordEvent());
                         },
                         icon: Icon(
                           _bloc.obscurePassword

@@ -49,7 +49,7 @@ class VerificationOnResetPasswordFactory extends VerificationFactory {
 
   @override
   Future<void> onVerify(String code) {
-    return GetIt.I.get<AuthRepository>().verify(session, code);
+    return GetIt.I.get<AuthRepository>().verifyResetPassword(session, code);
   }
 
   @override
@@ -64,57 +64,46 @@ class VerificationOnResetPasswordFactory extends VerificationFactory {
 }
 
 class VerificationOnChangePhoneNumberFactory extends VerificationFactory {
-  VerificationOnChangePhoneNumberFactory(String session) : super(session);
+  final ProfileBloc _bloc;
+
+  VerificationOnChangePhoneNumberFactory(String session, this._bloc)
+      : super(session);
 
   @override
   Future<void> onResend() {
-    return GetIt.I.get<AuthRepository>().resendVerificationCode(session);
+    return GetIt.I.get<UserRepository>().resendVerificationCode(session);
   }
 
   @override
-  Future<void> onVerify(String code) {
-    return GetIt.I.get<AuthRepository>().verify(session, code);
+  Future<void> onVerify(String code) async {
+    var response = await GetIt.I.get<UserRepository>().verify(session, code);
+    _bloc.add(ProfileUpdateEvent(response.data));
   }
 
   @override
   void afterVerified(BuildContext context) {
-    DataStore.instance.deleteCertificates();
-    Navigator.of(context).pushAndRemoveUntil(
-      CupertinoPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => LoginBloc(),
-          child: LoginLayout(),
-        ),
-      ),
-      (route) => false,
-    );
+    Navigator.of(context).popUntil(ModalRoute.withName(SettingsLayout.route));
   }
 }
 
-class VerificationOnChangeEmailAddressFactory extends VerificationFactory {
-  VerificationOnChangeEmailAddressFactory(String session) : super(session);
+class VerificationOnChangeEmailFactory extends VerificationFactory {
+  final ProfileBloc _bloc;
+
+  VerificationOnChangeEmailFactory(String session, this._bloc) : super(session);
 
   @override
   Future<void> onResend() {
-    return GetIt.I.get<AuthRepository>().resendVerificationCode(session);
+    return GetIt.I.get<UserRepository>().resendVerificationCode(session);
   }
 
   @override
-  Future<void> onVerify(String code) {
-    return GetIt.I.get<AuthRepository>().verify(session, code);
+  Future<void> onVerify(String code) async {
+    var response = await GetIt.I.get<UserRepository>().verify(session, code);
+    _bloc.add(ProfileUpdateEvent(response.data));
   }
 
   @override
   void afterVerified(BuildContext context) {
-    DataStore.instance.deleteCertificates();
-    Navigator.of(context).pushAndRemoveUntil(
-      CupertinoPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => LoginBloc(),
-          child: LoginLayout(),
-        ),
-      ),
-      (route) => false,
-    );
+    Navigator.of(context).popUntil(ModalRoute.withName(SettingsLayout.route));
   }
 }

@@ -53,7 +53,7 @@ class AuthRepository extends BaseClient {
 
   Future<AuthResponse> verify(String session, String code) async {
     final response = await client.post(
-      Links.VERIFY_URL,
+      Links.AUTH_VERIFY_URL,
       data: {
         "session": session,
         "code": code,
@@ -62,9 +62,21 @@ class AuthRepository extends BaseClient {
     return AuthResponse.fromJson(response.data);
   }
 
+  Future<SimpleResponse> verifyResetPassword(String session, String code) async {
+    final response = await client.post(
+      Links.AUTH_VERIFY_URL,
+      data: {
+        "session": session,
+        "code": code,
+      },
+    );
+    return SimpleResponse.fromJson(response.data);
+  }
+
+
   Future<SessionResponse> resendVerificationCode(String session) async {
     final response = await client.post(
-      Links.RESEND_URL,
+      Links.AUTH_RESEND_URL,
       data: {
         "session": session,
       },

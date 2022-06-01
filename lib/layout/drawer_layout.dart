@@ -196,7 +196,7 @@ class DrawerLayout extends StatelessWidget {
                 ));
               },
             ),
-            // if (isAuthenticated)//todo
+            if (isAuthenticated)
               ListTile(
                 leading: Icon(
                   Icons.settings_outlined,
@@ -209,6 +209,9 @@ class DrawerLayout extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(CupertinoPageRoute(
                     builder: (context) => SettingsLayout(),
+                    settings: RouteSettings(
+                      name: SettingsLayout.route,
+                    ),
                   ));
                 },
               ),

@@ -40,9 +40,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       } else if (event is ProfileUpdateEvent) {
         model = event.model;
-        emit(ProfileInitial());
+        emit(ProfileRefreshState());
       } else if (event is ProfileRefreshEvent) {
-        emit(ProfileInitial());
+        emit(ProfileRefreshState());
       } else if (event is ProfileUploadVideoEvent) {
         // emit(ProfileAwaitVideoUploadState());
         // try {

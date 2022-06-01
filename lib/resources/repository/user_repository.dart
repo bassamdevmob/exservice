@@ -69,6 +69,28 @@ class UserRepository extends BaseClient {
     return SessionResponse.fromJson(response.data);
   }
 
+  Future<SessionResponse> resendVerificationCode(String session) async {
+    final response = await client.post(
+      Links.USER_RESEND_URL,
+      data: {
+        "session": session,
+      },
+    );
+    return SessionResponse.fromJson(response.data);
+  }
+
+  Future<ProfileResponse> verify(String session, String code) async {
+    final response = await client.post(
+      Links.USER_VERIFY_URL,
+      data: {
+        "session": session,
+        "code": code,
+      },
+    );
+    return ProfileResponse.fromJson(response.data);
+  }
+
+
   Future<NotificationsResponse> notifications() async {
     final response = await client.get(Links.NOTIFICATION_URL);
     return NotificationsResponse.fromJson(response.data);

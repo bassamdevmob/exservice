@@ -102,7 +102,7 @@ class _VerificationLayoutState extends State<VerificationLayout> {
           child: TextField(
             maxLength: 6,
             controller: _bloc.pinController,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               labelText:
                   AppLocalization.of(context).translate("confirmation_code"),
@@ -141,7 +141,6 @@ class _VerificationLayoutState extends State<VerificationLayout> {
           current is VerificationErrorState ||
           current is VerificationResendAwaitState,
       builder: (context, state) {
-        print(state.runtimeType);
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           child: Text(
