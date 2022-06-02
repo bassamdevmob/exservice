@@ -54,12 +54,17 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
             return ListTile(
               enabled: true,
               onTap: () {
-                Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => AdDetailsBloc(_bloc.notes[index].id),
-                    child: AdDetailsLayout(),
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => AdDetailsBloc(
+                        _bloc.notes[index].id,
+                        locator: context.read,
+                      ),
+                      child: AdDetailsLayout(),
+                    ),
                   ),
-                ));
+                );
               },
               leading: OutlineContainer(
                 dimension: dimensions,

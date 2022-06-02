@@ -56,13 +56,9 @@ class _ForgotPasswordLayoutState extends State<ForgotPasswordLayout> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    AppLocalization.of(context).translate('enter_account'),
-                    style: AppTextStyle.mediumGray,
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  AppLocalization.of(context).translate('enter_account'),
+                  style: Theme.of(context).primaryTextTheme.bodySmall,
                 ),
                 SizedBox(height: 20),
                 getAccountField(),

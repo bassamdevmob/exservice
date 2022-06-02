@@ -9,6 +9,7 @@ import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/ad_media.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
+import 'package:exservice/widget/application/status_container.dart';
 import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,7 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
                 itemCount: _bloc.models.length,
                 itemBuilder: (context, index) {
                   var model = _bloc.models[index];
-                  return  Column(
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       GestureDetector(
@@ -163,13 +164,21 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
                           Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (context) => BlocProvider(
-                                create: (context) => AdDetailsBloc(model.id),
+                                create: (context) => AdDetailsBloc(
+                                  model.id,
+                                  locator: context.read,
+                                ),
                                 child: AdDetailsLayout(),
                               ),
                             ),
                           );
                         },
-                        child: AdGallery(model),
+                        child: Stack(
+                          children: [
+                            AdGallery(model),
+                            StatusContainer(model.status),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(

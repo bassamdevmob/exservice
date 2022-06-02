@@ -23,6 +23,8 @@
   "subscribe": "Subscribe",
   "have_account": "Already have an account?",
   "no_account": "Don't have an account?",
+  "forget_password": "Forget password",
+  "enter_account": "Enter account and the verification code will be sent to your account",
   "subscribe_now": "Subscribe Now",
   "finish_profile_description1": "We promise it'll only take a minute",
   "finish_profile_description2": "Help us know a little bit more about you by filling the information below",
@@ -105,5 +107,15 @@
   "enter_confirmation_code": "Confirm the process and enter the code sent to you",
   "more": "more",
   "less": "less",
-  "listings": "Listings"
+  "listings": "Listings",
+  "welcome": "Welcome to %s you can now access all features",
+  "activate": "Activate",
+  "delete": "Delete",
+  "pause": "Pause",
+  "edit": "Edit",
+  "delete_ad": "Delete ad",
+  "delete_ad_desc": "This ad will be deleted permanently and you won't be able to restore it again",
+  "edit_ad": "Edit ad",
+  "title": "Title",
+  "cancel": "Cancel"
 }

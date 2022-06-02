@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
-import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/models/request/edit_ad_request.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
+import 'package:exservice/utils/localized.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,10 +16,9 @@ class EditAdBloc extends Bloc<EditAdEvent, EditAdState> {
   final AdModel model;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final BuildContext context;
 
-  String titleErrorMessage;
-  String descriptionErrorMessage;
+  Localized titleErrorMessage;
+  Localized descriptionErrorMessage;
 
   bool get valid =>
       titleErrorMessage == null && descriptionErrorMessage == null;
@@ -28,13 +27,10 @@ class EditAdBloc extends Bloc<EditAdEvent, EditAdState> {
     String title = titleController.text.trim();
     String description = descriptionController.text.trim();
 
-    titleErrorMessage = title.isEmpty
-        ? AppLocalization.of(context).translate("filed_required")
-        : null;
+    titleErrorMessage = title.isEmpty ? Localized("filed_required") : null;
 
-    descriptionErrorMessage = description.isEmpty
-        ? AppLocalization.of(context).translate("filed_required")
-        : null;
+    descriptionErrorMessage =
+        description.isEmpty ? Localized("filed_required") : null;
   }
 
   @override
@@ -44,7 +40,7 @@ class EditAdBloc extends Bloc<EditAdEvent, EditAdState> {
     return super.close();
   }
 
-  EditAdBloc(this.context, this.model) : super(EditAdInitial()) {
+  EditAdBloc(this.model) : super(EditAdInitial()) {
     titleController.text = model.title;
     descriptionController.text = model.description;
     on<EditAdEvent>((event, emit) async {
@@ -65,10 +61,10 @@ class EditAdBloc extends Bloc<EditAdEvent, EditAdState> {
                 );
             model.title = title;
             model.description = description;
-            emit(EditAdCommittedState());
+            emit(EditAdAcceptState());
           }
-        } catch (e) {
-          emit(EditAdErrorState("$e"));
+        } catch (ex) {
+          emit(EditAdErrorState(ex.error));
         }
       }
     });

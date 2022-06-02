@@ -86,7 +86,7 @@ class _LoginLayoutState extends State<LoginLayout> {
                       );
                     },
                     child: Text(
-                      AppLocalization.of(context).translate('forget'),
+                      AppLocalization.of(context).translate('forget_password'),
                     ),
                   ),
                   Divider(height: 2),

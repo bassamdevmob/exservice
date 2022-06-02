@@ -5,7 +5,6 @@ import 'package:exservice/layout/account/account_ads_layout.dart';
 import 'package:exservice/layout/account/edit_profile_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/utils/enums.dart';
 import 'package:exservice/utils/extensions.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';

@@ -20,7 +20,7 @@ class AdRepository extends BaseClient {
 
   Future<SimpleResponse> delete(int id) async {
     final response = await client.delete(
-      Links.AD_URL,
+      "${Links.AD_URL}/$id",
     );
     return SimpleResponse.fromJson(response.data);
   }

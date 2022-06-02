@@ -1,18 +1,25 @@
 import 'package:expandable/expandable.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
-import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
+import 'package:exservice/bloc/edit_ad_bloc/edit_ad_bloc.dart';
+import 'package:exservice/layout/edit_ad_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/constant.dart';
+import 'package:exservice/utils/enums.dart';
 import 'package:exservice/utils/global.dart';
 import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/utils.dart';
 import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
+import 'package:exservice/widget/application/status_container.dart';
+import 'package:exservice/widget/bottom_sheets/delete_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/error_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:readmore/readmore.dart';
@@ -43,7 +50,33 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
       ),
       child: Scaffold(
         appBar: AppBar(),
-        body: BlocBuilder<AdDetailsBloc, AdDetailsState>(
+        body: BlocConsumer<AdDetailsBloc, AdDetailsState>(
+          listener: (context, state) {
+            if (state is AdDetailsDeleteErrorState) {
+              showErrorBottomSheet(
+                context,
+                title: AppLocalization.of(context).translate("error"),
+                message: Utils.resolveErrorMessage(state.error),
+              );
+            } else if (state is AdDetailsStatusErrorState) {
+              showErrorBottomSheet(
+                context,
+                title: AppLocalization.of(context).translate("error"),
+                message: Utils.resolveErrorMessage(state.error),
+              );
+            } else if (state is AdDetailsDeleteAcceptState) {
+              Fluttertoast.showToast(
+                msg: state.message,
+                toastLength: Toast.LENGTH_LONG,
+              );
+              if (mounted) Navigator.of(context).pop();
+            } else if (state is AdDetailsStatusAcceptState) {
+              Fluttertoast.showToast(
+                msg: state.message,
+                toastLength: Toast.LENGTH_LONG,
+              );
+            }
+          },
           buildWhen: (_, current) =>
               current is AdDetailsErrorState ||
               current is AdDetailsAcceptState ||
@@ -123,104 +156,52 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                     //image slider
                   ],
                 ),
-                AspectRatio(
-                  aspectRatio: ASPECT_RATIO,
-                  child: Swiper(
-                    itemCount: _bloc.details.media.length,
-                    pagination: swiperPagination,
-                    itemBuilder: (BuildContext context, index) {
-                      return OctoImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(_bloc.details.media[index].link),
-                        progressIndicatorBuilder: (context, _) => simpleShimmer,
-                        errorBuilder: imageErrorBuilder,
-                      );
-                    },
-                  ),
+                Stack(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: ASPECT_RATIO,
+                      child: Swiper(
+                        itemCount: _bloc.details.media.length,
+                        pagination: swiperPagination,
+                        itemBuilder: (BuildContext context, index) {
+                          return OctoImage(
+                            fit: BoxFit.cover,
+                            image:
+                                NetworkImage(_bloc.details.media[index].link),
+                            progressIndicatorBuilder: (context, _) =>
+                                simpleShimmer,
+                            errorBuilder: imageErrorBuilder,
+                          );
+                        },
+                      ),
+                    ),
+                    BlocBuilder<AdDetailsBloc, AdDetailsState>(
+                      buildWhen: (_, current) =>
+                          current is AdDetailsStatusAcceptState,
+                      builder: (context, state) {
+                        return StatusContainer(_bloc.details.status);
+                      },
+                    ),
+                  ],
                 ),
-                // if (_accountBloc.model.id != widget.ad.owner.id)
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     children: <Widget>[
-                //       AppButton(
-                //         child: Text(
-                //           AppLocalization.of(context).translate("edit"),
-                //           style: AppTextStyle.largeBlack,
-                //         ),
-                //         onTap: () {
-                //           Navigator.of(context)
-                //               .push(CupertinoPageRoute(
-                //             builder: (context) => BlocProvider(
-                //               create: (context) => EditAdBloc(context, widget.ad),
-                //               child: EditAdLayout(),
-                //             ),
-                //           ))
-                //               .whenComplete(() {
-                //             setState(() {});
-                //           });
-                //         },
-                //       ),
-                //       Builder(
-                //         builder: (context) {
-                //           if (AdStatus.paused.name == widget.ad.status)
-                //             return AppButton(
-                //               child: statusLoading == true
-                //                   ? CupertinoActivityIndicator()
-                //                   : Text(
-                //                 AppLocalization.of(context).translate("activate"),
-                //                 style: AppTextStyle.largeBlack,
-                //               ),
-                //               onTap: statusLoading == true ? null : _activate,
-                //             );
-                //           if (AdStatus.active.name == widget.ad.status)
-                //             return AppButton(
-                //               child: statusLoading == true
-                //                   ? CupertinoActivityIndicator()
-                //                   : Text(
-                //                 AppLocalization.of(context).translate("pause"),
-                //                 style: AppTextStyle.largeBlack,
-                //               ),
-                //               onTap: statusLoading == true ? null : _pause,
-                //             );
-                //           return Text(
-                //             AppLocalization.of(context).translate("expired"),
-                //             style: AppTextStyle.mediumBlue,
-                //           );
-                //         },
-                //       ),
-                //       AppButton(
-                //         child: deleteLoading == true
-                //             ? CupertinoActivityIndicator()
-                //             : Text(
-                //           AppLocalization.of(context).translate("delete"),
-                //           style: AppTextStyle.largeBlack,
-                //         ),
-                //         onTap: deleteLoading == true ? null : _delete,
-                //       ),
-                //     ],
-                //   ),
+                if (!_bloc.isOwned) getControlButtons(),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: Sizer.vs3,
                     horizontal: Sizer.vs3,
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Builder(builder: (context) {
-                        if (BlocProvider.of<ProfileBloc>(context).model.id ==
-                            _bloc.details.owner.id) {
-                          return AdDetails(_bloc.details);
-                        }
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              child: AdDetails(_bloc.details),
-                            ),
-                            getBookmarkButton(),
-                          ],
-                        );
-                      }),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: AdDetails(_bloc.details),
+                          ),
+                          if (!_bloc.isOwned) getBookmarkButton(),
+                        ],
+                      ),
                       SizedBox(
                         height: Sizer.vs2,
                       ),
@@ -377,32 +358,99 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
     );
   }
 
+  Widget getControlButtons() {
+    return Padding(
+      padding: EdgeInsets.only(top: Sizer.vs3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          OutlinedButton(
+            child: Text(
+              AppLocalization.of(context).translate("edit"),
+            ),
+            onPressed: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => EditAdBloc(_bloc.details),
+                  child: EditAdLayout(),
+                ),
+              )).whenComplete(() {
+                _bloc.add(AdDetailsUpdateEvent());
+              });
+            },
+          ),
+          Builder(
+            builder: (context) {
+              if (_bloc.details.status == AdStatus.expired.name) {
+                return Text(
+                  AppLocalization.of(context).translate("expired"),
+                  style: Theme.of(context).primaryTextTheme.bodyMedium,
+                );
+              } else {
+                return BlocBuilder<AdDetailsBloc, AdDetailsState>(
+                  buildWhen: (_, current) =>
+                      current is AdDetailsStatusAwaitState ||
+                      current is AdDetailsStatusAcceptState ||
+                      current is AdDetailsStatusErrorState,
+                  builder: (context, state) {
+                    return OutlinedButton(
+                      child: state is AdDetailsStatusAwaitState
+                          ? CupertinoActivityIndicator()
+                          : Text(
+                              AdStatus.paused.name == _bloc.details.status
+                                  ? AppLocalization.of(context)
+                                      .translate("activate")
+                                  : AppLocalization.of(context)
+                                      .translate("pause"),
+                            ),
+                      onPressed: state is AdDetailsStatusAwaitState
+                          ? null
+                          : () {
+                              if (AdStatus.paused.name == _bloc.details.status)
+                                _bloc.add(AdDetailsActivateEvent());
+                              else
+                                _bloc.add(AdDetailsPauseEvent());
+                            },
+                    );
+                  },
+                );
+              }
+            },
+          ),
+          BlocBuilder<AdDetailsBloc, AdDetailsState>(
+            buildWhen: (_, current) =>
+                current is AdDetailsDeleteAwaitState ||
+                current is AdDetailsDeleteAcceptState ||
+                current is AdDetailsDeleteErrorState,
+            builder: (context, state) {
+              return OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  primary: AppColors.red,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 5.0, color: Colors.blue),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: state is AdDetailsDeleteAwaitState
+                    ? CupertinoActivityIndicator()
+                    : Text(
+                        AppLocalization.of(context).translate("delete"),
+                      ),
+                onPressed: state is AdDetailsDeleteAwaitState
+                    ? null
+                    : () {
+                        DeleteBottomSheet.show(context, onTap: () {
+                          _bloc.add(AdDetailsDeleteEvent());
+                        });
+                      },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-  //  _delete() {
-//     showDialog(
-//       context: context,
-//       builder: (ctx) => ConfirmDialog(
-//         text: AppLocalization.of(context).translate("confirmDelete"),
-//         onTap: () {
-//           Navigator.of(ctx).pop();
-//           setState(() => deleteLoading = true);
-//           _bloc.removeAd(widget.ad).then((_) {
-//             Fluttertoast.showToast(
-//               msg: AppLocalization.of(context).translate("deleted"),
-//             );
-//           }).catchError((e) {
-//             showErrorBottomSheet(
-//               context,
-//               title: AppLocalization.of(context).translate("error"),
-//               message: "$e",
-//             );
-//           }).whenComplete(() {
-//             setState(() => deleteLoading = false);
-//           });
-//         },
-//       ),
-//     );
-//   }
 //
 //   _activate() {
 //     showDialog(

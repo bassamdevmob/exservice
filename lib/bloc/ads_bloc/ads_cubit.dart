@@ -27,6 +27,16 @@ class AdsCubit extends Cubit<AdsState> {
     return super.close();
   }
 
+  // void remove(int id) {
+  //   for (int i = 0; i < models.length; i++) {
+  //     if (models[i].id == id) {
+  //       models.removeAt(i);
+  //       break;
+  //     }
+  //   }
+  //   emit(AdsAcceptState());
+  // }
+
   Future<void> fetch() async {
     try {
       emit(AdsAwaitState());
@@ -56,9 +66,8 @@ class AdsCubit extends Cubit<AdsState> {
 
   Future<void> loadMore() async {
     try {
-      var response = await GetIt.I
-          .get<AdRepository>()
-          .ads(nextUrl: _meta.nextPageUrl);
+      var response =
+          await GetIt.I.get<AdRepository>().ads(nextUrl: _meta.nextPageUrl);
       _meta = response.meta;
       models.addAll(response.data);
       emit(AdsAcceptState());

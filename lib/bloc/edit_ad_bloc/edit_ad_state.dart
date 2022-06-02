@@ -4,14 +4,15 @@ part of 'edit_ad_bloc.dart';
 abstract class EditAdState {}
 
 class EditAdInitial extends EditAdState {}
+
 class EditAdValidationState extends EditAdState {}
 
 class EditAdAwaitState extends EditAdState {}
 
-class EditAdCommittedState extends EditAdState {}
+class EditAdAcceptState extends EditAdState {}
 
 class EditAdErrorState extends EditAdState {
-  final String message;
+  final dynamic error;
 
-  EditAdErrorState(this.message);
+  EditAdErrorState(this.error);
 }

@@ -13,7 +13,6 @@ class StatusContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: AppColors.blueAccent),
         color: AppColors.black.withOpacity(0.4),
       ),
       margin: EdgeInsets.all(10),

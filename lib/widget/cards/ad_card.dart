@@ -106,7 +106,10 @@ class _AdCardState extends State<AdCard> {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                  create: (context) => AdDetailsBloc(widget.model.id),
+                  create: (context) => AdDetailsBloc(
+                    widget.model.id,
+                    locator: context.read,
+                  ),
                   child: AdDetailsLayout(),
                 ),
               ),

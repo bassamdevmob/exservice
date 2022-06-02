@@ -2,9 +2,9 @@ class Links {
   static const BASE = 'https://dummy-server-xyz.herokuapp.com/app/exservice/v1/';
 
   ///auth
-  static const LOGIN_URL = "user/login";
-  static const REGISTER_URL = "user/register";
-  static const LOGOUT_URL = "user/logout";
+  static const LOGIN_URL = "auth/login";
+  static const REGISTER_URL = "auth/register";
+  static const LOGOUT_URL = "auth/logout";
   static const FORGET_PASSWORD_URL = "user/forget_password";
   static const RESET_PASSWORD_URL = "user/reset_password";
 
@@ -26,6 +26,7 @@ class Links {
   ///user ads
   static const HOME_URL = "ad/home";
   static const AD_URL = "ad";
+  static const USER_AD_URL = "user/ad";
   static const CHANGE_AD_URL = "ad/status";
   static const BOOKMARK_AD_URL = "ad/bookmark";
   static const PUBLISHER_URL = "ad/publisher";

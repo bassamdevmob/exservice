@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:exservice/models/request/change_password_request.dart';
 import 'package:exservice/models/request/edit_profile_request.dart';
 import 'package:exservice/models/response/ads_response.dart';
@@ -29,9 +30,9 @@ class UserRepository extends BaseClient {
     String nextUrl,
     List<String> status,
   }) async {
-    final response = await client.get(
-      nextUrl ?? Links.AD_URL,
-      queryParameters: {
+    final response = await client.post(
+      nextUrl ?? Links.USER_AD_URL,
+      data: {
         "status": status,
       },
     );
