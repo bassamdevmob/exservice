@@ -1,5 +1,6 @@
 import 'package:exservice/models/request/change_password_request.dart';
 import 'package:exservice/models/request/edit_profile_request.dart';
+import 'package:exservice/models/response/ads_response.dart';
 import 'package:exservice/models/response/chats_response.dart';
 import 'package:exservice/models/response/notifications_response.dart';
 import 'package:exservice/models/response/profile_response.dart';
@@ -9,7 +10,6 @@ import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/links.dart';
 
 class UserRepository extends BaseClient {
-
   Future<SimpleResponse> contactUs(String title, String content) async {
     final response = await client.get(Links.CONTACT_US_URL);
     return SimpleResponse.fromJson(response.data);
@@ -23,6 +23,19 @@ class UserRepository extends BaseClient {
   Future<ChatsResponse> chats() async {
     final response = await client.get(Links.CHATS_URL);
     return ChatsResponse.fromJson(response.data);
+  }
+
+  Future<AdsResponse> ads({
+    String nextUrl,
+    List<String> status,
+  }) async {
+    final response = await client.get(
+      nextUrl ?? Links.AD_URL,
+      queryParameters: {
+        "status": status,
+      },
+    );
+    return AdsResponse.fromJson(response.data);
   }
 
   Future<SimpleResponse> changePassword(ChangePasswordRequest request) async {
@@ -89,7 +102,6 @@ class UserRepository extends BaseClient {
     );
     return ProfileResponse.fromJson(response.data);
   }
-
 
   Future<NotificationsResponse> notifications() async {
     final response = await client.get(Links.NOTIFICATION_URL);

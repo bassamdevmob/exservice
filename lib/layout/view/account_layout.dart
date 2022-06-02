@@ -99,67 +99,20 @@ class _AccountLayoutState extends State<AccountLayout> {
                     },
                   ),
                   SizedBox(height: Sizer.vs3),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                  OutlinedButton(
+                    child: Text(
+                      AppLocalization.of(context).translate('listings'),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => BlocProvider(
+                            create: (context) => AccountAdsCubit(),
+                            child: AccountAdsLayout(),
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) =>
-                                    AccountAdsCubit(AdStatus.active),
-                                child: AccountAdsLayout(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Icon(Icons.motion_photos_on),
-                      ),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) =>
-                                    AccountAdsCubit(AdStatus.paused),
-                                child: AccountAdsLayout(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Icon(Icons.motion_photos_pause),
-                      ),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) =>
-                                    AccountAdsCubit(AdStatus.expired),
-                                child: AccountAdsLayout(),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Icon(Icons.motion_photos_off),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                   SizedBox(height: Sizer.vs3),
                   if (_bloc.model.companyName != null)

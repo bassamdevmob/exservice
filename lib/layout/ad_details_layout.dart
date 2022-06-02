@@ -138,6 +138,67 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                     },
                   ),
                 ),
+                // if (_accountBloc.model.id != widget.ad.owner.id)
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: <Widget>[
+                //       AppButton(
+                //         child: Text(
+                //           AppLocalization.of(context).translate("edit"),
+                //           style: AppTextStyle.largeBlack,
+                //         ),
+                //         onTap: () {
+                //           Navigator.of(context)
+                //               .push(CupertinoPageRoute(
+                //             builder: (context) => BlocProvider(
+                //               create: (context) => EditAdBloc(context, widget.ad),
+                //               child: EditAdLayout(),
+                //             ),
+                //           ))
+                //               .whenComplete(() {
+                //             setState(() {});
+                //           });
+                //         },
+                //       ),
+                //       Builder(
+                //         builder: (context) {
+                //           if (AdStatus.paused.name == widget.ad.status)
+                //             return AppButton(
+                //               child: statusLoading == true
+                //                   ? CupertinoActivityIndicator()
+                //                   : Text(
+                //                 AppLocalization.of(context).translate("activate"),
+                //                 style: AppTextStyle.largeBlack,
+                //               ),
+                //               onTap: statusLoading == true ? null : _activate,
+                //             );
+                //           if (AdStatus.active.name == widget.ad.status)
+                //             return AppButton(
+                //               child: statusLoading == true
+                //                   ? CupertinoActivityIndicator()
+                //                   : Text(
+                //                 AppLocalization.of(context).translate("pause"),
+                //                 style: AppTextStyle.largeBlack,
+                //               ),
+                //               onTap: statusLoading == true ? null : _pause,
+                //             );
+                //           return Text(
+                //             AppLocalization.of(context).translate("expired"),
+                //             style: AppTextStyle.mediumBlue,
+                //           );
+                //         },
+                //       ),
+                //       AppButton(
+                //         child: deleteLoading == true
+                //             ? CupertinoActivityIndicator()
+                //             : Text(
+                //           AppLocalization.of(context).translate("delete"),
+                //           style: AppTextStyle.largeBlack,
+                //         ),
+                //         onTap: deleteLoading == true ? null : _delete,
+                //       ),
+                //     ],
+                //   ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: Sizer.vs3,
@@ -315,4 +376,89 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
       },
     );
   }
+
+
+  //  _delete() {
+//     showDialog(
+//       context: context,
+//       builder: (ctx) => ConfirmDialog(
+//         text: AppLocalization.of(context).translate("confirmDelete"),
+//         onTap: () {
+//           Navigator.of(ctx).pop();
+//           setState(() => deleteLoading = true);
+//           _bloc.removeAd(widget.ad).then((_) {
+//             Fluttertoast.showToast(
+//               msg: AppLocalization.of(context).translate("deleted"),
+//             );
+//           }).catchError((e) {
+//             showErrorBottomSheet(
+//               context,
+//               title: AppLocalization.of(context).translate("error"),
+//               message: "$e",
+//             );
+//           }).whenComplete(() {
+//             setState(() => deleteLoading = false);
+//           });
+//         },
+//       ),
+//     );
+//   }
+//
+//   _activate() {
+//     showDialog(
+//       context: context,
+//       builder: (ctx) => ConfirmDialog(
+//         text: AppLocalization.of(context).translate("confirmActivate"),
+//         onTap: () {
+//           Navigator.of(ctx).pop();
+//           setState(() => statusLoading = true);
+//           _bloc.activateAd(widget.ad).then((_) {
+//             _accountBloc.model.statistics.activeAdsCount++;
+//             _accountBloc.model.statistics.inactiveAdsCount--;
+//             _accountBloc.add(ProfileRefreshEvent());
+//             Fluttertoast.showToast(
+//               msg: AppLocalization.of(context).translate("activated"),
+//             );
+//           }).catchError((e) {
+//             showErrorBottomSheet(
+//               context,
+//               title: AppLocalization.of(context).translate("error"),
+//               message: "$e",
+//             );
+//           }).whenComplete(() {
+//             setState(() => statusLoading = false);
+//           });
+//         },
+//       ),
+//     );
+//   }
+//
+//   _pause() {
+//     showDialog(
+//       context: context,
+//       builder: (ctx) => ConfirmDialog(
+//         text: AppLocalization.of(context).translate("confirmPause"),
+//         onTap: () {
+//           Navigator.of(ctx).pop();
+//           setState(() => statusLoading = true);
+//           _bloc.pauseAd(widget.ad).then((_) {
+//             _accountBloc.model.statistics.activeAdsCount--;
+//             _accountBloc.model.statistics.inactiveAdsCount++;
+//             _accountBloc.add(ProfileRefreshEvent());
+//             Fluttertoast.showToast(
+//               msg: AppLocalization.of(context).translate("paused"),
+//             );
+//           }).catchError((e) {
+//             showErrorBottomSheet(
+//               context,
+//               title: AppLocalization.of(context).translate("error"),
+//               message: "$e",
+//             );
+//           }).whenComplete(() {
+//             setState(() => statusLoading = false);
+//           });
+//         },
+//       ),
+//     );
+//   }
 }

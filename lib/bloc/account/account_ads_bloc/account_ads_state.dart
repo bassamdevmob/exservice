@@ -3,6 +3,8 @@ part of 'account_ads_cubit.dart';
 @immutable
 abstract class AccountAdsState {}
 
+class AccountAdsChangeStatusState extends AccountAdsState {}
+
 class AccountAdsAwaitState extends AccountAdsState {}
 
 class AccountAdsAcceptState extends AccountAdsState {}

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/models/entity/meta.dart';
-import 'package:exservice/resources/repository/ad_repository.dart';
+import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/utils/enums.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
@@ -15,11 +15,11 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
   List<AdModel> models;
   Meta _meta;
 
-  final AdStatus status;
+  final Set<AdStatus> types = {AdStatus.active};
 
   bool get enablePullUp => _meta?.nextPageUrl != null;
 
-  AccountAdsCubit(this.status) : super(AccountAdsAwaitState());
+  AccountAdsCubit() : super(AccountAdsAwaitState());
 
   @override
   Future<void> close() {
@@ -27,32 +27,23 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
     return super.close();
   }
 
-  Future<void> removeAd(AdModel ad) async {
-    var response = await GetIt.I.get<AdRepository>().delete(ad.id);
-    models?.removeWhere((element) => element.id == ad.id);
-    emit(AccountAdsAcceptState());
-  }
-
-  Future<void> pauseAd(AdModel ad) async {
-    await GetIt.I
-        .get<AdRepository>()
-        .changeAdStatus(ad.id, AdStatus.paused);
-    ad.status = AdStatus.paused.name;
-    emit(AccountAdsAcceptState());
-  }
-
-  Future<void> activateAd(AdModel ad) async {
-    await GetIt.I
-        .get<AdRepository>()
-        .changeAdStatus(ad.id, AdStatus.active);
-    ad.status = AdStatus.active.name;
-    emit(AccountAdsAcceptState());
+  void select(AdStatus status) {
+    if (types.contains(status)) {
+      if (types.length == 1) return;
+      types.remove(status);
+    } else {
+      types.add(status);
+    }
+    emit(AccountAdsChangeStatusState());
+    fetch();
   }
 
   Future<void> fetch() async {
     try {
       emit(AccountAdsAwaitState());
-      var response = await GetIt.I.get<AdRepository>().ads();
+      var response = await GetIt.I
+          .get<UserRepository>()
+          .ads(status: types.map((e) => e.name).toList());
       _meta = response.meta;
       models = response.data;
       emit(AccountAdsAcceptState());
@@ -65,7 +56,9 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
 
   Future<void> refresh() async {
     try {
-      var response = await GetIt.I.get<AdRepository>().ads();
+      var response = await GetIt.I
+          .get<UserRepository>()
+          .ads(status: types.map((e) => e.name).toList());
       _meta = response.meta;
       models = response.data;
       emit(AccountAdsAcceptState());
@@ -78,9 +71,10 @@ class AccountAdsCubit extends Cubit<AccountAdsState> {
 
   Future<void> loadMore() async {
     try {
-      var response = await GetIt.I
-          .get<AdRepository>()
-          .ads(nextUrl: _meta.nextPageUrl);
+      var response = await GetIt.I.get<UserRepository>().ads(
+            nextUrl: _meta.nextPageUrl,
+            status: types.map((e) => e.name).toList(),
+          );
       _meta = response.meta;
       models.addAll(response.data);
       emit(AccountAdsAcceptState());
