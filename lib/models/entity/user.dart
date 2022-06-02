@@ -9,7 +9,6 @@ class User {
     this.phoneNumber,
     this.location,
     this.countryCode,
-    this.type,
     this.bio,
     this.website,
     this.companyName,
@@ -24,7 +23,6 @@ class User {
   String phoneNumber;
   Location location;
   String countryCode;
-  String type;
   String bio;
   String website;
   String companyName;
@@ -39,7 +37,6 @@ class User {
     phoneNumber: json["phone_number"] == null ? null : json["phone_number"],
     location: json["location"] == null ? null : Location.fromJson(json["location"]),
     countryCode: json["country_code"] == null ? null : json["country_code"],
-    type: json["type"] == null ? null : json["type"],
     bio: json["bio"] == null ? null : json["bio"],
     website: json["website"] == null ? null : json["website"],
     companyName: json["company_name"] == null ? null : json["company_name"],
@@ -55,7 +52,6 @@ class User {
     "phone_number": phoneNumber == null ? null : phoneNumber,
     "location": location == null ? null : location.toJson(),
     "country_code": countryCode == null ? null : countryCode,
-    "type": type == null ? null : type,
     "bio": bio == null ? null : bio,
     "website": website == null ? null : website,
     "company_name": companyName == null ? null : companyName,

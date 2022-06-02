@@ -46,21 +46,15 @@ class SummaryAdCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Center(
-                      child: Container(
+                    child: ClipOval(
+                      child: OctoImage(
                         width: Sizer.avatarSizeLarge,
                         height: Sizer.avatarSizeLarge,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: OctoImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(model.owner.profilePicture),
-                          progressIndicatorBuilder: (context, progress) =>
-                              simpleShimmer,
-                          errorBuilder: imageErrorBuilder,
-                        ),
+                        fit: BoxFit.cover,
+                        image: NetworkImage(model.owner.profilePicture),
+                        progressIndicatorBuilder: (context, progress) =>
+                            simpleShimmer,
+                        errorBuilder: imageErrorBuilder,
                       ),
                     ),
                   ),

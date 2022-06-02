@@ -8,7 +8,7 @@ class PublisherAwaitState extends PublisherState {}
 class PublisherAcceptState extends PublisherState {}
 
 class PublisherErrorState extends PublisherState {
-  final String message;
+  final dynamic error;
 
-  PublisherErrorState(this.message);
+  PublisherErrorState(this.error);
 }

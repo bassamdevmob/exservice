@@ -4,10 +4,8 @@ import 'dart:math';
 
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/utils/global.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_number/phone_number.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class Utils {
   static final _phoneNumberUtil = PhoneNumberUtil();
@@ -68,35 +66,8 @@ abstract class Utils {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  static Future<void> launchWeb(BuildContext context, String url) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(
-        url,
-      );
-    } else {
-      throw "${AppLocalization.of(context).translate("siteFailed")}: $url";
-    }
-  }
 
-  static Future<void> launchMail(BuildContext context, String mail) async {
-    final path =
-    Uri(scheme: 'mailto', path: mail, queryParameters: {'subject': 'hi '})
-        .toString();
-    if (await canLaunchUrlString(path)) {
-      await launchUrlString(path);
-    } else {
-      throw "${AppLocalization.of(context).translate("emailFailed")}: $mail";
-    }
-  }
 
-  static Future<void> launchCall(BuildContext context, String number) async {
-    var path = "tel:$number";
-    if (await canLaunchUrlString(path)) {
-      await launchUrlString(path);
-    } else {
-      throw "${AppLocalization.of(context).translate("callFailed")}: $number";
-    }
-  }
 
   static bool isPhoneNumber(String value) =>
       value != null && phoneRegex.hasMatch(value);

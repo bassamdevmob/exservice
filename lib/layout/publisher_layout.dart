@@ -4,19 +4,17 @@ import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/chat/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_text_style.dart';
-import 'package:exservice/utils/utils.dart';
-import 'package:exservice/widget/application/dotted_container.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
-import 'package:exservice/widget/application/reload_widget.dart';
-import 'package:exservice/widget/button/app_button.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
-import 'package:string_validator/string_validator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:exservice/utils/extensions.dart';
 
 class PublisherLayout extends StatefulWidget {
   @override
@@ -33,18 +31,55 @@ class _PublisherLayoutState extends State<PublisherLayout> {
     super.initState();
   }
 
+  Future<void> launchMail() async {
+    var email = _bloc.model.email;
+    final path = Uri(
+      scheme: "mailto",
+      path: email,
+      queryParameters: {
+        "subject": "Hello",
+      },
+    );
+    if (await canLaunchUrl(path)) {
+      launchUrl(path);
+    } else {
+      Fluttertoast.showToast(
+        msg: AppLocalization.of(context).translate("cannot_launch"),
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+  Future<void> launchCall() async {
+    var path = "tel:${_bloc.model.phoneNumber}";
+    if (await canLaunchUrlString(path)) {
+      launchUrlString(path);
+    } else {
+      Fluttertoast.showToast(
+        msg: AppLocalization.of(context).translate("cannot_launch"),
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+  Future<void> launchWeb() async {
+    var url = _bloc.model.website;
+    if (await canLaunchUrlString(url)) {
+      launchUrlString(url);
+    } else {
+      Fluttertoast.showToast(
+        msg: AppLocalization.of(context).translate("cannot_launch"),
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var dimension = 80.0;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        iconTheme: IconThemeData(color: AppColors.blue),
-        centerTitle: true,
         title: Text(
-          AppLocalization.of(context).translate('app_name'),
-          style: AppTextStyle.largeBlack,
+          AppLocalization.of(context).translate('publisher'),
         ),
       ),
       body: BlocBuilder<PublisherCubit, PublisherState>(
@@ -53,181 +88,209 @@ class _PublisherLayoutState extends State<PublisherLayout> {
             current is PublisherAcceptState ||
             current is PublisherErrorState,
         builder: (context, state) {
+          if (state is PublisherAwaitState) {
+            return Center(
+              child: CupertinoActivityIndicator(),
+            );
+          }
           if (state is PublisherErrorState) {
             return Center(
-              child: ReloadWidget.error(
-                content: Text(state.message, textAlign: TextAlign.center),
-                onPressed: () {
+              child: ReloadIndicator(
+                error: state.error,
+                onTap: () {
                   _bloc.fetch();
                 },
               ),
             );
           }
-          if (state is PublisherAwaitState) {
-            return Center(child: CupertinoActivityIndicator());
-          }
-          return WillPopScope(
-            onWillPop: () async {
-              if (!_bloc.scrollController.hasClients ||
-                  _bloc.scrollController.offset == 0) {
-                return true;
-              } else {
-                _bloc.scrollController.animateTo(
-                  0,
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
-                return false;
-              }
-            },
-            child: NestedScrollView(
-              controller: _bloc.scrollController,
-              dragStartBehavior: DragStartBehavior.start,
-              headerSliverBuilder: (context, _) {
-                return [
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 5),
-                            child: OutlineContainer(
-                              radius: dimension / 2,
-                              dimension: dimension,
-                              strokeWidth: 1,
-                              gradient: LinearGradient(
-                                colors: [AppColors.blue, AppColors.deepPurple],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              child: ClipOval(
-                                child: OctoImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      _bloc.publisher.profilePicture),
-                                  progressIndicatorBuilder: (context, _) =>
-                                      simpleShimmer,
-                                  errorBuilder: imageErrorBuilder,
-                                ),
-                              ),
-                            ),
+          return CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    getHeader(),
+                    SizedBox(height: 5),
+                    Text(
+                      _bloc.model.email,
+                      style: Theme.of(context).primaryTextTheme.bodySmall,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      _bloc.model.phoneNumber,
+                      style: Theme.of(context).primaryTextTheme.bodySmall,
+                    ),
+                    SizedBox(height: 5),
+                    if (_bloc.model.website != null)
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: GestureDetector(
+                          child: Text(
+                            _bloc.model.website,
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .titleSmall
+                                .copyWith(color: AppColors.blueAccent),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Text(
-                                  _bloc.publisher.username,
-                                  style: AppTextStyle.largeBlack,
-                                  maxLines: 1,
-                                ),
-                                if (_bloc.publisher.location != null)
-                                  Text(
-                                    "${_bloc.publisher.location.country} ${_bloc.publisher.location.city}",
-                                    style: AppTextStyle.largeBlack,
-                                    maxLines: 1,
-                                  )
-                              ],
-                            ),
-                          ),
-                        ],
+                          onTap: () {
+                            launchWeb();
+                          },
+                        ),
                       ),
-                      Divider(),
-                      ...getBusinessInfo(),
-                      if (context.read<ProfileBloc>().model.id !=
-                          _bloc.publisher.id) ...[
-                        getContactToolbar(),
-                        Divider(),
-                      ],
-                    ]),
-                  ),
-                ];
-              },
-              body: getBody(),
-            ),
+                    SizedBox(height: 5),
+                    if (_bloc.model.bio != null)
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          _bloc.model.bio,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                      ),
+                    SizedBox(height: Sizer.vs2),
+                    getContactToolbar(),
+                  ]),
+                ),
+              ),
+            ],
           );
         },
       ),
     );
   }
 
-  List<Widget> getBusinessInfo() {
-    return [
-      // if (_bloc.publisher.profileVideo != null)
-      //   Padding(
-      //     padding: const EdgeInsets.all(10),
-      //     child: AppVideo.network(
-      //       "${_bloc.publisher.profileVideo}",
-      //       fit: false,
-      //     ),
-      //   ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget getHeader() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
           children: <Widget>[
-            Text(
-              _bloc.publisher.type,
-              style: AppTextStyle.largeBlack,
-            ),
-            if (_bloc.publisher.website != null &&
-                isURL(_bloc.publisher.website))
-              InkWell(
-                onTap: () {
-                  Utils.launchWeb(context, _bloc.publisher.website)
-                      .catchError((e) {
-                    Fluttertoast.showToast(msg: e);
-                  });
-                },
-                child: Text(
-                  _bloc.publisher.website,
-                  style: AppTextStyle.mediumBlue,
+            ClipOval(
+              child: OctoImage(
+                width: Sizer.avatarSizeLarge,
+                height: Sizer.avatarSizeLarge,
+                fit: BoxFit.cover,
+                image: NetworkImage(_bloc.model.profilePicture),
+                progressIndicatorBuilder: (context, _) => simpleShimmer,
+                errorBuilder: (context, e, _) => Container(
+                  color: AppColors.grayAccent,
+                  child: Center(
+                    child: Text(
+                      _bloc.model.username.camelCase,
+                      style: Theme.of(context).primaryTextTheme.titleLarge,
+                    ),
+                  ),
                 ),
               ),
-            if (_bloc.publisher.bio != null && _bloc.publisher.bio.isNotEmpty)
-              Text(
-                _bloc.publisher.bio,
-                style: AppTextStyle.mediumBlack,
-              ),
+            ),
+            SizedBox(height: Sizer.vs3),
+            Text(
+              _bloc.model.username,
+              style: Theme.of(context).primaryTextTheme.bodySmall,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+            ),
           ],
         ),
-      ),
-      Divider(),
-    ];
+        Spacer(),
+        getStatusItem(
+          "${_bloc.model.statistics.activeAdsCount}",
+          AppLocalization.of(context).translate('active'),
+        ),
+        Spacer(),
+        getStatusItem(
+          "${_bloc.model.statistics.inactiveAdsCount}",
+          AppLocalization.of(context).translate('inactive'),
+        ),
+        Spacer(),
+        getStatusItem(
+          "${_bloc.model.statistics.expiredAdsCount}",
+          AppLocalization.of(context).translate('expired'),
+        ),
+        Spacer(),
+      ],
+    );
   }
+
+  Widget getStatusItem(String number, String title) {
+    return Column(
+      children: <Widget>[
+        Text(
+          number,
+          style: Theme.of(context).primaryTextTheme.bodySmall,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).primaryTextTheme.bodySmall,
+        ),
+      ],
+    );
+  }
+
+  // Widget getHeader() {
+  //   return Row(
+  //     mainAxisSize: MainAxisSize.min,
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: <Widget>[
+  //       Padding(
+  //         padding: const EdgeInsets.all(10),
+  //         child: ClipOval(
+  //           child: OctoImage(
+  //             width: Sizer.avatarSizeLarge,
+  //             height: Sizer.avatarSizeLarge,
+  //             fit: BoxFit.cover,
+  //             image: NetworkImage(_bloc.model.profilePicture),
+  //             progressIndicatorBuilder: (context, progress) => simpleShimmer,
+  //             errorBuilder: imageErrorBuilder,
+  //           ),
+  //         ),
+  //       ),
+  //       SizedBox(width: 10),
+  //       Expanded(
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.stretch,
+  //           children: <Widget>[
+  //             Text(
+  //               _bloc.model.username,
+  //               style: Theme.of(context).primaryTextTheme.bodyMedium,
+  //               maxLines: 1,
+  //             ),
+  //             Text(
+  //               "${_bloc.model.location.country} ${_bloc.model.location.city}",
+  //               style: Theme.of(context).primaryTextTheme.bodyMedium,
+  //               maxLines: 1,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget getContactToolbar() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        if (_bloc.publisher.phoneNumber != null)
-          AppButton(
+        if (_bloc.model.phoneNumber != null)
+          OutlinedButton(
             child: Text(
               AppLocalization.of(context).translate("call"),
-              style: AppTextStyle.largeBlack,
             ),
-            onTap: () {
-              Utils.launchCall(context, _bloc.publisher.phoneNumber)
-                  .catchError((e) => Fluttertoast.showToast(msg: e));
-            },
+            onPressed: launchCall,
           ),
-        AppButton(
+        OutlinedButton(
           child: Text(
             AppLocalization.of(context).translate("chat"),
-            style: AppTextStyle.largeBlack,
           ),
-          onTap: () {
+          onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => ChatBloc(
                     BlocProvider.of<ProfileBloc>(context).model,
-                    _bloc.publisher,
+                    _bloc.model,
                   ),
                   child: ChatLayout(),
                 ),
@@ -235,45 +298,18 @@ class _PublisherLayoutState extends State<PublisherLayout> {
             );
           },
         ),
-        if (_bloc.publisher.email != null)
-          AppButton(
+        if (_bloc.model.email != null)
+          OutlinedButton(
             child: Text(
-              AppLocalization.of(context).translate("email2"),
-              style: AppTextStyle.largeBlack,
+              AppLocalization.of(context).translate("mail"),
             ),
-            onTap: () {
-              Utils.launchMail(context, _bloc.publisher.email)
-                  .catchError((e) => Fluttertoast.showToast(msg: e));
-            },
+            onPressed: launchMail,
           ),
       ],
     );
   }
 
   Widget getBody() {
-    // var profile = _bloc.publisher;
     return SizedBox();
-    // switch (_bloc.format) {
-    //   case DisplayFormat.grid:
-    //     return GridView.count(
-    //       shrinkWrap: true,
-    //       crossAxisSpacing: 5,
-    //       mainAxisSpacing: 10,
-    //       crossAxisCount: 2,
-    //       padding: EdgeInsets.only(right: 5, left: 5, bottom: 10),
-    //       childAspectRatio: (4 / 7),
-    //       scrollDirection: Axis.vertical,
-    //       children: List.generate(profile.ads.length, (index) {
-    //         return GridAdCard(profile.ads[index]);
-    //       }),
-    //     );
-    //   default:
-    //     return ListView.builder(
-    //       itemCount: profile.ads.length,
-    //       itemBuilder: (context, index) {
-    //         return ListAdCard(profile.ads[index]);
-    //       },
-    //     );
-    // }
   }
 }
