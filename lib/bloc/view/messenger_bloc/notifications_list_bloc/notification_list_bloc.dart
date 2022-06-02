@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:exservice/models/response/notifications_response.dart';
 import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +12,7 @@ part 'notification_list_state.dart';
 class NotificationListBloc
     extends Bloc<NotificationListEvent, NotificationListState> {
   List<NotificationModel> notes;
+
   NotificationListBloc() : super(NotificationListAwaitState()) {
     on((event, emit) async {
       if (event is FetchNotificationListEvent) {
@@ -19,11 +21,10 @@ class NotificationListBloc
           var response = await GetIt.I.get<UserRepository>().notifications();
           notes = response.data;
           emit(NotificationListReceivedState());
-        } catch (e) {
-          emit(NotificationListErrorState("$e"));
+        } on DioError catch (ex) {
+          emit(NotificationListErrorState(ex.error));
         }
       }
     });
   }
-
 }

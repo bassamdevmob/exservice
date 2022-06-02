@@ -8,7 +8,7 @@ class NotificationListAwaitState extends NotificationListState {}
 class NotificationListReceivedState extends NotificationListState {}
 
 class NotificationListErrorState extends NotificationListState {
-  final String message;
+  final dynamic error;
 
-  NotificationListErrorState(this.message);
+  NotificationListErrorState(this.error);
 }

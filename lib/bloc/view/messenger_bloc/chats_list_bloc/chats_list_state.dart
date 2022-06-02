@@ -8,7 +8,7 @@ class ChatsListAwaitState extends ChatsListState {}
 class ChatsListAccessibleState extends ChatsListState {}
 
 class ChatsListErrorState extends ChatsListState {
-  final String message;
+  final dynamic error;
 
-  ChatsListErrorState(this.message);
+  ChatsListErrorState(this.error);
 }

@@ -4,9 +4,10 @@ import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/global.dart';
-import 'package:exservice/widget/application/dotted_container.dart';
+import 'package:exservice/utils/sizer.dart';
+import 'package:exservice/utils/extensions.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
-import 'package:exservice/widget/application/reload_widget.dart';
+import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,45 +15,45 @@ import 'package:octo_image/octo_image.dart';
 
 class NotificationsLayout extends StatefulWidget {
   @override
-  State<NotificationsLayout> createState() => _NotificationsLayoutState();
+  State<StatefulWidget> createState() => NotificationsLayoutState();
 }
 
-class _NotificationsLayoutState extends State<NotificationsLayout> {
+class NotificationsLayoutState extends State<NotificationsLayout> {
   NotificationListBloc _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<NotificationListBloc>(context);
+    _bloc = context.read<NotificationListBloc>();
     _bloc.add(FetchNotificationListEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final dimensions = width / 7;
-
     return BlocBuilder<NotificationListBloc, NotificationListState>(
       builder: (context, state) {
+        if (state is NotificationListAwaitState) {
+          return Center(
+            child: CupertinoActivityIndicator(),
+          );
+        }
         if (state is NotificationListErrorState) {
           return Center(
-            child: ReloadWidget.error(
-              content: Text(state.message, textAlign: TextAlign.center),
-              onPressed: () {
+            child: ReloadIndicator(
+              error: state.error,
+              onTap: () {
                 _bloc.add(FetchNotificationListEvent());
               },
             ),
           );
         }
-        if (state is NotificationListAwaitState) {
-          return Center(child: CupertinoActivityIndicator());
-        }
         return ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: Sizer.hs3),
           itemCount: _bloc.notes.length,
           itemBuilder: (context, index) {
             var model = _bloc.notes[index];
             return ListTile(
-              enabled: true,
+              contentPadding: EdgeInsets.zero,
               onTap: () {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
@@ -66,42 +67,30 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                   ),
                 );
               },
-              leading: OutlineContainer(
-                dimension: dimensions,
-                gradient: LinearGradient(
-                  colors: [AppColors.blue, AppColors.deepPurple],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                radius: dimensions / 2,
-                strokeWidth: 1,
-                child: ClipOval(
-                  child: OctoImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(model.user.profilePicture),
-                    progressIndicatorBuilder: (context, progress) =>
-                        simpleShimmer,
-                    errorBuilder: (context, error, stacktrace) => Container(
-                      color: AppColors.grayAccent,
-                      child: Center(
-                        child: Text(
-                          model.user.username,
-                          style: AppTextStyle.xxLargeBlack,
-                        ),
-                      ),
+              leading: ClipOval(
+                child: OctoImage(
+                  height: Sizer.avatarSizeLarge,
+                  width: Sizer.avatarSizeLarge,
+                  fit: BoxFit.cover,
+                  image: NetworkImage(model.user.profilePicture),
+                  progressIndicatorBuilder: (ctx, _) => simpleShimmer,
+                  errorBuilder: (ctx, error, _) => Container(
+                    alignment: Alignment.center,
+                    color: AppColors.grayAccent,
+                    child: Text(
+                      model.user.username.firstCapLetter,
+                      style: AppTextStyle.xxLargeBlack,
                     ),
                   ),
                 ),
               ),
               title: Text(
                 model.user.username,
-                style: AppTextStyle.largeBlackBold,
+                style: Theme.of(context).primaryTextTheme.bodyLarge,
               ),
               subtitle: Text(
                 model.ad.title,
-                style: AppTextStyle.largeGray,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).primaryTextTheme.labelMedium,
               ),
               trailing: Builder(builder: (context) {
                 final date = model.date;
@@ -109,19 +98,22 @@ class _NotificationsLayoutState extends State<NotificationsLayout> {
                 if (def.inDays < 1) {
                   return Text(
                     jmTimeFormatter.format(date),
-                    style: AppTextStyle.smallGray,
+                    style: Theme.of(context).primaryTextTheme.labelSmall,
                   );
                 } else {
                   return Text(
                     dateFormatter.format(date),
-                    style: AppTextStyle.smallGray,
+                    style: Theme.of(context).primaryTextTheme.labelSmall,
                   );
                 }
               }),
             );
           },
           separatorBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.only(left: 70, right: 20),
+            padding: EdgeInsets.only(
+              left: Sizer.avatarSizeLarge,
+              right: Sizer.hs3,
+            ),
             child: Divider(
               color: AppColors.gray,
               height: 1,

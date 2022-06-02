@@ -1,4 +1,3 @@
-import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
@@ -6,13 +5,15 @@ import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bl
 import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
 import 'package:exservice/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/layout/drawer_layout.dart';
+import 'package:exservice/layout/messenger_layout.dart';
 import 'package:exservice/layout/post/post_ad_layout.dart';
 import 'package:exservice/layout/view/account_layout.dart';
 import 'package:exservice/layout/view/bookmarks_layout.dart';
 import 'package:exservice/layout/view/home_layout.dart';
-import 'package:exservice/layout/view/messenger_layout.dart';
+import 'package:exservice/layout/view/notifications_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,12 +36,9 @@ class _MainLayoutState extends State<MainLayout> {
       child: BookmarksLayout(),
     ),
     SizedBox(),
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => ChatsListBloc()),
-        BlocProvider(create: (context) => NotificationListBloc()),
-      ],
-      child: MessengerLayout(),
+    BlocProvider(
+      create: (context) => NotificationListBloc(),
+      child: NotificationsLayout(),
     ),
     AccountLayout(),
   ];
@@ -57,7 +55,25 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Image.asset("assets/images/app_icon.png"),
+        leading: IconButton(
+          splashRadius: 25,
+          icon: Icon(CupertinoIcons.chat_bubble_text),
+          onPressed: () {
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => ChatsListBloc(),
+                  child: MessengerLayout(),
+                ),
+              ),
+            );
+          },
+        ),
+        centerTitle: true,
+        title: Image.asset(
+          "assets/images/app_icon.png",
+          width: Sizer.avatarSizeSmall,
+        ),
         actions: [
           IconButton(
             icon: Icon(
@@ -96,7 +112,7 @@ class _MainLayoutState extends State<MainLayout> {
           BottomNavigationBarItem(
             icon: Icon(Icons.mail_outline, color: AppColors.gray),
             activeIcon: Icon(Icons.mail, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('messages'),
+            label: AppLocalization.of(context).translate('notifications'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline, color: AppColors.gray),

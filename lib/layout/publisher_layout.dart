@@ -1,7 +1,7 @@
 import 'package:exservice/bloc/chat/chat_bloc.dart';
 import 'package:exservice/bloc/publisher_bloc/publisher_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
-import 'package:exservice/layout/chat/chat_layout.dart';
+import 'package:exservice/layout/chat_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';

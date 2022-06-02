@@ -31,7 +31,6 @@ class _ChatLayoutState extends State<ChatLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
         centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.blue),
         title: Row(
@@ -58,7 +57,7 @@ class _ChatLayoutState extends State<ChatLayout> {
             Text(
               _bloc.chatter.username,
               maxLines: 1,
-              style: AppTextStyle.mediumBlueBold,
+              style: AppTextStyle.mediumBlue,
             ),
           ],
         ),

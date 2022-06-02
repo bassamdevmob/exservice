@@ -4,9 +4,3 @@ part of 'chats_list_bloc.dart';
 abstract class ChatsListEvent {}
 
 class ChatsListFetchEvent implements ChatsListEvent {}
-
-class ChatsListFilterEvent implements ChatsListEvent {
-  final String substring;
-
-  ChatsListFilterEvent(this.substring);
-}

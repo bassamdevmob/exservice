@@ -146,8 +146,8 @@ class _VerificationLayoutState extends State<VerificationLayout> {
           child: Text(
             AppLocalization.of(context).translate('resend_code'),
             style: (state is VerificationResendAwaitState
-                    ? AppTextStyle.smallGrayBold
-                    : AppTextStyle.smallBlueBold)
+                    ? AppTextStyle.smallGray
+                    : AppTextStyle.smallBlue)
                 .copyWith(decoration: TextDecoration.underline),
           ),
           onTap: state is VerificationResendAwaitState ? null : _resend,

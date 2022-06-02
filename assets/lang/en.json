@@ -121,5 +121,7 @@
   "call": "Call",
   "chat": "Chat",
   "mail": "Mail",
+  "chats": "Conversations",
+  "notifications": "Notifications",
   "cancel": "Cancel"
 }
