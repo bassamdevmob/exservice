@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
 import 'package:exservice/bloc/post/post_ad_media_picker_bloc.dart';
-import 'package:exservice/layout/post/post_ad_details_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -92,22 +91,27 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                         children: [
                           SliverToBoxAdapter(
                             child: AspectRatio(
-                              aspectRatio: _bloc.mode.value,
+                              aspectRatio: AspectRatioMode.square.value,
                               child: Hero(
                                 tag: "thumbnail",
-                                child: FutureBuilder<Uint8List>(
-                                  future: _bloc.thumbnail,
-                                  builder: (context, snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: CupertinoActivityIndicator(),
-                                      );
-                                    }
-                                    return Image.memory(
-                                      snapshot.data,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
+                                child: Center(
+                                  child: AspectRatio(
+                                    aspectRatio: _bloc.mode.value,
+                                    child: FutureBuilder<Uint8List>(
+                                      future: _bloc.thumbnail,
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: CupertinoActivityIndicator(),
+                                          );
+                                        }
+                                        return Image.memory(
+                                          snapshot.data,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -123,7 +127,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                               child: AnimatedCrossIcon(
                                 startIcon: CupertinoIcons.viewfinder_circle,
                                 endIcon: CupertinoIcons.viewfinder_circle_fill,
-                                value: _bloc.mode == AspectRatioMode.wide,
+                                value: _bloc.mode == AspectRatioMode.tight,
                               ),
                             ),
                           ),
@@ -145,7 +149,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 1,
-                  crossAxisCount: 3,
+                  crossAxisCount: 4,
                   mainAxisSpacing: 2,
                   crossAxisSpacing: 2,
                 ),
@@ -164,24 +168,21 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return simpleShimmer;
         return GestureDetector(
-          onTap: (){
+          onTap: () {
             _bloc.add(PostAdMediaPickerFocusEvent(entity));
           },
           child: Stack(
             fit: StackFit.expand,
             children: [
-              AnimatedPadding(
-                padding: EdgeInsets.all(entity == _bloc.focusedEntity ? 10 : 0),
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                child: Image.memory(
-                  snapshot.data,
-                  fit: BoxFit.cover,
-                ),
+              Image.memory(
+                snapshot.data,
+                fit: BoxFit.cover,
+                color: _bloc.focusedEntity == entity ? AppColors.gray : null,
+                colorBlendMode: BlendMode.lighten,
               ),
               Positioned.directional(
-                top: 5,
-                end: 5,
+                top: 4,
+                end: 4,
                 textDirection: Directionality.of(context),
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
@@ -189,6 +190,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                     _bloc.add(PostAdMediaPickerSelectEvent(entity));
                   },
                   child: Container(
+                    margin: EdgeInsets.all(5),
                     height: Sizer.iconSizeLarge,
                     width: Sizer.iconSizeLarge,
                     decoration: BoxDecoration(
@@ -247,12 +249,12 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
           );
           return;
         }
-        Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => BlocProvider.value(
-            value: _bloc,
-            child: PostAdDetailsLayout(),
-          ),
-        ));
+        // Navigator.of(context).push(CupertinoPageRoute(
+        //   builder: (context) => BlocProvider.value(
+        //     value: _bloc,
+        //     child: PostAdDetailsLayout(),
+        //   ),
+        // ));
       },
     );
   }

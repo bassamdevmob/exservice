@@ -124,5 +124,8 @@
   "chats": "Conversations",
   "notifications": "Notifications",
   "message": "Message",
+  "max_media": "Cannot pick more than 10 images",
+  "min_media": "Pick at least one image",
+  "access_denied": "Access denied",
   "cancel": "Cancel"
 }

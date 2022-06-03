@@ -15,14 +15,14 @@ class AspectRatioMode {
 
   const AspectRatioMode(this.id, this.value);
 
-  static const wide = AspectRatioMode("WIDE", 1.5);
-  static const tight = AspectRatioMode("TIGHT", 1.1);
+  static const tight = AspectRatioMode("TIGHT", 0.7);
+  static const square = AspectRatioMode("SQUARE", 1);
 }
 
 class PostAdMediaPickerBloc
     extends Bloc<PostAdMediaPickerEvent, PostAdMediaPickerState> {
   List<AssetEntity> entities;
-  AspectRatioMode mode = AspectRatioMode.wide;
+  AspectRatioMode mode = AspectRatioMode.square;
   AssetEntity focusedEntity;
 
   final List<AssetEntity> selectedEntities = [];
@@ -46,6 +46,9 @@ class PostAdMediaPickerBloc
       } else if (event is PostAdMediaPickerSelectEvent) {
         if (selectedEntities.contains(event.entity)) {
           selectedEntities.remove(event.entity);
+          if (selectedEntities.isNotEmpty) {
+            focusedEntity = selectedEntities.last;
+          }
         } else {
           if (selectedEntities.length >= 10) {
             emit(PostAdMediaPickerMaxLimitsErrorState());
@@ -59,10 +62,10 @@ class PostAdMediaPickerBloc
         focusedEntity = event.entity;
         emit(PostAdMediaPickerSelectMediaState());
       } else if (event is PostAdMediaPickerDisplayModeEvent) {
-        if (mode == AspectRatioMode.wide)
-          mode = AspectRatioMode.tight;
+        if (mode == AspectRatioMode.tight)
+          mode = AspectRatioMode.square;
         else
-          mode = AspectRatioMode.wide;
+          mode = AspectRatioMode.tight;
         emit(PostAdMediaPickerDisplayModeState());
       }
     });
