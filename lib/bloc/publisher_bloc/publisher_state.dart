@@ -12,3 +12,6 @@ class PublisherErrorState extends PublisherState {
 
   PublisherErrorState(this.error);
 }
+
+class PublisherAdsAcceptState extends PublisherState {}
+

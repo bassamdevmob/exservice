@@ -27,9 +27,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on((event, emit) async {
       if (event is ChatSendMessageEvent) {
+        var message = controller.text.trim();
+        if (message.isEmpty) return;
         sendMessage(Message(
           senderId: user.id,
-          content: controller.text.trim(),
+          content: message,
           date: DateTime.now(),
         ));
         controller.clear();

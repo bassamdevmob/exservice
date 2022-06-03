@@ -166,8 +166,9 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         itemBuilder: (BuildContext context, index) {
                           return OctoImage(
                             fit: BoxFit.cover,
-                            image:
-                                NetworkImage(_bloc.details.media[index].link),
+                            image: NetworkImage(
+                              _bloc.details.media[index].link,
+                            ),
                             progressIndicatorBuilder: (context, _) =>
                                 simpleShimmer,
                             errorBuilder: imageErrorBuilder,
@@ -175,16 +176,17 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         },
                       ),
                     ),
-                    BlocBuilder<AdDetailsBloc, AdDetailsState>(
-                      buildWhen: (_, current) =>
-                          current is AdDetailsStatusAcceptState,
-                      builder: (context, state) {
-                        return StatusContainer(_bloc.details.status);
-                      },
-                    ),
+                    if (_bloc.isOwned)
+                      BlocBuilder<AdDetailsBloc, AdDetailsState>(
+                        buildWhen: (_, current) =>
+                            current is AdDetailsStatusAcceptState,
+                        builder: (context, state) {
+                          return StatusContainer(_bloc.details.status);
+                        },
+                      ),
                   ],
                 ),
-                if (!_bloc.isOwned) getControlButtons(),
+                if (_bloc.isOwned) getControlButtons(),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: Sizer.vs3,
@@ -369,12 +371,14 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
               AppLocalization.of(context).translate("edit"),
             ),
             onPressed: () {
-              Navigator.of(context).push(CupertinoPageRoute(
+              Navigator.of(context)
+                  .push(CupertinoPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => EditAdBloc(_bloc.details),
                   child: EditAdLayout(),
                 ),
-              )).whenComplete(() {
+              ))
+                  .whenComplete(() {
                 _bloc.add(AdDetailsUpdateEvent());
               });
             },

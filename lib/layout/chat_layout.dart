@@ -95,18 +95,19 @@ class _ChatLayoutState extends State<ChatLayout> {
                     } else {
                       bubbleNip = BubbleNip.leftTop;
                     }
+                    var startPadding = 10.0;
                     return Padding(
                       padding: EdgeInsetsDirectional.only(
-                        top: isNotFirst ? 3 : 10,
+                        top: isNotFirst ? 3 : startPadding,
                         bottom: 2,
-                        start: owned ? Sizer.hs1 : (isNotFirst ? 10: 0),
-                        end: owned ? (isNotFirst ? 10: 0) : Sizer.hs1,
+                        start: owned ? Sizer.hs1 : (isNotFirst ? startPadding: 0),
+                        end: owned ? (isNotFirst ? startPadding: 0) : Sizer.hs1,
                       ),
                       child: Align(
                         alignment: getAlignment(messages[index].senderId),
                         child: Bubble(
                           nipHeight: 12,
-                          nipWidth: 10,
+                          nipWidth: startPadding,
                           radius: Radius.circular(15),
                           color: getColor(messages[index].senderId),
                           nip: bubbleNip,
