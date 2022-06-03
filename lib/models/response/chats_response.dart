@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exservice/models/entity/user.dart';
 
 class ChatsResponse {
@@ -50,28 +51,36 @@ class Chat {
 
 class Message {
   Message({
-    this.id,
     this.senderId,
     this.content,
     this.date,
   });
 
-  int id;
   int senderId;
   String content;
   DateTime date;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-    id: json["id"] == null ? null : json["id"],
     senderId: json["sender_id"] == null ? null : json["sender_id"],
     content: json["content"] == null ? null : json["content"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
   );
 
+  factory Message.fromFirestoreJson(Map<String, dynamic> json) => Message(
+    senderId: json["sender_id"] == null ? null : json["sender_id"],
+    content: json["content"] == null ? null : json["content"],
+    date: json["date"] == null ? null : json["date"].toDate(),
+  );
+
   Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
     "sender_id": senderId == null ? null : senderId,
     "content": content == null ? null : content,
     "date": date == null ? null : date.toIso8601String(),
+  };
+
+  Map<String, dynamic> toFirestoreJson() => {
+    "sender_id": senderId == null ? null : senderId,
+    "content": content == null ? null : content,
+    "date": date == null ? null : Timestamp.fromDate(date),
   };
 }

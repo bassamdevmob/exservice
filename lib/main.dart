@@ -12,6 +12,7 @@ import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/styles/themes/dark_theme.dart';
 import 'package:exservice/styles/themes/light_theme.dart';
 import 'package:exservice/utils/global.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   try {
     await Future.wait([
+      Firebase.initializeApp(),
       ApplicationCubit.init(),
       DataStore.instance.init(),
     ]);

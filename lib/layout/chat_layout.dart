@@ -3,15 +3,16 @@ import 'package:exservice/bloc/chat/chat_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/models/response/chats_response.dart';
 import 'package:exservice/styles/app_colors.dart';
-import 'package:exservice/styles/app_font_size.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/extensions.dart';
 import 'package:exservice/utils/global.dart';
+import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:intl/intl.dart' as intl;
 
 class ChatLayout extends StatefulWidget {
   @override
@@ -31,14 +32,13 @@ class _ChatLayoutState extends State<ChatLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.blue),
+        elevation: 5,
         title: Row(
           children: <Widget>[
             ClipOval(
               child: OctoImage(
-                height: 40,
-                width: 40,
+                height: Sizer.avatarSizeSmall,
+                width: Sizer.avatarSizeSmall,
                 fit: BoxFit.cover,
                 image: NetworkImage(_bloc.chatter.profilePicture),
                 progressIndicatorBuilder: (context, _) => simpleShimmer,
@@ -57,7 +57,7 @@ class _ChatLayoutState extends State<ChatLayout> {
             Text(
               _bloc.chatter.username,
               maxLines: 1,
-              style: AppTextStyle.mediumBlue,
+              style: Theme.of(context).primaryTextTheme.titleLarge,
             ),
           ],
         ),
@@ -74,7 +74,9 @@ class _ChatLayoutState extends State<ChatLayout> {
                   );
                 }
                 if (!snapshot.hasData) {
-                  return Center(child: CupertinoActivityIndicator());
+                  return Center(
+                    child: CupertinoActivityIndicator(),
+                  );
                 }
                 final messages = snapshot.data;
                 return ListView.builder(
@@ -85,42 +87,33 @@ class _ChatLayoutState extends State<ChatLayout> {
                     final isNotFirst = index < messages.length - 1 &&
                         messages[index].senderId ==
                             messages[index + 1].senderId;
+                    var owned = messages[index].senderId == _bloc.user.id;
                     if (isNotFirst) {
                       bubbleNip = BubbleNip.no;
-                    } else if (messages[index].senderId == _bloc.user.id) {
+                    } else if (owned) {
                       bubbleNip = BubbleNip.rightTop;
                     } else {
                       bubbleNip = BubbleNip.leftTop;
                     }
-                    final textAlign = TextAlign.start;
                     return Padding(
-                      padding: const EdgeInsets.all(2.0),
+                      padding: EdgeInsetsDirectional.only(
+                        top: isNotFirst ? 3 : 10,
+                        bottom: 2,
+                        start: owned ? Sizer.hs1 : (isNotFirst ? 10: 0),
+                        end: owned ? (isNotFirst ? 10: 0) : Sizer.hs1,
+                      ),
                       child: Align(
                         alignment: getAlignment(messages[index].senderId),
                         child: Bubble(
+                          nipHeight: 12,
+                          nipWidth: 10,
+                          radius: Radius.circular(15),
                           color: getColor(messages[index].senderId),
-                          padding: BubbleEdges.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
-                          ),
                           nip: bubbleNip,
-                          child: Builder(builder: (context) {
-                            final message = getMessage(messages[index]);
-                            if (isNotFirst) return message;
-                            return Column(
-                              crossAxisAlignment: getCrossAxisAlignment(
-                                messages[index].senderId,
-                              ),
-                              children: <Widget>[
-                                Text(
-                                  "hello",
-                                  style: AppTextStyle.largeGray,
-                                  textAlign: textAlign,
-                                ),
-                                message
-                              ],
-                            );
-                          }),
+                          padding: BubbleEdges.symmetric(
+                            horizontal: Sizer.vs3,
+                          ),
+                          child: getMessage(messages[index]),
                         ),
                       ),
                     );
@@ -140,7 +133,7 @@ class _ChatLayoutState extends State<ChatLayout> {
       senderId == _bloc.user.id ? Alignment.centerRight : Alignment.centerLeft;
 
   Color getColor(int senderId) =>
-      senderId == _bloc.user.id ? AppColors.blue : AppColors.gray;
+      senderId == _bloc.user.id ? AppColors.blue : Colors.grey[800];
 
   CrossAxisAlignment getCrossAxisAlignment(int senderId) =>
       senderId == _bloc.user.id
@@ -148,90 +141,75 @@ class _ChatLayoutState extends State<ChatLayout> {
           : CrossAxisAlignment.end;
 
   Widget getMessage(Message message) {
-    final time = getTime(message.date);
-    final content = getContent(message.content);
-    final list = <Widget>[];
-    if (message.senderId == _bloc.user.id) {
-      list.add(content);
-      list.add(time);
-    } else {
-      list.add(time);
-      list.add(content);
-    }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: list,
-    );
-  }
-
-  Widget getTime(DateTime date) {
-    return Text(
-      jmsTimeFormatter.format(date),
-      style: AppTextStyle.xSmallAccentGray,
-      textDirection: TextDirection.ltr,
-    );
-  }
-
-  Widget getContent(String content) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.6,
-      ),
-      child: Text(
-        content,
-        maxLines: null,
-        style: AppTextStyle.mediumWhite,
-        textAlign: TextAlign.start,
-      ),
+    var direction = intl.Bidi.estimateDirectionOfText(message.content);
+    return Wrap(
+      alignment: WrapAlignment.end,
+      crossAxisAlignment: WrapCrossAlignment.end,
+      children: [
+        Text(
+          message.content,
+          maxLines: null,
+          style: AppTextStyle.mediumWhite,
+          textAlign: direction == intl.TextDirection.LTR
+              ? TextAlign.start
+              : TextAlign.end,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            jmTimeFormatter.format(message.date),
+            style: AppTextStyle.xSmallAccentGray,
+            textDirection: TextDirection.ltr,
+          ),
+        ),
+      ],
     );
   }
 
   Widget getChatToolbar() {
+    var border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+    );
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
+      padding: EdgeInsets.only(bottom: Sizer.vs1, left: 10, right: 10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: Material(
-              elevation: 5,
-              borderRadius: BorderRadius.circular(100),
-              // padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _bloc.controller,
-                maxLines: 3,
-                minLines: 1,
-                style: AppTextStyle.mediumBlack,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 10,
-                  ),
-                  hintText:
-                      AppLocalization.of(context).translate("type_message_hint"),
-                  hintStyle: AppTextStyle.mediumGray,
+            child: TextFormField(
+              controller: _bloc.controller,
+              maxLines: 3,
+              minLines: 1,
+              style: AppTextStyle.mediumBlack,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.onSecondary,
+                border: border,
+                enabledBorder: border,
+                focusedBorder: border,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 10,
                 ),
+                hintText: AppLocalization.of(context).translate("message"),
+                hintStyle: Theme.of(context).primaryTextTheme.labelSmall,
               ),
             ),
           ),
           SizedBox(width: 8),
-          InkWell(
+          GestureDetector(
             onTap: () {
               _bloc.add(ChatSendMessageEvent());
             },
-            borderRadius: BorderRadius.circular(100),
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.blue,
                 shape: BoxShape.circle,
               ),
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(12.0),
               child: Icon(
                 Icons.send,
                 color: AppColors.white,
-                size: AppFontSize.large,
               ),
             ),
           ),

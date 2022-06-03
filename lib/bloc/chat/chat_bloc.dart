@@ -28,9 +28,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on((event, emit) async {
       if (event is ChatSendMessageEvent) {
         sendMessage(Message(
-          date: DateTime.now(),
-          content: controller.text.trim(),
           senderId: user.id,
+          content: controller.text.trim(),
+          date: DateTime.now(),
         ));
         controller.clear();
       }
@@ -47,7 +47,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       List<Message>>.fromHandlers(
     handleData: (data, sink) {
       var messages = data.docs.map((e) {
-        return Message.fromJson(e.data());
+        return Message.fromFirestoreJson(e.data());
       }).toList();
       sink.add(messages);
     },
@@ -57,7 +57,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       .collection(CHAT_COLLECTION)
       .doc(_chatId)
       .collection(MESSAGE_COLLECTION)
-      .orderBy('timestamp', descending: true)
+      .orderBy('date', descending: true)
       .limit(MESSAGE_COUNT_LIMIT)
       .snapshots()
       .transform(_transformer);
@@ -67,6 +67,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         .collection(CHAT_COLLECTION)
         .doc(_chatId)
         .collection(MESSAGE_COLLECTION)
-        .add(message.toJson());
+        .add(message.toFirestoreJson());
   }
 }
