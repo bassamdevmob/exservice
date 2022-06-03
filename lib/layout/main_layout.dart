@@ -1,3 +1,4 @@
+import 'package:exservice/bloc/post/post_ad_media_picker_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:exservice/bloc/view/post_ad_bloc/post_ad_bloc.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/messenger_layout.dart';
 import 'package:exservice/layout/post/post_ad_layout.dart';
+import 'package:exservice/layout/post/post_ad_media_picker_layout.dart';
 import 'package:exservice/layout/view/account_layout.dart';
 import 'package:exservice/layout/view/bookmarks_layout.dart';
 import 'package:exservice/layout/view/home_layout.dart';
@@ -125,8 +127,8 @@ class _MainLayoutState extends State<MainLayout> {
           if (i == 2) {
             Navigator.of(context).push(CupertinoPageRoute(
               builder: (context) => BlocProvider(
-                create: (context) => PostAdBloc(),
-                child: PostAdLayout(),
+                create: (context) => PostAdMediaPickerBloc(),
+                child: PostAdMediaPickerLayout(),
               ),
             ));
           } else {
