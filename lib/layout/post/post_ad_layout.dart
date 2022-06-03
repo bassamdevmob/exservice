@@ -49,12 +49,8 @@ class _PostAdLayoutState extends State<PostAdLayout> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.white,
-          iconTheme: IconThemeData(color: AppColors.blue),
-          centerTitle: true,
           title: Text(
-            AppLocalization.of(context).translate('app_name'),
-            style: AppTextStyle.largeBlack,
+            AppLocalization.of(context).translate('post'),
           ),
           actions: [
             Center(
@@ -65,12 +61,13 @@ class _PostAdLayoutState extends State<PostAdLayout> {
         body: BlocBuilder<PostAdBloc, PostAdState>(
           buildWhen: (_, current) =>
               current is PostAdAwaitState ||
-              current is PostAdAccessibleState ||
-              current is PostAdSelectMediaState ||
-              current is PostAdErrorState,
+              current is PostAdAcceptState ||
+              current is PostAdSelectMediaState,
           builder: (context, state) {
             if (state is PostAdAwaitState) {
-              return Center(child: CupertinoActivityIndicator());
+              return Center(
+                child: CupertinoActivityIndicator(),
+              );
             }
             return NestedScrollView(
               headerSliverBuilder: (context, _) {
@@ -279,7 +276,7 @@ class _PostAdLayoutState extends State<PostAdLayout> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: BlocBuilder<PostAdBloc, PostAdState>(
           buildWhen: (_, current) =>
-              current is PostAdAccessibleState ||
+              current is PostAdAcceptState ||
               current is PostAdSelectMediaState,
           builder: (context, state) {
             return Badge(

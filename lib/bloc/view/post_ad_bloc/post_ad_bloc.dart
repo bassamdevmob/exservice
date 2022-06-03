@@ -197,7 +197,7 @@ class PostAdBloc extends Bloc<PostAdEvent, PostAdState> {
           );
           media = await paths.first.getAssetListPaged(page: 0, size: 80);
           selectedEntities.add(media.first);
-          emit(PostAdAccessibleState());
+          emit(PostAdAcceptState());
         } else {
           // add(FetchPostAdEvent());
         }
