@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
-import 'package:exservice/bloc/post/post_ad_media_picker_bloc.dart';
+import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
+import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
+import 'package:exservice/layout/post/post_ad_info_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -98,7 +100,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                                   child: AspectRatio(
                                     aspectRatio: _bloc.mode.value,
                                     child: FutureBuilder<Uint8List>(
-                                      future: _bloc.thumbnail,
+                                      future: _bloc.focusedThumbnail,
                                       builder: (context, snapshot) {
                                         if (!snapshot.hasData) {
                                           return Center(
@@ -249,12 +251,12 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
           );
           return;
         }
-        // Navigator.of(context).push(CupertinoPageRoute(
-        //   builder: (context) => BlocProvider.value(
-        //     value: _bloc,
-        //     child: PostAdDetailsLayout(),
-        //   ),
-        // ));
+        Navigator.of(context).push(CupertinoPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => PostAdInfoCubit(_bloc),
+            child: PostAdInfoLayout(),
+          ),
+        ));
       },
     );
   }

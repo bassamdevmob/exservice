@@ -127,5 +127,8 @@
   "max_media": "Cannot pick more than 10 images",
   "min_media": "Pick at least one image",
   "access_denied": "Access denied",
+  "add_location": "Add location",
+  "write_caption": "Write a caption",
+  "write_title": "Write a title",
   "cancel": "Cancel"
 }

@@ -127,5 +127,8 @@
   "max_media": "لا يمكن إختيار أكثر من 10 صور",
   "min_media": "اختر صورة على الأقل",
   "access_denied": "الإذن مرفوض",
+  "add_location": "إضافة موقع",
+  "write_caption": "اكتب شرح بسيط",
+  "write_title": "اكتب العنوان",
   "cancel": "إلغاء"
 }

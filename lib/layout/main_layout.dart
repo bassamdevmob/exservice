@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/post/post_ad_media_picker_bloc.dart';
+import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';

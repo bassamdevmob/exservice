@@ -73,7 +73,9 @@ class PostAdMediaPickerBloc
 
   final _thumbnails = <AssetEntity, Uint8List>{};
 
-  Future<Uint8List> get thumbnail => getThumbnail(focusedEntity);
+  Uint8List get thumbnail => _thumbnails[selectedEntities.first];
+
+  Future<Uint8List> get focusedThumbnail => getThumbnail(focusedEntity);
 
   Future<Uint8List> getThumbnail(AssetEntity entity) async {
     var thumb = _thumbnails[entity];
