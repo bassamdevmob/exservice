@@ -130,5 +130,10 @@
   "add_location": "Add location",
   "write_caption": "Write a caption",
   "write_title": "Write a title",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "type": "Type",
+  "more_details": "More details",
+  "trade": "Trade",
+  "price": "Price",
+  "size": "Size"
 }

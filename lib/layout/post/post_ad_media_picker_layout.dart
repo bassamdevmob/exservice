@@ -252,8 +252,11 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
           return;
         }
         Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => PostAdInfoCubit(_bloc),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => PostAdInfoCubit()),
+              BlocProvider.value(value: _bloc),
+            ],
             child: PostAdInfoLayout(),
           ),
         ));

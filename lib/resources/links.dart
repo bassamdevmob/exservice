@@ -33,4 +33,5 @@ class Links {
 
 
   static const CATEGORIES_URL = "config/categories";
+  static const CONFIG_URL = "config";
 }

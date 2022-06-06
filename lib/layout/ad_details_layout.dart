@@ -228,48 +228,34 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
                             AppLocalization.of(context)
-                                .translate('specifications'),
+                                .translate('more_details'),
                             style:
                                 Theme.of(context).primaryTextTheme.bodyMedium,
                           ),
                         ),
                         collapsed: SizedBox(),
                         expanded: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            if (_bloc.details.extra.trade != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context).translate('option'),
-                                "${_bloc.details.extra.trade.type} - ${_bloc.details.extra.trade.flag}",
-                              ),
-                            if (_bloc.details.extra.type != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context).translate('type'),
-                                "${_bloc.details.extra.type.type} - ${_bloc.details.extra.type.flag}",
-                              ),
-                            if (_bloc.details.extra.furniture != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context)
-                                    .translate('furniture'),
-                                "${_bloc.details.extra.furniture.type} - ${_bloc.details.extra.furniture.flag}",
-                              ),
-                            if (_bloc.details.extra.balcony != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context)
-                                    .translate('balcony'),
-                                "${_bloc.details.extra.balcony.value} ${_bloc.details.extra.balcony.unit}",
-                              ),
-                            if (_bloc.details.extra.garage != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context).translate('garage'),
-                                "${_bloc.details.extra.garage.value} ${_bloc.details.extra.garage.unit}",
-                              ),
-                            if (_bloc.details.extra.gym != null)
-                              getFeatureWidget(
-                                AppLocalization.of(context).translate('gym'),
-                                "${_bloc.details.extra.gym.value} ${_bloc.details.extra.gym.unit}",
-                              ),
-                          ],
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: List.generate(
+                            _bloc.details.extra.length,
+                            (index) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.arrow_right,
+                                  size: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    _bloc.details.extra[index],
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       Divider(),
@@ -313,22 +299,6 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
           },
         ),
       ),
-    );
-  }
-
-  Widget getFeatureWidget(String field, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          field,
-          style: Theme.of(context).primaryTextTheme.bodyMedium,
-        ),
-        Text(
-          value,
-          style: Theme.of(context).primaryTextTheme.bodyMedium,
-        )
-      ],
     );
   }
 

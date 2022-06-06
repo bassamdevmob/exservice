@@ -1,5 +1,7 @@
+
 import 'package:exservice/models/entity/location.dart';
 import 'package:exservice/models/entity/user.dart';
+import 'package:exservice/models/response/config_response.dart';
 
 class AdModel {
   AdModel({
@@ -12,6 +14,10 @@ class AdModel {
     this.owner,
     this.status,
     this.views,
+    this.type,
+    this.trade,
+    this.price,
+    this.size,
     this.extra,
     this.media,
   });
@@ -25,8 +31,12 @@ class AdModel {
   User owner;
   String status;
   int views;
-  Extra extra;
-  List<MediaEntity> media;
+  OptionData type;
+  OptionData trade;
+  NumericData price;
+  NumericData size;
+  List<String> extra;
+  List<Media> media;
 
   factory AdModel.fromJson(Map<String, dynamic> json) => AdModel(
     id: json["id"] == null ? null : json["id"],
@@ -38,8 +48,12 @@ class AdModel {
     owner: json["owner"] == null ? null : User.fromJson(json["owner"]),
     status: json["status"] == null ? null : json["status"],
     views: json["views"] == null ? null : json["views"],
-    extra: json["extra"] == null ? null : Extra.fromJson(json["extra"]),
-    media: json["media"] == null ? null : List<MediaEntity>.from(json["media"].map((x) => MediaEntity.fromJson(x))),
+    type: json["type"] == null ? null : OptionData.fromJson(json["type"]),
+    trade: json["trade"] == null ? null : OptionData.fromJson(json["trade"]),
+    price: json["price"] == null ? null : NumericData.fromJson(json["price"]),
+    size: json["size"] == null ? null : NumericData.fromJson(json["size"]),
+    extra: json["extra"] == null ? null : List<String>.from(json["extra"].map((x) => x)),
+    media: json["media"] == null ? null : List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -52,127 +66,79 @@ class AdModel {
     "owner": owner == null ? null : owner.toJson(),
     "status": status == null ? null : status,
     "views": views == null ? null : views,
-    "extra": extra == null ? null : extra.toJson(),
-    "media": media == null ? null : List<dynamic>.from(media.map((x) => x.toJson())),
-  };
-}
-
-class Extra {
-  Extra({
-    this.type,
-    this.trade,
-    this.price,
-    this.size,
-    this.furniture,
-    this.room,
-    this.bath,
-    this.garage,
-    this.balcony,
-    this.gym,
-  });
-
-  StandardValue type;
-  StandardValue trade;
-  NumericValue price;
-  NumericValue size;
-  StandardValue furniture;
-  NumericValue room;
-  NumericValue bath;
-  NumericValue garage;
-  NumericValue balcony;
-  NumericValue gym;
-
-  factory Extra.fromJson(Map<String, dynamic> json) => Extra(
-    type: json["type"] == null ? null : StandardValue.fromJson(json["type"]),
-    trade: json["trade"] == null ? null : StandardValue.fromJson(json["trade"]),
-    price: json["price"] == null ? null : NumericValue.fromJson(json["price"]),
-    size: json["size"] == null ? null : NumericValue.fromJson(json["size"]),
-    furniture: json["furniture"] == null ? null : StandardValue.fromJson(json["furniture"]),
-    room: json["room"] == null ? null : NumericValue.fromJson(json["room"]),
-    bath: json["bath"] == null ? null : NumericValue.fromJson(json["bath"]),
-    garage: json["garage"] == null ? null : NumericValue.fromJson(json["garage"]),
-    balcony: json["balcony"] == null ? null : NumericValue.fromJson(json["balcony"]),
-    gym: json["gym"] == null ? null : NumericValue.fromJson(json["gym"]),
-  );
-
-  Map<String, dynamic> toJson() => {
     "type": type == null ? null : type.toJson(),
     "trade": trade == null ? null : trade.toJson(),
     "price": price == null ? null : price.toJson(),
     "size": size == null ? null : size.toJson(),
-    "furniture": furniture == null ? null : furniture.toJson(),
-    "room": room == null ? null : room.toJson(),
-    "bath": bath == null ? null : bath.toJson(),
-    "garage": garage == null ? null : garage.toJson(),
-    "balcony": balcony == null ? null : balcony.toJson(),
-    "gym": gym == null ? null : gym.toJson(),
+    "extra": extra == null ? null : List<dynamic>.from(extra.map((x) => x)),
+    "media": media == null ? null : List<dynamic>.from(media.map((x) => x.toJson())),
   };
 }
 
-class NumericValue {
-  NumericValue({
-    this.value,
-    this.unit,
-    this.description,
-  });
-
-  int value;
-  String unit;
-  String description;
-
-  factory NumericValue.fromJson(Map<String, dynamic> json) => NumericValue(
-    value: json["value"] == null ? null : json["value"],
-    unit: json["unit"] == null ? null : json["unit"],
-    description: json["description"] == null ? null : json["description"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "value": value == null ? null : value,
-    "unit": unit == null ? null : unit,
-    "description": description == null ? null : description,
-  };
-}
-
-class StandardValue {
-  StandardValue({
-    this.type,
-    this.flag,
-  });
-
-  String type;
-  String flag;
-
-  factory StandardValue.fromJson(Map<String, dynamic> json) => StandardValue(
-    type: json["type"] == null ? null : json["type"],
-    flag: json["flag"] == null ? null : json["flag"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "type": type == null ? null : type,
-    "flag": flag == null ? null : flag,
-  };
-}
-
-class MediaEntity {
-  MediaEntity({
+class Media {
+  Media({
     this.id,
     this.link,
-    this.type,
   });
 
   int id;
   String link;
-  String type;
 
-  factory MediaEntity.fromJson(Map<String, dynamic> json) => MediaEntity(
+  factory Media.fromJson(Map<String, dynamic> json) => Media(
     id: json["id"] == null ? null : json["id"],
     link: json["link"] == null ? null : json["link"],
-    type: json["type"] == null ? null : json["type"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id == null ? null : id,
     "link": link == null ? null : link,
-    "type": type == null ? null : type,
+  };
+}
+
+class NumericData {
+  NumericData({
+    this.value,
+    this.unit,
+    this.note,
+  });
+
+  int value;
+  Unit unit;
+  String note;
+
+  factory NumericData.fromJson(Map<String, dynamic> json) => NumericData(
+    value: json["value"] == null ? null : json["value"],
+    unit: json["unit"] == null ? null : Unit.fromJson(json["unit"]),
+    note: json["note"] == null ? null : json["note"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "value": value == null ? null : value,
+    "unit": unit == null ? null : unit.toJson(),
+    "note": note == null ? null : note,
+  };
+}
+
+class OptionData {
+  OptionData({
+    this.value,
+    this.text,
+    this.note,
+  });
+
+  String value;
+  String text;
+  String note;
+
+  factory OptionData.fromJson(Map<String, dynamic> json) => OptionData(
+    value: json["value"] == null ? null : json["value"],
+    text: json["text"] == null ? null : json["text"],
+    note: json["note"] == null ? null : json["note"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "value": value == null ? null : value,
+    "text": text == null ? null : text,
+    "note": note == null ? null : note,
   };
 }

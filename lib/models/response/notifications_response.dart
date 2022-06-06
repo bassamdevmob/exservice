@@ -62,12 +62,12 @@ class AdBrief {
 
   int id;
   String title;
-  MediaEntity cover;
+  Media cover;
 
   factory AdBrief.fromJson(Map<String, dynamic> json) => AdBrief(
     id: json["id"] == null ? null : json["id"],
     title: json["title"] == null ? null : json["title"],
-    cover: json["cover"] == null ? null : MediaEntity.fromJson(json["cover"]),
+    cover: json["cover"] == null ? null : Media.fromJson(json["cover"]),
   );
 
   Map<String, dynamic> toJson() => {

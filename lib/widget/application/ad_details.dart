@@ -3,9 +3,9 @@ import 'package:exservice/utils/global.dart';
 import 'package:flutter/material.dart';
 
 class AdDetails extends StatelessWidget {
-  final AdModel ad;
+  final AdModel model;
 
-  const AdDetails(this.ad, {Key key}) : super(key: key);
+  const AdDetails(this.model, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,36 +19,34 @@ class AdDetails extends StatelessWidget {
             style: Theme.of(context).primaryTextTheme.labelSmall,
             children: <TextSpan>[
               TextSpan(
-                text: '${ad.extra.room.value} ${ad.extra.room.unit}  ',
+                text: '${model.trade.text}  ',
               ),
               TextSpan(
-                text: '${ad.extra.bath.value} ${ad.extra.bath.unit}  ',
+                text: '${model.type.text}  ',
               ),
               TextSpan(
-                text: '${ad.extra.size.value} ${ad.extra.size.unit}',
+                text: '${model.size.value} ${model.size.unit.value}',
               )
             ],
           ),
         ),
         Text(
-          '${currencyFormatter.format(ad.extra.price.value)} ${ad.extra.price.unit}',
+          '${currencyFormatter.format(model.price.value)} ${model.price.unit.value}',
           style: Theme.of(context).primaryTextTheme.titleMedium,
         ),
         Text(
-          ad.title,
+          model.title,
           style: Theme.of(context).primaryTextTheme.bodyMedium,
         ),
         Text(
-          '${ad.location.country}, ${ad.location.city}',
+          '${model.location.country}, ${model.location.city}',
           style: Theme.of(context).primaryTextTheme.labelSmall,
-          maxLines: 2,
         ),
         Text(
-          isoFormatter.format(ad.createdAt),
+          isoFormatter.format(model.createdAt),
           style: Theme.of(context).primaryTextTheme.labelSmall,
         ),
       ],
     );
   }
-
 }
