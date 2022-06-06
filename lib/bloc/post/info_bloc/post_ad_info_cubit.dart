@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
 import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:exservice/utils/localized.dart';
+import 'package:exservice/widget/bottom_sheets/pickers_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,8 +14,8 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
   final descriptionController = TextEditingController();
   Config data;
 
-  Option type;
-  Option trade;
+  OptionResult type;
+  OptionResult trade;
 
   @override
   Future<void> close() {
@@ -62,13 +62,13 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
     }
   }
 
-  void updateType(Option option) {
-    type = option;
+  void updateType(OptionResult result) {
+    type = result;
     emit(PostAdInfoUpdateState());
   }
 
-  void updateTrade(Option option) {
-    trade = option;
+  void updateTrade(OptionResult result) {
+    trade = result;
     emit(PostAdInfoUpdateState());
   }
 }

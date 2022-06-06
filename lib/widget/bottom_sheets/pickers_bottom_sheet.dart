@@ -1,34 +1,38 @@
 import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:flutter/material.dart';
 
-typedef TextBuilder<T> = String Function(T);
+class OptionResult {
+  final Option option;
+  final String note;
 
-class OptionPickerBottomSheet<T> extends StatefulWidget {
+  OptionResult({this.option, this.note});
+}
+
+class OptionPickerBottomSheet extends StatefulWidget {
   final String title;
-  final T selected;
-  final List<T> elements;
-  final TextBuilder<T> elementTextBuilder;
+  final OptionResult selected;
+  final List<Option> elements;
 
-  static Future<T> show<T>(
+  static Future<OptionResult> show(
     BuildContext context, {
     String title,
-    T selected,
-    List<T> elements,
-    TextBuilder<T> elementTextBuilder,
+    OptionResult selected,
+    List<Option> elements,
   }) {
-    return showModalBottomSheet<T>(
+    return showModalBottomSheet<OptionResult>(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: Sizer.bottomSheetBorderRadius,
       ),
-      builder: (context) => OptionPickerBottomSheet<T>(
+      builder: (context) => OptionPickerBottomSheet(
         title: title,
         selected: selected,
         elements: elements,
-        elementTextBuilder: elementTextBuilder,
       ),
     );
   }
@@ -38,28 +42,38 @@ class OptionPickerBottomSheet<T> extends StatefulWidget {
     this.title,
     this.selected,
     this.elements,
-    this.elementTextBuilder,
   }) : super(key: key);
 
   @override
-  State<OptionPickerBottomSheet<T>> createState() =>
-      _OptionPickerBottomSheetState<T>();
+  State<OptionPickerBottomSheet> createState() =>
+      _OptionPickerBottomSheetState();
 }
 
-class _OptionPickerBottomSheetState<T>
-    extends State<OptionPickerBottomSheet<T>> {
-  T selected;
+class _OptionPickerBottomSheetState extends State<OptionPickerBottomSheet> {
+  final TextEditingController controller = TextEditingController();
+  Option selected;
 
   @override
   void initState() {
-    selected = widget.selected;
+    if (widget.selected != null) {
+      selected = widget.selected.option;
+      controller.text = widget.selected.note;
+    }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: Sizer.bottomSheetPadding,
+      padding: Sizer.bottomSheetPadding.add(
+        MediaQuery.of(context).viewInsets,
+      ),
       shrinkWrap: true,
       children: [
         SizedBox(height: Sizer.vs2),
@@ -80,7 +94,7 @@ class _OptionPickerBottomSheetState<T>
                   minWidth: Sizer.screenSize.width * 0.3,
                 ),
                 child: InputChip(
-                  label: Text(widget.elementTextBuilder(element)),
+                  label: Text(element.text),
                   selected: selected == element,
                   selectedColor: AppColors.blueAccent,
                   onPressed: () {
@@ -93,6 +107,14 @@ class _OptionPickerBottomSheetState<T>
           ],
         ),
         SizedBox(height: Sizer.vs3),
+        TextField(
+          controller: controller,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: AppLocalization.of(context).translate("note"),
+          ),
+        ),
+        SizedBox(height: Sizer.vs1),
         Row(
           children: [
             Expanded(
@@ -123,7 +145,11 @@ class _OptionPickerBottomSheetState<T>
                   AppLocalization.of(context).translate("next"),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(selected);
+                  if (selected == null) return;
+                  Navigator.of(context).pop(OptionResult(
+                    option: selected,
+                    note: controller.text.trim(),
+                  ));
                 },
               ),
             ),

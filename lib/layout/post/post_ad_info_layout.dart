@@ -1,7 +1,6 @@
 import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
 import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
 import 'package:exservice/localization/app_localization.dart';
-import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
@@ -119,18 +118,17 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("type"),
                 ),
-                subtitle: _bloc.type == null ? null : Text(_bloc.type.text),
+                subtitle: _bloc.type == null ? null : Text(_bloc.type.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
-                  OptionPickerBottomSheet.show<Option>(
+                  OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("type"),
                     selected: _bloc.type,
                     elements: _bloc.data.type,
-                    elementTextBuilder: (e) => e.text,
-                  ).then((value) {
-                    if (value != null) {
-                      _bloc.updateType(value);
+                  ).then((result) {
+                    if (result != null) {
+                      _bloc.updateType(result);
                     }
                   });
                 },
@@ -140,15 +138,14 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("trade"),
                 ),
-                subtitle: _bloc.trade == null ? null : Text(_bloc.trade.text),
+                subtitle: _bloc.trade == null ? null : Text(_bloc.trade.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
-                  OptionPickerBottomSheet.show<Option>(
+                  OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("trade"),
                     selected: _bloc.trade,
                     elements: _bloc.data.trade,
-                    elementTextBuilder: (e) => e.text,
                   ).then((value) {
                     if (value != null) {
                       _bloc.updateTrade(value);
