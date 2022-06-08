@@ -7,6 +7,7 @@ import 'package:exservice/widget/bottom_sheets/numeric_input_bottom_sheet.dart';
 import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 part 'post_ad_info_state.dart';
 
@@ -15,6 +16,7 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
   final descriptionController = TextEditingController();
   Config data;
 
+  LatLng location;
   OptionResult type;
   OptionResult trade;
   NumericResult price;
@@ -72,6 +74,11 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
 
   void updateTrade(OptionResult result) {
     trade = result;
+    emit(PostAdInfoUpdateState());
+  }
+
+  void updatePosition(LatLng result) {
+    location = result;
     emit(PostAdInfoUpdateState());
   }
 

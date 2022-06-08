@@ -1,5 +1,6 @@
 import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
 import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
+import 'package:exservice/layout/post/extra_notes_layout.dart';
 import 'package:exservice/layout/post/map_picker_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -11,6 +12,8 @@ import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 class PostAdInfoLayout extends StatefulWidget {
   @override
@@ -19,6 +22,7 @@ class PostAdInfoLayout extends StatefulWidget {
 
 class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
   PostAdInfoCubit _bloc;
+  NumberFormat format = NumberFormat();
 
   @override
   void initState() {
@@ -162,13 +166,30 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("location"),
                 ),
+                subtitle: _bloc.location == null
+                    ? null
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              "LAT: ${_bloc.location.latitude.toStringAsFixed(6)}"),
+                          Text(
+                              "LNG: ${_bloc.location.longitude.toStringAsFixed(6)}"),
+                        ],
+                      ),
                 trailing: getTrailing(context),
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).push<LatLng>(
                     CupertinoPageRoute(
-                      builder: (context) => MapPickerLayout(),
+                      builder: (context) {
+                        return MapPickerLayout();
+                      },
                     ),
-                  );
+                  ).then((value) {
+                    if (value != null) {
+                      _bloc.updatePosition(value);
+                    }
+                  });
                 },
               ),
               ListTile(
@@ -176,6 +197,10 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("price"),
                 ),
+                subtitle: _bloc.price == null
+                    ? null
+                    : Text(
+                        "${format.format(_bloc.price.value)} ${_bloc.price.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
                   NumericInputBottomSheet.show(
@@ -195,6 +220,10 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("size"),
                 ),
+                subtitle: _bloc.size == null
+                    ? null
+                    : Text(
+                        "${format.format(_bloc.size.value)} ${_bloc.size.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
                   NumericInputBottomSheet.show(
@@ -225,7 +254,13 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
           style: AppTextStyle.largeBlue,
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => ExtraNotesLayout(),
+          ),
+        );
+      },
     );
   }
 }

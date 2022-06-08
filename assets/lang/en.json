@@ -137,5 +137,7 @@
   "price": "Price",
   "note": "Note",
   "amount": "Amount",
+  "location_disabled": "Location services are disabled.",
+  "location_denied": "Location permissions are denied.",
   "size": "Size"
 }
