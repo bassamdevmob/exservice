@@ -136,5 +136,6 @@
   "trade": "Trade",
   "price": "Price",
   "note": "Note",
+  "amount": "Amount",
   "size": "Size"
 }

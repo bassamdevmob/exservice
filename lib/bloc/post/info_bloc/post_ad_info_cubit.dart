@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:exservice/utils/localized.dart';
-import 'package:exservice/widget/bottom_sheets/pickers_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/numeric_input_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,6 +17,8 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
 
   OptionResult type;
   OptionResult trade;
+  NumericResult price;
+  NumericResult size;
 
   @override
   Future<void> close() {
@@ -69,6 +72,16 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
 
   void updateTrade(OptionResult result) {
     trade = result;
+    emit(PostAdInfoUpdateState());
+  }
+
+  void updatePrice(NumericResult result) {
+    price = result;
+    emit(PostAdInfoUpdateState());
+  }
+
+  void updateSize(NumericResult result) {
+    size = result;
     emit(PostAdInfoUpdateState());
   }
 }
