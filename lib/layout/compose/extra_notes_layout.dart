@@ -1,6 +1,7 @@
-import 'package:exservice/bloc/manage_payment_bloc/manage_payment_cubit.dart';
-import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
-import 'package:exservice/layout/post/manage_payment_layout.dart';
+import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
+import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
+import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -17,11 +18,11 @@ class ExtraNotesLayout extends StatefulWidget {
 }
 
 class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
-  PostAdInfoCubit _bloc;
+  ComposeDetailsCubit _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<PostAdInfoCubit>(context);
+    _bloc = BlocProvider.of<ComposeDetailsCubit>(context);
     super.initState();
   }
 
@@ -41,8 +42,8 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
           ),
         ],
       ),
-      body: BlocBuilder<PostAdInfoCubit, PostAdInfoState>(
-        buildWhen: (previous, current) => current is PostAdInfoUpdateState,
+      body: BlocBuilder<ComposeDetailsCubit, ComposeDetailsState>(
+        buildWhen: (previous, current) => current is ComposeDetailsUpdateState,
         builder: (context, state) {
           return ReorderableListView.builder(
             itemCount: _bloc.notes.length,
@@ -102,14 +103,24 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
         ),
       ),
       onTap: () {
+        var repository = RepositoryProvider.of<CompositionRepository>(context);
+        repository.setNotes(_bloc.notes);
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => BlocProvider(
-              create: (context) => ManagePaymentCubit(),
-              child: ManagePaymentLayout(),
+              create: (context) => AdDetailsBloc.review(repository.toModel()),
+              child: AdDetailsLayout(),
             ),
           ),
         );
+        // Navigator.of(context).push(
+        //   CupertinoPageRoute(
+        //     builder: (context) => BlocProvider(
+        //       create: (context) => ManagePaymentCubit(),
+        //       child: ManagePaymentLayout(),
+        //     ),
+        //   ),
+        // );
       },
     );
   }

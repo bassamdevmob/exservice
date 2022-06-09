@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
-import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
-import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
-import 'package:exservice/layout/post/post_ad_info_layout.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
+import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
+import 'package:exservice/bloc/post/media_picker_bloc/compose_media_picker_bloc.dart';
+import 'package:exservice/layout/compose/compose_details_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -19,29 +20,29 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class PostAdMediaPickerLayout extends StatefulWidget {
+class ComposeMediaPickerLayout extends StatefulWidget {
   @override
-  _PostAdMediaPickerLayoutState createState() =>
-      _PostAdMediaPickerLayoutState();
+  _ComposeMediaPickerLayoutState createState() =>
+      _ComposeMediaPickerLayoutState();
 }
 
-class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
-  PostAdMediaPickerBloc _bloc;
+class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
+  ComposeMediaPickerBloc _bloc;
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<PostAdMediaPickerBloc>(context);
-    _bloc.add(PostAdMediaPickerFetchEvent());
+    _bloc = BlocProvider.of<ComposeMediaPickerBloc>(context);
+    _bloc.add(ComposeMediaPickerFetchEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PostAdMediaPickerBloc, PostAdMediaPickerState>(
+    return BlocListener<ComposeMediaPickerBloc, ComposeMediaPickerState>(
       listenWhen: (_, current) =>
-          current is PostAdMediaPickerMaxLimitsErrorState,
+          current is ComposeMediaPickerMaxLimitsErrorState,
       listener: (context, state) {
-        if (state is PostAdMediaPickerMaxLimitsErrorState) {
+        if (state is ComposeMediaPickerMaxLimitsErrorState) {
           showErrorBottomSheet(
             context,
             title: AppLocalization.of(context).translate("error"),
@@ -52,7 +53,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalization.of(context).translate('post'),
+            AppLocalization.of(context).translate('compose'),
           ),
           actions: [
             Center(
@@ -60,24 +61,24 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
             ),
           ],
         ),
-        body: BlocBuilder<PostAdMediaPickerBloc, PostAdMediaPickerState>(
+        body: BlocBuilder<ComposeMediaPickerBloc, ComposeMediaPickerState>(
           buildWhen: (_, current) =>
-              current is PostAdMediaPickerAwaitState ||
-              current is PostAdMediaPickerAcceptState ||
-              current is PostAdMediaPickerDeniedState ||
-              current is PostAdMediaPickerSelectMediaState,
+              current is ComposeMediaPickerAwaitState ||
+              current is ComposeMediaPickerAcceptState ||
+              current is ComposeMediaPickerDeniedState ||
+              current is ComposeMediaPickerSelectMediaState,
           builder: (context, state) {
-            if (state is PostAdMediaPickerAwaitState) {
+            if (state is ComposeMediaPickerAwaitState) {
               return Center(
                 child: CupertinoActivityIndicator(),
               );
             }
-            if (state is PostAdMediaPickerDeniedState) {
+            if (state is ComposeMediaPickerDeniedState) {
               return Center(
                 child: ReloadIndicator(
                   error: AppLocalization.of(context).translate("access_denied"),
                   onTap: () {
-                    _bloc.add(PostAdMediaPickerFetchEvent());
+                    _bloc.add(ComposeMediaPickerFetchEvent());
                   },
                 ),
               );
@@ -85,9 +86,9 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
             return NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [
-                  BlocBuilder<PostAdMediaPickerBloc, PostAdMediaPickerState>(
+                  BlocBuilder<ComposeMediaPickerBloc, ComposeMediaPickerState>(
                     buildWhen: (_, current) =>
-                        current is PostAdMediaPickerDisplayModeState,
+                        current is ComposeMediaPickerDisplayModeState,
                     builder: (context, state) {
                       return SliverStack(
                         children: [
@@ -124,7 +125,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                             textDirection: Directionality.of(context),
                             child: GestureDetector(
                               onTap: () {
-                                _bloc.add(PostAdMediaPickerDisplayModeEvent());
+                                _bloc.add(ComposeMediaPickerDisplayModeEvent());
                               },
                               child: AnimatedCrossIcon(
                                 startIcon: CupertinoIcons.viewfinder_circle,
@@ -171,7 +172,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
         if (!snapshot.hasData) return simpleShimmer;
         return GestureDetector(
           onTap: () {
-            _bloc.add(PostAdMediaPickerFocusEvent(entity));
+            _bloc.add(ComposeMediaPickerFocusEvent(entity));
           },
           child: Stack(
             fit: StackFit.expand,
@@ -189,7 +190,7 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    _bloc.add(PostAdMediaPickerSelectEvent(entity));
+                    _bloc.add(ComposeMediaPickerSelectEvent(entity));
                   },
                   child: Container(
                     margin: EdgeInsets.all(5),
@@ -224,10 +225,10 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: BlocBuilder<PostAdMediaPickerBloc, PostAdMediaPickerState>(
+        child: BlocBuilder<ComposeMediaPickerBloc, ComposeMediaPickerState>(
           buildWhen: (_, current) =>
-              current is PostAdMediaPickerAcceptState ||
-              current is PostAdMediaPickerSelectMediaState,
+              current is ComposeMediaPickerAcceptState ||
+              current is ComposeMediaPickerSelectMediaState,
           builder: (context, state) {
             return Badge(
               position: BadgePosition.topEnd(top: -12),
@@ -251,13 +252,16 @@ class _PostAdMediaPickerLayoutState extends State<PostAdMediaPickerLayout> {
           );
           return;
         }
+
+        var repository = RepositoryProvider.of<CompositionRepository>(context);
+        repository.setMedia(_bloc);
         Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => PostAdInfoCubit()),
-              BlocProvider.value(value: _bloc),
-            ],
-            child: PostAdInfoLayout(),
+          builder: (context) => RepositoryProvider.value(
+            value: repository,
+            child: BlocProvider(
+              create: (context) => ComposeDetailsCubit(),
+              child: ComposeDetailsLayout(),
+            ),
           ),
         ));
       },

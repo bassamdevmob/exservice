@@ -1,4 +1,5 @@
-import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
+import 'package:exservice/bloc/post/media_picker_bloc/compose_media_picker_bloc.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
@@ -6,7 +7,7 @@ import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bl
 import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/messenger_layout.dart';
-import 'package:exservice/layout/post/post_ad_media_picker_layout.dart';
+import 'package:exservice/layout/compose/compose_media_picker_layout.dart';
 import 'package:exservice/layout/view/account_layout.dart';
 import 'package:exservice/layout/view/bookmarks_layout.dart';
 import 'package:exservice/layout/view/home_layout.dart';
@@ -124,9 +125,12 @@ class _MainLayoutState extends State<MainLayout> {
         onTap: (int i) {
           if (i == 2) {
             Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) => PostAdMediaPickerBloc(),
-                child: PostAdMediaPickerLayout(),
+              builder: (context) => RepositoryProvider(
+                create: (context) => CompositionRepository(),
+                child: BlocProvider(
+                  create: (context) => ComposeMediaPickerBloc(),
+                  child: ComposeMediaPickerLayout(),
+                ),
               ),
             ));
           } else {

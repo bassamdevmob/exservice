@@ -1,7 +1,7 @@
-import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
-import 'package:exservice/bloc/post/media_picker_bloc/post_ad_media_picker_bloc.dart';
-import 'package:exservice/layout/post/extra_notes_layout.dart';
-import 'package:exservice/layout/post/map_picker_layout.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
+import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
+import 'package:exservice/layout/compose/extra_notes_layout.dart';
+import 'package:exservice/layout/compose/map_picker_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/utils/sizer.dart';
@@ -15,25 +15,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
-class PostAdInfoLayout extends StatefulWidget {
+class ComposeDetailsLayout extends StatefulWidget {
   @override
-  _PostAdInfoLayoutState createState() => _PostAdInfoLayoutState();
+  _ComposeDetailsLayoutState createState() => _ComposeDetailsLayoutState();
 }
 
-class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
-  PostAdInfoCubit _bloc;
+class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
+  ComposeDetailsCubit _bloc;
   NumberFormat format = NumberFormat();
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<PostAdInfoCubit>(context);
+    _bloc = BlocProvider.of<ComposeDetailsCubit>(context);
     _bloc.fetch();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var mediaBloc = BlocProvider.of<PostAdMediaPickerBloc>(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -42,20 +41,20 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
           ),
         ],
       ),
-      body: BlocBuilder<PostAdInfoCubit, PostAdInfoState>(
+      body: BlocBuilder<ComposeDetailsCubit, ComposeDetailsState>(
         buildWhen: (previous, current) =>
-            current is PostAdInfoValidationState ||
-            current is PostAdInfoAwaitState ||
-            current is PostAdInfoAcceptState ||
-            current is PostAdInfoErrorState ||
-            current is PostAdInfoUpdateState,
+            current is ComposeDetailsValidationState ||
+            current is ComposeDetailsAwaitState ||
+            current is ComposeDetailsAcceptState ||
+            current is ComposeDetailsErrorState ||
+            current is ComposeDetailsUpdateState,
         builder: (context, state) {
-          if (state is PostAdInfoAwaitState) {
+          if (state is ComposeDetailsAwaitState) {
             return Center(
               child: CupertinoActivityIndicator(),
             );
           }
-          if (state is PostAdInfoErrorState) {
+          if (state is ComposeDetailsErrorState) {
             return Center(
               child: ReloadIndicator(
                 error: state.error,
@@ -65,6 +64,8 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
               ),
             );
           }
+          var repository =
+              RepositoryProvider.of<CompositionRepository>(context);
           return ListView(
             padding: EdgeInsets.only(bottom: Sizer.vs1),
             children: [
@@ -80,13 +81,13 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                         SizedBox(
                           width: Sizer.avatarSizeLarge,
                           child: AspectRatio(
-                            aspectRatio: mediaBloc.mode.value,
+                            aspectRatio: repository.mode.value,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: Hero(
                                 tag: "thumbnail",
                                 child: Image.memory(
-                                  mediaBloc.thumbnail,
+                                  repository.thumbnail,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -184,13 +185,13 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
-                  Navigator.of(context).push<LatLng>(
+                  Navigator.of(context)
+                      .push<LatLng>(
                     CupertinoPageRoute(
-                      builder: (context) {
-                        return MapPickerLayout();
-                      },
+                      builder: (context) => MapPickerLayout(),
                     ),
-                  ).then((value) {
+                  )
+                      .then((value) {
                     if (value != null) {
                       _bloc.updatePosition(value);
                     }
@@ -264,11 +265,17 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
       onTap: () {
         _bloc.next();
         if (_bloc.valid) {
+          var repository =
+              RepositoryProvider.of<CompositionRepository>(context);
+          repository.setDetails(_bloc);
           Navigator.of(context).push(
             CupertinoPageRoute(
-              builder: (context) => BlocProvider.value(
-                value: _bloc,
-                child: ExtraNotesLayout(),
+              builder: (context) => RepositoryProvider.value(
+                value: repository,
+                child: BlocProvider.value(
+                  value: _bloc,
+                  child: ExtraNotesLayout(),
+                ),
               ),
             ),
           );

@@ -26,13 +26,27 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
   LatLng position;
   DisplayMode mode;
 
-  bool get isOwned => locator<ProfileBloc>().model.id == details.id;
+  bool get isOwned => mode == DisplayMode.normal
+      ? locator<ProfileBloc>().model.id == details.id
+      : false;
 
   AdDetailsBloc(
     this.id, {
     @required this.locator,
-    this.mode = DisplayMode.normal,
-  }) : super(AdDetailsAwaitState()) {
+  })  : this.mode = DisplayMode.normal,
+        super(AdDetailsAwaitState()) {
+    init();
+  }
+
+  AdDetailsBloc.review(this.details)
+      : this.id = 0,
+        this.locator = null,
+        this.mode = DisplayMode.review,
+        super(AdDetailsAcceptState()) {
+    init();
+  }
+
+  void init() {
     on((event, emit) async {
       if (event is AdDetailsFetchEvent) {
         try {

@@ -5,9 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-part 'post_ad_media_picker_event.dart';
+part 'compose_media_picker_event.dart';
 
-part 'post_ad_media_picker_state.dart';
+part 'compose_media_picker_state.dart';
 
 class AspectRatioMode {
   final String id;
@@ -19,18 +19,18 @@ class AspectRatioMode {
   static const square = AspectRatioMode("SQUARE", 1);
 }
 
-class PostAdMediaPickerBloc
-    extends Bloc<PostAdMediaPickerEvent, PostAdMediaPickerState> {
+class ComposeMediaPickerBloc
+    extends Bloc<ComposeMediaPickerEvent, ComposeMediaPickerState> {
   List<AssetEntity> entities;
   AspectRatioMode mode = AspectRatioMode.square;
   AssetEntity focusedEntity;
 
   final List<AssetEntity> selectedEntities = [];
 
-  PostAdMediaPickerBloc() : super(PostAdMediaPickerAwaitState()) {
-    on<PostAdMediaPickerEvent>((event, emit) async {
-      if (event is PostAdMediaPickerFetchEvent) {
-        emit(PostAdMediaPickerAwaitState());
+  ComposeMediaPickerBloc() : super(ComposeMediaPickerAwaitState()) {
+    on<ComposeMediaPickerEvent>((event, emit) async {
+      if (event is ComposeMediaPickerFetchEvent) {
+        emit(ComposeMediaPickerAwaitState());
         var result = await PhotoManager.requestPermissionExtend();
         if (result.isAuth) {
           var paths = await PhotoManager.getAssetPathList(
@@ -39,11 +39,11 @@ class PostAdMediaPickerBloc
           );
           entities = await paths.first.getAssetListPaged(page: 0, size: 80);
           focusedEntity = entities.first;
-          emit(PostAdMediaPickerAcceptState());
+          emit(ComposeMediaPickerAcceptState());
         } else {
-          emit(PostAdMediaPickerDeniedState());
+          emit(ComposeMediaPickerDeniedState());
         }
-      } else if (event is PostAdMediaPickerSelectEvent) {
+      } else if (event is ComposeMediaPickerSelectEvent) {
         if (selectedEntities.contains(event.entity)) {
           selectedEntities.remove(event.entity);
           if (selectedEntities.isNotEmpty) {
@@ -51,22 +51,22 @@ class PostAdMediaPickerBloc
           }
         } else {
           if (selectedEntities.length >= 10) {
-            emit(PostAdMediaPickerMaxLimitsErrorState());
+            emit(ComposeMediaPickerMaxLimitsErrorState());
             return;
           }
           selectedEntities.add(event.entity);
           focusedEntity = event.entity;
         }
-        emit(PostAdMediaPickerSelectMediaState());
-      } else if (event is PostAdMediaPickerFocusEvent) {
+        emit(ComposeMediaPickerSelectMediaState());
+      } else if (event is ComposeMediaPickerFocusEvent) {
         focusedEntity = event.entity;
-        emit(PostAdMediaPickerSelectMediaState());
-      } else if (event is PostAdMediaPickerDisplayModeEvent) {
+        emit(ComposeMediaPickerSelectMediaState());
+      } else if (event is ComposeMediaPickerDisplayModeEvent) {
         if (mode == AspectRatioMode.tight)
           mode = AspectRatioMode.square;
         else
           mode = AspectRatioMode.tight;
-        emit(PostAdMediaPickerDisplayModeState());
+        emit(ComposeMediaPickerDisplayModeState());
       }
     });
   }

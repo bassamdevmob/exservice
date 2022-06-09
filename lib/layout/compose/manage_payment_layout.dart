@@ -1,4 +1,4 @@
-import 'package:exservice/bloc/manage_payment_bloc/manage_payment_cubit.dart';
+import 'package:exservice/bloc/post/manage_payment_bloc/manage_payment_cubit.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:flutter/cupertino.dart';

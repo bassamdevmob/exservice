@@ -10,9 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-part 'post_ad_info_state.dart';
+part 'compose_details_state.dart';
 
-class PostAdInfoCubit extends Cubit<PostAdInfoState> {
+class ComposeDetailsCubit extends Cubit<ComposeDetailsState> {
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -48,66 +48,66 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
         description.isEmpty ? Localized("field_required") : null;
   }
 
-  PostAdInfoCubit() : super(PostAdInfoAwaitState());
+  ComposeDetailsCubit() : super(ComposeDetailsAwaitState());
 
   void next() {
     _validate();
-    emit(PostAdInfoValidationState());
+    emit(ComposeDetailsValidationState());
   }
 
   void fetch() async {
     try {
-      emit(PostAdInfoAwaitState());
+      emit(ComposeDetailsAwaitState());
       var response = await GetIt.I.get<ConfigRepository>().config();
       data = response.data;
-      emit(PostAdInfoAcceptState());
+      emit(ComposeDetailsAcceptState());
     } on DioError catch (ex) {
-      emit(PostAdInfoErrorState(ex.error));
+      emit(ComposeDetailsErrorState(ex.error));
     }
   }
 
   void updateType(OptionResult result) {
     type = result;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void updateTrade(OptionResult result) {
     trade = result;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void updatePosition(LatLng result) {
     location = result;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void updatePrice(NumericResult result) {
     price = result;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void updateSize(NumericResult result) {
     size = result;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void newNote() {
     notes.add("");
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void removeNote(int index) {
     notes.removeAt(index);
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void updateNote(int index, NoteResult result) {
     notes[index] = result.note;
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 
   void reorder(int oldIndex, newIndex) {
     notes.insert(newIndex, notes.removeAt(oldIndex));
-    emit(PostAdInfoUpdateState());
+    emit(ComposeDetailsUpdateState());
   }
 }
