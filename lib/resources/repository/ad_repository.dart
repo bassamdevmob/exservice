@@ -3,6 +3,7 @@ import 'package:exservice/models/response/ad_details_response.dart';
 import 'package:exservice/models/response/ads_response.dart';
 import 'package:exservice/models/response/bit_response.dart';
 import 'package:exservice/models/response/home_response.dart';
+import 'package:exservice/models/response/payment_response.dart';
 import 'package:exservice/models/response/profile_response.dart';
 import 'package:exservice/models/response/simple_response.dart';
 import 'package:exservice/resources/api_client.dart';
@@ -10,7 +11,6 @@ import 'package:exservice/resources/links.dart';
 import 'package:exservice/utils/enums.dart';
 
 class AdRepository extends BaseClient {
-
   Future<HomeResponse> home() async {
     final response = await client.get(
       Links.HOME_URL,
@@ -85,5 +85,15 @@ class AdRepository extends BaseClient {
   Future<ProfileResponse> publisher(int id) async {
     final response = await client.get("${Links.PUBLISHER_URL}/$id");
     return ProfileResponse.fromJson(response.data);
+  }
+
+  Future<PaymentResponse> pay(int days) async {
+    final response = await client.post(
+      Links.PAY_URL,
+      data: {
+        "days": days,
+      }
+    );
+    return PaymentResponse.fromJson(response.data);
   }
 }

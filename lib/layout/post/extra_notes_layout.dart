@@ -1,8 +1,11 @@
+import 'package:exservice/bloc/manage_payment_bloc/manage_payment_cubit.dart';
 import 'package:exservice/bloc/post/info_bloc/post_ad_info_cubit.dart';
+import 'package:exservice/layout/post/manage_payment_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
 import 'package:exservice/widget/bottom_sheets/note_input_bottom_sheet.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -98,7 +101,16 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
           style: AppTextStyle.largeBlue,
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => ManagePaymentCubit(),
+              child: ManagePaymentLayout(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -30,8 +30,10 @@ class Links {
   static const CHANGE_AD_URL = "ad/status";
   static const BOOKMARK_AD_URL = "ad/bookmark";
   static const PUBLISHER_URL = "ad/publisher";
+  static const PAY_URL = "ad/pay";
 
 
   static const CATEGORIES_URL = "config/categories";
   static const CONFIG_URL = "config";
+  static const CONFIG_PAYMENT_URL = "config/payment";
 }

@@ -12,7 +12,7 @@
 // import 'package:exservice/utils/constant.dart';
 // import 'package:exservice/widget/button/app_button.dart';
 // import 'package:exservice/resources/api/ApiProviderDelegate.dart';
-// import 'package:exservice/ui/post_ad/ManagePayment.dart';
+// import 'package:exservice/ui/post_ad/manage_payment_layout.dart';
 // import 'package:exservice/widget/dialog/NoteDialog.dart';
 // import 'package:exservice/widget/dialog/ProgressDialog.dart';
 // import 'package:flutter/cupertino.dart';
