@@ -101,6 +101,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                             decoration: InputDecoration(
                               hintText:
                                   "${AppLocalization.of(context).translate("write_title")}...",
+                              errorText: _bloc.titleErrorMessage?.toString(),
                             ),
                           ),
                         ),
@@ -113,6 +114,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                       decoration: InputDecoration(
                         hintText:
                             "${AppLocalization.of(context).translate("write_caption")}...",
+                        errorText: _bloc.descriptionErrorMessage?.toString(),
                       ),
                     ),
                   ],
@@ -128,6 +130,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                     _bloc.type == null ? null : Text(_bloc.type.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("type"),
@@ -149,6 +152,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                     _bloc.trade == null ? null : Text(_bloc.trade.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("trade"),
@@ -179,6 +183,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                       ),
                 trailing: getTrailing(context),
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   Navigator.of(context).push<LatLng>(
                     CupertinoPageRoute(
                       builder: (context) {
@@ -203,6 +208,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                         "${format.format(_bloc.price.value)} ${_bloc.price.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   NumericInputBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("price"),
@@ -226,6 +232,7 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
                         "${format.format(_bloc.size.value)} ${_bloc.size.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
+                  FocusScope.of(context).unfocus();
                   NumericInputBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("size"),
@@ -255,11 +262,17 @@ class _PostAdInfoLayoutState extends State<PostAdInfoLayout> {
         ),
       ),
       onTap: () {
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (context) => ExtraNotesLayout(),
-          ),
-        );
+        _bloc.next();
+        if (_bloc.valid) {
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: _bloc,
+                child: ExtraNotesLayout(),
+              ),
+            ),
+          );
+        }
       },
     );
   }

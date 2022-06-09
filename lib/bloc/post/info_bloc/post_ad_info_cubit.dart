@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:exservice/utils/localized.dart';
+import 'package:exservice/widget/bottom_sheets/note_input_bottom_sheet.dart';
 import 'package:exservice/widget/bottom_sheets/numeric_input_bottom_sheet.dart';
 import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'post_ad_info_state.dart';
 
 class PostAdInfoCubit extends Cubit<PostAdInfoState> {
+
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   Config data;
@@ -21,6 +23,7 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
   OptionResult trade;
   NumericResult price;
   NumericResult size;
+  final List<String> notes = [];
 
   @override
   Future<void> close() {
@@ -39,10 +42,10 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
     String title = titleController.text.trim();
     String description = descriptionController.text.trim();
 
-    titleErrorMessage = title.isEmpty ? Localized("filed_required") : null;
+    titleErrorMessage = title.isEmpty ? Localized("field_required") : null;
 
     descriptionErrorMessage =
-        description.isEmpty ? Localized("filed_required") : null;
+        description.isEmpty ? Localized("field_required") : null;
   }
 
   PostAdInfoCubit() : super(PostAdInfoAwaitState());
@@ -50,10 +53,6 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
   void next() {
     _validate();
     emit(PostAdInfoValidationState());
-    if (valid) {
-      String title = titleController.text.trim();
-      String description = descriptionController.text.trim();
-    }
   }
 
   void fetch() async {
@@ -89,6 +88,26 @@ class PostAdInfoCubit extends Cubit<PostAdInfoState> {
 
   void updateSize(NumericResult result) {
     size = result;
+    emit(PostAdInfoUpdateState());
+  }
+
+  void newNote() {
+    notes.add("");
+    emit(PostAdInfoUpdateState());
+  }
+
+  void removeNote(int index) {
+    notes.removeAt(index);
+    emit(PostAdInfoUpdateState());
+  }
+
+  void updateNote(int index, NoteResult result) {
+    notes[index] = result.note;
+    emit(PostAdInfoUpdateState());
+  }
+
+  void reorder(int oldIndex, newIndex) {
+    notes.insert(newIndex, notes.removeAt(oldIndex));
     emit(PostAdInfoUpdateState());
   }
 }
