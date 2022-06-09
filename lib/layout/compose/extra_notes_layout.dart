@@ -1,6 +1,7 @@
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
@@ -108,7 +109,11 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => BlocProvider(
-              create: (context) => AdDetailsBloc.review(repository.toModel()),
+              create: (context) => AdDetailsBloc.review(
+                repository.toModel(
+                  context.read<ProfileBloc>().model,
+                ),
+              ),
               child: AdDetailsLayout(),
             ),
           ),

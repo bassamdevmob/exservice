@@ -43,12 +43,17 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
         this.locator = null,
         this.mode = DisplayMode.review,
         super(AdDetailsAcceptState()) {
+    position = LatLng(
+      double.parse(details.location.latitude),
+      double.parse(details.location.longitude),
+    );
     init();
   }
 
   void init() {
     on((event, emit) async {
       if (event is AdDetailsFetchEvent) {
+        if(mode == DisplayMode.review) return;
         try {
           emit(AdDetailsAwaitState());
           var response = await GetIt.I.get<AdRepository>().view(id);

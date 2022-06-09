@@ -4,7 +4,7 @@ import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
 import 'package:exservice/bloc/post/media_picker_bloc/compose_media_picker_bloc.dart';
 import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/models/entity/location.dart';
-import 'package:exservice/models/response/config_response.dart';
+import 'package:exservice/models/entity/user.dart';
 import 'package:exservice/utils/enums.dart';
 import 'package:exservice/widget/bottom_sheets/numeric_input_bottom_sheet.dart';
 import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
@@ -15,9 +15,8 @@ class CompositionRepository {
   AspectRatioMode _mode;
   List<AssetEntity> _entities;
   Uint8List _thumbnail;
-
-  Config get config => _config;
-  Config _config;
+  String _title;
+  String _description;
   OptionResult _type;
   OptionResult _trade;
   LatLng _location;
@@ -36,7 +35,8 @@ class CompositionRepository {
   }
 
   void setDetails(ComposeDetailsCubit bloc) {
-    _config = bloc.data;
+    _title = bloc.titleController.text.trim();
+    _description = bloc.descriptionController.text.trim();
     _type = bloc.type;
     _trade = bloc.trade;
     _location = bloc.location;
@@ -48,10 +48,14 @@ class CompositionRepository {
     _notes = notes;
   }
 
-  AdModel toModel() {
+  AdModel toModel(User user) {
     return AdModel(
       id: 0,
       views: 3040,
+      title: _title,
+      description: _description,
+      owner: user,
+      media: [],
       status: AdStatus.active.name,
       marked: false,
       createdAt: DateTime.now(),
