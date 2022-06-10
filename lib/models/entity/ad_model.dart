@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:exservice/models/entity/location.dart';
 import 'package:exservice/models/entity/user.dart';
 import 'package:exservice/models/response/config_response.dart';
@@ -36,7 +38,7 @@ class AdModel {
   NumericData price;
   NumericData size;
   List<String> extra;
-  List<Media> media;
+  List<BaseMedia> media;
 
   factory AdModel.fromJson(Map<String, dynamic> json) => AdModel(
     id: json["id"] == null ? null : json["id"],
@@ -75,7 +77,26 @@ class AdModel {
   };
 }
 
-class Media {
+abstract class BaseMedia {
+  Map<String, dynamic> toJson();
+}
+
+class ReviewMedia implements BaseMedia {
+  ReviewMedia({
+    this.id,
+    this.data,
+  });
+
+  int id;
+  Uint8List data;
+
+  @override
+  Map<String, dynamic> toJson() {
+    throw UnimplementedError();
+  }
+}
+
+class Media implements BaseMedia {
   Media({
     this.id,
     this.link,

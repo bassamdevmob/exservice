@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:exservice/models/response/config_response.dart';
 import 'package:exservice/resources/repository/config_repository.dart';
 import 'package:exservice/utils/localized.dart';
@@ -13,17 +14,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 part 'compose_details_state.dart';
 
 class ComposeDetailsCubit extends Cubit<ComposeDetailsState> {
-
+  final CompositionRepository repository;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   Config data;
-
-  LatLng location;
-  OptionResult type;
-  OptionResult trade;
-  NumericResult price;
-  NumericResult size;
-  final List<String> notes = [];
 
   @override
   Future<void> close() {
@@ -48,7 +42,17 @@ class ComposeDetailsCubit extends Cubit<ComposeDetailsState> {
         description.isEmpty ? Localized("field_required") : null;
   }
 
-  ComposeDetailsCubit() : super(ComposeDetailsAwaitState());
+  ComposeDetailsCubit(this.repository) : super(ComposeDetailsAwaitState()) {
+    titleController.text = repository.title;
+    descriptionController.text = repository.description;
+
+    titleController.addListener(() {
+      repository.title = titleController.text.trim();
+    });
+    descriptionController.addListener(() {
+      repository.description = descriptionController.text.trim();
+    });
+  }
 
   void next() {
     _validate();
@@ -67,47 +71,47 @@ class ComposeDetailsCubit extends Cubit<ComposeDetailsState> {
   }
 
   void updateType(OptionResult result) {
-    type = result;
+    repository.type = result;
     emit(ComposeDetailsUpdateState());
   }
 
   void updateTrade(OptionResult result) {
-    trade = result;
+    repository.trade = result;
     emit(ComposeDetailsUpdateState());
   }
 
   void updatePosition(LatLng result) {
-    location = result;
+    repository.location = result;
     emit(ComposeDetailsUpdateState());
   }
 
   void updatePrice(NumericResult result) {
-    price = result;
+    repository.price = result;
     emit(ComposeDetailsUpdateState());
   }
 
   void updateSize(NumericResult result) {
-    size = result;
+    repository.size = result;
     emit(ComposeDetailsUpdateState());
   }
 
   void newNote() {
-    notes.add("");
+    repository.notes.add("");
     emit(ComposeDetailsUpdateState());
   }
 
   void removeNote(int index) {
-    notes.removeAt(index);
+    repository.notes.removeAt(index);
     emit(ComposeDetailsUpdateState());
   }
 
   void updateNote(int index, NoteResult result) {
-    notes[index] = result.note;
+    repository.notes[index] = result.note;
     emit(ComposeDetailsUpdateState());
   }
 
   void reorder(int oldIndex, newIndex) {
-    notes.insert(newIndex, notes.removeAt(oldIndex));
+    repository.notes.insert(newIndex, repository.notes.removeAt(oldIndex));
     emit(ComposeDetailsUpdateState());
   }
 }

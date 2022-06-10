@@ -23,7 +23,7 @@ class AdGallery extends StatelessWidget {
           itemBuilder: (context, index) {
             return OctoImage(
               fit: BoxFit.cover,
-              image: NetworkImage(media[index].link),
+              image: resolveProvider(media[index]),
               progressIndicatorBuilder: (ctx, _) => simpleShimmer,
               errorBuilder: imageErrorBuilder,
             );

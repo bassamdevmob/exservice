@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -21,13 +22,14 @@ class AspectRatioMode {
 
 class ComposeMediaPickerBloc
     extends Bloc<ComposeMediaPickerEvent, ComposeMediaPickerState> {
+  final CompositionRepository repository;
+
   List<AssetEntity> entities;
-  AspectRatioMode mode = AspectRatioMode.square;
   AssetEntity focusedEntity;
 
-  final List<AssetEntity> selectedEntities = [];
-
-  ComposeMediaPickerBloc() : super(ComposeMediaPickerAwaitState()) {
+  ComposeMediaPickerBloc(
+    this.repository,
+  ) : super(ComposeMediaPickerAwaitState()) {
     on<ComposeMediaPickerEvent>((event, emit) async {
       if (event is ComposeMediaPickerFetchEvent) {
         emit(ComposeMediaPickerAwaitState());
@@ -44,17 +46,17 @@ class ComposeMediaPickerBloc
           emit(ComposeMediaPickerDeniedState());
         }
       } else if (event is ComposeMediaPickerSelectEvent) {
-        if (selectedEntities.contains(event.entity)) {
-          selectedEntities.remove(event.entity);
-          if (selectedEntities.isNotEmpty) {
-            focusedEntity = selectedEntities.last;
+        if (repository.entities.contains(event.entity)) {
+          repository.entities.remove(event.entity);
+          if (repository.entities.isNotEmpty) {
+            focusedEntity = repository.entities.last;
           }
         } else {
-          if (selectedEntities.length >= 10) {
+          if (repository.entities.length >= 10) {
             emit(ComposeMediaPickerMaxLimitsErrorState());
             return;
           }
-          selectedEntities.add(event.entity);
+          repository.entities.add(event.entity);
           focusedEntity = event.entity;
         }
         emit(ComposeMediaPickerSelectMediaState());
@@ -62,25 +64,21 @@ class ComposeMediaPickerBloc
         focusedEntity = event.entity;
         emit(ComposeMediaPickerSelectMediaState());
       } else if (event is ComposeMediaPickerDisplayModeEvent) {
-        if (mode == AspectRatioMode.tight)
-          mode = AspectRatioMode.square;
+        if (repository.mode == AspectRatioMode.tight)
+          repository.mode = AspectRatioMode.square;
         else
-          mode = AspectRatioMode.tight;
+          repository.mode = AspectRatioMode.tight;
         emit(ComposeMediaPickerDisplayModeState());
       }
     });
   }
 
-  final _thumbnails = <AssetEntity, Uint8List>{};
-
-  Uint8List get thumbnail => _thumbnails[selectedEntities.first];
-
   Future<Uint8List> get focusedThumbnail => getThumbnail(focusedEntity);
 
   Future<Uint8List> getThumbnail(AssetEntity entity) async {
-    var thumb = _thumbnails[entity];
+    var thumb = repository.thumbnails[entity];
     if (thumb == null) {
-      return _thumbnails[entity] =
+      return repository.thumbnails[entity] =
           await entity.thumbnailDataWithSize(ThumbnailSize.square(400));
     } else {
       return thumb;

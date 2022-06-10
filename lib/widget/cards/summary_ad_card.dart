@@ -92,46 +92,45 @@ class SummaryAdCard extends StatelessWidget {
     );
   }
 
-  Widget getImage(String image) {
+  Widget getImage(BaseMedia image) {
     return OctoImage(
       fit: BoxFit.cover,
-      image: NetworkImage(image),
+      image: resolveProvider(image),
       progressIndicatorBuilder: (context, progress) => simpleShimmer,
       errorBuilder: imageErrorBuilder,
     );
   }
 
   Widget getContent(BuildContext context) {
-    var images = model.media.map((e) => e.link).toList();
-    switch (images.length) {
+    switch (model.media.length) {
       case 0:
         return ColoredBox(
           color: AppColors.blue,
         );
       case 1:
-        return getImage(images[0]);
+        return getImage(model.media[0]);
       case 2:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(child: getImage(images[0])),
+            Expanded(child: getImage(model.media[0])),
             SizedBox(width: 2),
-            Expanded(child: getImage(images[1])),
+            Expanded(child: getImage(model.media[1])),
           ],
         );
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(child: getImage(images[0])),
+            Expanded(child: getImage(model.media[0])),
             SizedBox(height: 2),
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Expanded(child: getImage(images[1])),
+                  Expanded(child: getImage(model.media[1])),
                   SizedBox(width: 2),
-                  Expanded(child: getImage(images[2])),
+                  Expanded(child: getImage(model.media[2])),
                 ],
               ),
             ),

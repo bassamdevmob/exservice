@@ -1,3 +1,4 @@
+import 'package:exservice/models/entity/ad_model.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:exservice/styles/app_colors.dart';
@@ -32,6 +33,16 @@ class BottomSheetStroke extends StatelessWidget {
       ),
     );
   }
+}
+
+ImageProvider resolveProvider(BaseMedia baseMedia){
+  if(baseMedia is Media){
+    return NetworkImage(baseMedia.link);
+  }
+  if(baseMedia is ReviewMedia){
+    return MemoryImage(baseMedia.data);
+  }
+  throw Exception("NOT IMPLEMENTED");
 }
 
 Widget imageErrorBuilder(ctx, error, _) => const ColoredBox(

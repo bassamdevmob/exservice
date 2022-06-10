@@ -47,7 +47,7 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
         buildWhen: (previous, current) => current is ComposeDetailsUpdateState,
         builder: (context, state) {
           return ReorderableListView.builder(
-            itemCount: _bloc.notes.length,
+            itemCount: _bloc.repository.notes.length,
             onReorder: (int oldIndex, int newIndex) {
               _bloc.reorder(oldIndex, newIndex);
             },
@@ -69,7 +69,7 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
                     NoteInputBottomSheet.show(
                       context,
                       initValue: NoteResult(
-                        note: _bloc.notes[index],
+                        note: _bloc.repository.notes[index],
                       ),
                     ).then((value) {
                       if (value != null) {
@@ -78,10 +78,10 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
                     });
                   },
                   title: Text(
-                    _bloc.notes[index].isEmpty
+                    _bloc.repository.notes[index].isEmpty
                         ? "${AppLocalization.of(context).translate("write_caption")}..."
-                        : _bloc.notes[index],
-                    style: _bloc.notes[index].isEmpty
+                        : _bloc.repository.notes[index],
+                    style: _bloc.repository.notes[index].isEmpty
                         ? Theme.of(context).primaryTextTheme.titleMedium
                         : Theme.of(context).primaryTextTheme.bodyMedium,
                   ),
@@ -104,8 +104,7 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
         ),
       ),
       onTap: () {
-        var repository = RepositoryProvider.of<CompositionRepository>(context);
-        repository.setNotes(_bloc.notes);
+        var repository = _bloc.repository;
         Navigator.of(context).push(
           CupertinoPageRoute(
             builder: (context) => BlocProvider(

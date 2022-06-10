@@ -99,7 +99,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
                                 tag: "thumbnail",
                                 child: Center(
                                   child: AspectRatio(
-                                    aspectRatio: _bloc.mode.value,
+                                    aspectRatio: _bloc.repository.mode.value,
                                     child: FutureBuilder<Uint8List>(
                                       future: _bloc.focusedThumbnail,
                                       builder: (context, snapshot) {
@@ -130,7 +130,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
                               child: AnimatedCrossIcon(
                                 startIcon: CupertinoIcons.viewfinder_circle,
                                 endIcon: CupertinoIcons.viewfinder_circle_fill,
-                                value: _bloc.mode == AspectRatioMode.tight,
+                                value: _bloc.repository.mode == AspectRatioMode.tight,
                               ),
                             ),
                           ),
@@ -165,7 +165,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
   }
 
   Widget getImageWidget(AssetEntity entity) {
-    var selected = _bloc.selectedEntities.contains(entity);
+    var selected = _bloc.repository.entities.contains(entity);
     return FutureBuilder<Uint8List>(
       future: _bloc.getThumbnail(entity),
       builder: (context, snapshot) {
@@ -206,7 +206,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
                     child: selected
                         ? Center(
                             child: Text(
-                              "${_bloc.selectedEntities.indexOf(entity) + 1}",
+                              "${_bloc.repository.entities.indexOf(entity) + 1}",
                               style: AppTextStyle.smallWhite,
                             ),
                           )
@@ -234,7 +234,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
               position: BadgePosition.topEnd(top: -12),
               badgeColor: AppColors.blue,
               badgeContent: Text(
-                "${_bloc.selectedEntities.length}",
+                "${_bloc.repository.entities.length}",
                 style: AppTextStyle.smallWhite,
               ),
               child: Text(
@@ -246,22 +246,17 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
         ),
       ),
       onTap: () {
-        if (_bloc.selectedEntities.length < 1) {
+        if (_bloc.repository.entities.length < 1) {
           Fluttertoast.showToast(
             msg: AppLocalization.of(context).translate("min_media"),
           );
           return;
         }
 
-        var repository = RepositoryProvider.of<CompositionRepository>(context);
-        repository.setMedia(_bloc);
         Navigator.of(context).push(CupertinoPageRoute(
-          builder: (context) => RepositoryProvider.value(
-            value: repository,
-            child: BlocProvider(
-              create: (context) => ComposeDetailsCubit(),
-              child: ComposeDetailsLayout(),
-            ),
+          builder: (context) => BlocProvider(
+            create: (context) => ComposeDetailsCubit(_bloc.repository),
+            child: ComposeDetailsLayout(),
           ),
         ));
       },

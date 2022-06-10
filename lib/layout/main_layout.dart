@@ -125,12 +125,11 @@ class _MainLayoutState extends State<MainLayout> {
         onTap: (int i) {
           if (i == 2) {
             Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => RepositoryProvider(
-                create: (context) => CompositionRepository(),
-                child: BlocProvider(
-                  create: (context) => ComposeMediaPickerBloc(),
-                  child: ComposeMediaPickerLayout(),
+              builder: (context) => BlocProvider(
+                create: (context) => ComposeMediaPickerBloc(
+                  CompositionRepository(),
                 ),
+                child: ComposeMediaPickerLayout(),
               ),
             ));
           } else {

@@ -50,6 +50,14 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
       ),
       child: Scaffold(
         appBar: AppBar(),
+        floatingActionButton: _bloc.mode == DisplayMode.review
+            ? FloatingActionButton(
+                child: Icon(Icons.check),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            : null,
         body: BlocConsumer<AdDetailsBloc, AdDetailsState>(
           listener: (context, state) {
             if (state is AdDetailsDeleteErrorState) {
@@ -166,9 +174,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                         itemBuilder: (BuildContext context, index) {
                           return OctoImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              _bloc.details.media[index].link,
-                            ),
+                            image: resolveProvider(_bloc.details.media[index]),
                             progressIndicatorBuilder: (context, _) =>
                                 simpleShimmer,
                             errorBuilder: imageErrorBuilder,

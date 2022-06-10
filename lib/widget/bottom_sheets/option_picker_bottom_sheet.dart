@@ -110,6 +110,7 @@ class _OptionPickerBottomSheetState extends State<OptionPickerBottomSheet> {
         TextField(
           controller: controller,
           keyboardType: TextInputType.text,
+          maxLines: null,
           decoration: InputDecoration(
             labelText: AppLocalization.of(context).translate("note"),
           ),

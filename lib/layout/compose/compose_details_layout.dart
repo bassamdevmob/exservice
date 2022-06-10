@@ -1,4 +1,3 @@
-import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
 import 'package:exservice/layout/compose/extra_notes_layout.dart';
 import 'package:exservice/layout/compose/map_picker_layout.dart';
@@ -64,8 +63,6 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
               ),
             );
           }
-          var repository =
-              RepositoryProvider.of<CompositionRepository>(context);
           return ListView(
             padding: EdgeInsets.only(bottom: Sizer.vs1),
             children: [
@@ -81,13 +78,13 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                         SizedBox(
                           width: Sizer.avatarSizeLarge,
                           child: AspectRatio(
-                            aspectRatio: repository.mode.value,
+                            aspectRatio: _bloc.repository.mode.value,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: Hero(
                                 tag: "thumbnail",
                                 child: Image.memory(
-                                  repository.thumbnail,
+                                  _bloc.repository.thumbnail,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -128,14 +125,14 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                   AppLocalization.of(context).translate("type"),
                 ),
                 subtitle:
-                    _bloc.type == null ? null : Text(_bloc.type.option.text),
+                    _bloc.repository.type == null ? null : Text(_bloc.repository.type.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("type"),
-                    selected: _bloc.type,
+                    selected: _bloc.repository.type,
                     elements: _bloc.data.type,
                   ).then((result) {
                     if (result != null) {
@@ -150,14 +147,14 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                   AppLocalization.of(context).translate("trade"),
                 ),
                 subtitle:
-                    _bloc.trade == null ? null : Text(_bloc.trade.option.text),
+                    _bloc.repository.trade == null ? null : Text(_bloc.repository.trade.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   OptionPickerBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("trade"),
-                    selected: _bloc.trade,
+                    selected: _bloc.repository.trade,
                     elements: _bloc.data.trade,
                   ).then((value) {
                     if (value != null) {
@@ -171,15 +168,15 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("location"),
                 ),
-                subtitle: _bloc.location == null
+                subtitle: _bloc.repository.location == null
                     ? null
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "LAT: ${_bloc.location.latitude.toStringAsFixed(6)}"),
+                              "LAT: ${_bloc.repository.location.latitude.toStringAsFixed(6)}"),
                           Text(
-                              "LNG: ${_bloc.location.longitude.toStringAsFixed(6)}"),
+                              "LNG: ${_bloc.repository.location.longitude.toStringAsFixed(6)}"),
                         ],
                       ),
                 trailing: getTrailing(context),
@@ -203,17 +200,17 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("price"),
                 ),
-                subtitle: _bloc.price == null
+                subtitle: _bloc.repository.price == null
                     ? null
                     : Text(
-                        "${format.format(_bloc.price.value)} ${_bloc.price.unit.value}"),
+                        "${format.format(_bloc.repository.price.value)} ${_bloc.repository.price.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   NumericInputBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("price"),
-                    initValue: _bloc.price,
+                    initValue: _bloc.repository.price,
                     unites: _bloc.data.priceUnit,
                   ).then((value) {
                     if (value != null) {
@@ -227,17 +224,17 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("size"),
                 ),
-                subtitle: _bloc.size == null
+                subtitle: _bloc.repository.size == null
                     ? null
                     : Text(
-                        "${format.format(_bloc.size.value)} ${_bloc.size.unit.value}"),
+                        "${format.format(_bloc.repository.size.value)} ${_bloc.repository.size.unit.value}"),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   NumericInputBottomSheet.show(
                     context,
                     title: AppLocalization.of(context).translate("size"),
-                    initValue: _bloc.size,
+                    initValue: _bloc.repository.size,
                     unites: _bloc.data.sizeUnit,
                   ).then((value) {
                     if (value != null) {
@@ -265,17 +262,11 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
       onTap: () {
         _bloc.next();
         if (_bloc.valid) {
-          var repository =
-              RepositoryProvider.of<CompositionRepository>(context);
-          repository.setDetails(_bloc);
           Navigator.of(context).push(
             CupertinoPageRoute(
-              builder: (context) => RepositoryProvider.value(
-                value: repository,
-                child: BlocProvider.value(
-                  value: _bloc,
-                  child: ExtraNotesLayout(),
-                ),
+              builder: (context) => BlocProvider.value(
+                value: _bloc,
+                child: ExtraNotesLayout(),
               ),
             ),
           );
