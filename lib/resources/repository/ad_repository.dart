@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:exservice/models/request/edit_ad_request.dart';
 import 'package:exservice/models/response/ad_details_response.dart';
 import 'package:exservice/models/response/ads_response.dart';
@@ -88,12 +89,19 @@ class AdRepository extends BaseClient {
   }
 
   Future<PaymentResponse> pay(int days) async {
-    final response = await client.post(
-      Links.PAY_URL,
-      data: {
-        "days": days,
-      }
-    );
+    final response = await client.post(Links.PAY_URL, data: {
+      "days": days,
+    });
     return PaymentResponse.fromJson(response.data);
+  }
+
+  Future<ProfileResponse> upload() async {
+    var formData = FormData();
+    // formData.files.add(MapEntry("key", MultipartFile.fromFile(filePath)));
+    final response = await client.post(
+      Links.AD_URL,
+      data: formData,
+    );
+    return ProfileResponse.fromJson(response.data);
   }
 }

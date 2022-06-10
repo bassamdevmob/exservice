@@ -42,6 +42,9 @@ class WelcomeLayout extends StatelessWidget {
                 Navigator.of(context).pushAndRemoveUntil(
                   CupertinoPageRoute(
                     builder: (context) => MainLayout(),
+                    settings: RouteSettings(
+                      name: MainLayout.route,
+                    )
                   ),
                   (route) => false,
                 );

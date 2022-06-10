@@ -1,7 +1,10 @@
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
+import 'package:exservice/bloc/upload_manger_bloc/upload_manager_bloc.dart';
 import 'package:exservice/layout/ad_details_layout.dart';
+import 'package:exservice/layout/main_layout.dart';
+import 'package:exservice/layout/upload/upload_manager_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/styles/app_text_style.dart';
@@ -102,9 +105,9 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
           style: AppTextStyle.largeBlue,
         ),
       ),
-      onTap: () {
+      onTap: () async {
         var repository = _bloc.repository;
-        Navigator.of(context).push(
+        var result = await Navigator.of(context).push<bool>(
           CupertinoPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => AdDetailsBloc.review(
@@ -116,6 +119,17 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
             ),
           ),
         );
+        if (result == true) {
+          context
+              .read<UploadManagerBloc>()
+              .add(UploadManagerInsertEvent(repository));
+          Navigator.of(context).pushAndRemoveUntil(
+            CupertinoPageRoute(builder: (context) {
+              return UploadManagerLayout();
+            }),
+            ModalRoute.withName(MainLayout.route),
+          );
+        }
         // Navigator.of(context).push(
         //   CupertinoPageRoute(
         //     builder: (context) => BlocProvider(

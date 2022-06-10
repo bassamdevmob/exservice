@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
+import 'package:exservice/bloc/upload_manger_bloc/upload_manager_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
@@ -45,6 +46,7 @@ void main() async {
     runApp(
       MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => UploadManagerBloc()),
           BlocProvider(create: (context) => ApplicationCubit()),
           BlocProvider(create: (context) => ProfileBloc()),
         ],
@@ -66,7 +68,10 @@ class AppMaterial extends StatelessWidget {
           key: ApplicationCubit.key,
           navigatorKey: navigatorKey,
           title: ApplicationCubit.info.appName,
-          home: MainLayout(),
+          initialRoute: MainLayout.route,
+          routes: {
+            MainLayout.route: (context) => MainLayout(),
+          },
           themeMode: DataStore.instance.isDarkModeEnabled
               ? ThemeMode.dark
               : ThemeMode.light,

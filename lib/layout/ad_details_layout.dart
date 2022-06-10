@@ -54,7 +54,7 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
             ? FloatingActionButton(
                 child: Icon(Icons.check),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                 },
               )
             : null,
