@@ -11,6 +11,7 @@ import 'package:exservice/widget/bottom_sheets/option_picker_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -40,8 +41,23 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
           ),
         ],
       ),
-      body: BlocBuilder<ComposeDetailsCubit, ComposeDetailsState>(
+      body: BlocConsumer<ComposeDetailsCubit, ComposeDetailsState>(
+        listener: (context, state) {
+          if (state is ComposeDetailsValidationErrorState) {
+            Fluttertoast.showToast(msg: state.message.toString());
+          } else if (state is ComposeDetailsNextState) {
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: _bloc,
+                  child: ExtraNotesLayout(),
+                ),
+              ),
+            );
+          }
+        },
         buildWhen: (previous, current) =>
+            current is ComposeDetailsNextState ||
             current is ComposeDetailsValidationState ||
             current is ComposeDetailsAwaitState ||
             current is ComposeDetailsAcceptState ||
@@ -124,8 +140,9 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("type"),
                 ),
-                subtitle:
-                    _bloc.repository.type == null ? null : Text(_bloc.repository.type.option.text),
+                subtitle: _bloc.repository.type == null
+                    ? null
+                    : Text(_bloc.repository.type.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
@@ -146,8 +163,9 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
                 title: Text(
                   AppLocalization.of(context).translate("trade"),
                 ),
-                subtitle:
-                    _bloc.repository.trade == null ? null : Text(_bloc.repository.trade.option.text),
+                subtitle: _bloc.repository.trade == null
+                    ? null
+                    : Text(_bloc.repository.trade.option.text),
                 trailing: getTrailing(context),
                 onTap: () {
                   FocusScope.of(context).unfocus();
@@ -261,16 +279,6 @@ class _ComposeDetailsLayoutState extends State<ComposeDetailsLayout> {
       ),
       onTap: () {
         _bloc.next();
-        if (_bloc.valid) {
-          Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) => BlocProvider.value(
-                value: _bloc,
-                child: ExtraNotesLayout(),
-              ),
-            ),
-          );
-        }
       },
     );
   }

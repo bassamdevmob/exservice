@@ -4,7 +4,9 @@ part of 'upload_manager_bloc.dart';
 abstract class UploadManagerEvent {}
 
 class UploadManagerInsertEvent implements UploadManagerEvent {
-  final CompositionRepository repository;
+  final CompositionRepository model;
 
-  UploadManagerInsertEvent(this.repository);
+  UploadManagerInsertEvent(this.model);
 }
+
+class UploadManagerPopEvent implements UploadManagerEvent {}

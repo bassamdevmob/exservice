@@ -139,5 +139,11 @@
   "amount": "Amount",
   "location_disabled": "Location services are disabled.",
   "location_denied": "Location permissions are denied.",
-  "size": "Size"
+  "size": "Size",
+  "type_required": "Property type required",
+  "trade_required": "Trade type required",
+  "location_required": "Location required",
+  "size_required": "Size required",
+  "uploads": "Uploads",
+  "price_required": "Price required"
 }

@@ -139,5 +139,11 @@
   "amount": "الكمية",
   "location_disabled": "الموقع معطل.",
   "location_denied": "إذن الوصول الى الموقع مرفوض.",
-  "size": "المساحة"
+  "size": "المساحة",
+  "type_required": "نوع العقار مطلوب",
+  "trade_required": "نوع المقايضة مطلوب",
+  "location_required": "الموقع مطلوب",
+  "size_required": "المساحة مطلوبة",
+  "uploads": "التحميلات",
+  "price_required": "السعر مطلوب"
 }

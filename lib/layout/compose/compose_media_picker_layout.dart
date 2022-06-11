@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
-import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:exservice/bloc/post/info_bloc/compose_details_cubit.dart';
 import 'package:exservice/bloc/post/media_picker_bloc/compose_media_picker_bloc.dart';
 import 'package:exservice/layout/compose/compose_details_layout.dart';
@@ -53,7 +52,7 @@ class _ComposeMediaPickerLayoutState extends State<ComposeMediaPickerLayout> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            AppLocalization.of(context).translate('compose'),
+            AppLocalization.of(context).translate('post'),
           ),
           actions: [
             Center(

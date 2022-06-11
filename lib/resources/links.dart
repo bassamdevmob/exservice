@@ -26,6 +26,7 @@ class Links {
   ///user ads
   static const HOME_URL = "ad/home";
   static const AD_URL = "ad";
+  static const MEDIA_AD_URL = "ad/media";
   static const USER_AD_URL = "user/ad";
   static const CHANGE_AD_URL = "ad/status";
   static const BOOKMARK_AD_URL = "ad/bookmark";

@@ -7,6 +7,14 @@ class ComposeDetailsUpdateState extends ComposeDetailsState {}
 
 class ComposeDetailsValidationState extends ComposeDetailsState {}
 
+class ComposeDetailsValidationErrorState extends ComposeDetailsState {
+  final Localized message;
+
+  ComposeDetailsValidationErrorState(this.message);
+}
+
+class ComposeDetailsNextState extends ComposeDetailsState {}
+
 class ComposeDetailsAwaitState extends ComposeDetailsState {}
 
 class ComposeDetailsAcceptState extends ComposeDetailsState {}

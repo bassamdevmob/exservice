@@ -57,6 +57,21 @@ class ComposeDetailsCubit extends Cubit<ComposeDetailsState> {
   void next() {
     _validate();
     emit(ComposeDetailsValidationState());
+    if (valid) {
+      if (repository.type == null) {
+        emit(ComposeDetailsValidationErrorState(Localized("type_required")));
+      } else if (repository.trade == null) {
+        emit(ComposeDetailsValidationErrorState(Localized("trade_required")));
+      } else if (repository.location == null) {
+        emit(ComposeDetailsValidationErrorState(Localized("location_required")));
+      } else if (repository.size == null) {
+        emit(ComposeDetailsValidationErrorState(Localized("size_required")));
+      } else if (repository.price == null) {
+        emit(ComposeDetailsValidationErrorState(Localized("price_required")));
+      } else {
+        emit(ComposeDetailsNextState());
+      }
+    }
   }
 
   void fetch() async {

@@ -68,4 +68,32 @@ class CompositionRepository {
       extra: notes,
     );
   }
+
+
+  Map<String, dynamic> toJson() => {
+    "title": title,
+    "description": description,
+    "location": location.toJson(),
+    "type": OptionData(
+      text: type.option.text,
+      value: type.option.value,
+      note: type.note,
+    ).toJson(),
+    "trade": OptionData(
+      text: trade.option.text,
+      value: trade.option.value,
+      note: trade.note,
+    ).toJson(),
+    "price": NumericData(
+      unit: price.unit,
+      value: price.value,
+      note: price.note,
+    ).toJson(),
+    "size": NumericData(
+      unit: size.unit,
+      value: size.value,
+      note: size.note,
+    ).toJson(),
+    "extra": List<dynamic>.from(notes.map((x) => x)),
+  };
 }

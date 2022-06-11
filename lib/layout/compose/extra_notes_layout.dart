@@ -130,14 +130,6 @@ class _ExtraNotesLayoutState extends State<ExtraNotesLayout> {
             ModalRoute.withName(MainLayout.route),
           );
         }
-        // Navigator.of(context).push(
-        //   CupertinoPageRoute(
-        //     builder: (context) => BlocProvider(
-        //       create: (context) => ManagePaymentCubit(),
-        //       child: ManagePaymentLayout(),
-        //     ),
-        //   ),
-        // );
       },
     );
   }

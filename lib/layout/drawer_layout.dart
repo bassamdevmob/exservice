@@ -9,6 +9,7 @@ import 'package:exservice/layout/app/contact_us_layout.dart';
 import 'package:exservice/layout/app/info_layout.dart';
 import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/app/change_language_layout.dart';
+import 'package:exservice/layout/upload/upload_manager_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
@@ -196,6 +197,22 @@ class DrawerLayout extends StatelessWidget {
                 ));
               },
             ),
+            if (isAuthenticated)
+              ListTile(
+                leading: Icon(
+                  Icons.upload_outlined,
+                  size: Sizer.iconSizeLarge,
+                ),
+                title: Text(
+                  AppLocalization.of(context).translate("uploads"),
+                ),
+                trailing: getTrailing(context),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => UploadManagerLayout(),
+                  ));
+                },
+              ),
             if (isAuthenticated)
               ListTile(
                 leading: Icon(
