@@ -9,7 +9,11 @@ class LoginValidationState extends LoginState {}
 
 class LoginAwaitState extends LoginState {}
 
-class LoginAcceptState extends LoginState {}
+class LoginAcceptState extends LoginState {
+  final AuthModel model;
+
+  LoginAcceptState(this.model);
+}
 
 class LoginSecurePasswordState extends LoginState {}
 

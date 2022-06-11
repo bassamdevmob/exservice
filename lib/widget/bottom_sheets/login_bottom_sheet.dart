@@ -1,40 +1,23 @@
+import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
+import 'package:exservice/layout/auth/login_layout.dart';
+import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:exservice/utils/sizer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ActionBottomSheet extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String confirmText;
-  final VoidCallback onTap;
+class LoginBottomSheet extends StatelessWidget {
+  const LoginBottomSheet({Key key}) : super(key: key);
 
-  const ActionBottomSheet({
-    Key key,
-    this.title,
-    this.subtitle,
-    this.confirmText,
-    this.onTap,
-  }) : super(key: key);
-
-  static Future<T> show<T>(
-    BuildContext context, {
-    String title,
-    String subtitle,
-    String confirmText,
-    VoidCallback onTap,
-  }) {
+  static Future<T> show<T>(BuildContext context) {
     return showModalBottomSheet<T>(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: Sizer.bottomSheetBorderRadius,
       ),
       builder: (context) {
-        return ActionBottomSheet(
-          title: title,
-          subtitle: subtitle,
-          confirmText: confirmText,
-          onTap: onTap,
-        );
+        return LoginBottomSheet();
       },
     );
   }
@@ -50,13 +33,13 @@ class ActionBottomSheet extends StatelessWidget {
           const Center(child: BottomSheetStroke()),
           SizedBox(height: Sizer.vs2),
           Text(
-            title,
+            AppLocalization.of(context).translate("need_login"),
             textAlign: TextAlign.start,
             style: Theme.of(context).primaryTextTheme.bodyLarge,
           ),
           const SizedBox(height: 8),
           Text(
-            subtitle,
+            AppLocalization.of(context).translate("need_login_desc"),
             textAlign: TextAlign.start,
             style: Theme.of(context).primaryTextTheme.labelMedium,
           ),
@@ -64,8 +47,19 @@ class ActionBottomSheet extends StatelessWidget {
           Align(
             alignment: AlignmentDirectional.centerEnd,
             child: ElevatedButton(
-              onPressed: onTap,
-              child: Text(confirmText),
+              onPressed: () {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => LoginBloc(),
+                      child: LoginLayout(),
+                    ),
+                  ),
+                );
+              },
+              child: Text(
+                AppLocalization.of(context).translate("next"),
+              ),
             ),
           ),
         ],

@@ -26,9 +26,10 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
   LatLng position;
   DisplayMode mode;
 
-  bool get isOwned => mode == DisplayMode.normal
-      ? locator<ProfileBloc>().model.id == details.id
-      : false;
+  bool get isOwned =>
+      mode == DisplayMode.normal &&
+      locator<ProfileBloc>().isAuthenticated &&
+      locator<ProfileBloc>().model.id == details.owner.id;
 
   AdDetailsBloc(
     this.id, {
@@ -53,7 +54,7 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
   void init() {
     on((event, emit) async {
       if (event is AdDetailsFetchEvent) {
-        if(mode == DisplayMode.review) return;
+        if (mode == DisplayMode.review) return;
         try {
           emit(AdDetailsAwaitState());
           var response = await GetIt.I.get<AdRepository>().view(id);

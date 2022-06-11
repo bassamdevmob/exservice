@@ -1,6 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:exservice/bloc/ad_details_bloc/ad_details_bloc.dart';
 import 'package:exservice/bloc/edit_ad_bloc/edit_ad_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/layout/edit_ad_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
@@ -207,7 +208,10 @@ class _AdDetailsLayoutState extends State<AdDetailsLayout> {
                           Expanded(
                             child: AdDetails(_bloc.details),
                           ),
-                          if (!_bloc.isOwned) getBookmarkButton(),
+                          if (context.read<ProfileBloc>().isAuthenticated &&
+                              context.read<ProfileBloc>().model.id !=
+                                  _bloc.details.owner.id)
+                            getBookmarkButton(),
                         ],
                       ),
                       SizedBox(

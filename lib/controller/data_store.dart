@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:exservice/models/entity/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class DataStore {
@@ -9,7 +11,7 @@ class DataStore {
   static const THEME = "theme";
   static const LANG = "lang";
   static const TOKEN = "token";
-  static const SUBSCRIBER = "subscriber";
+  static const USER = "user";
   static const FCM_TOKEN = "fcm_token";
   static const DEFAULT_BOX = "kiosk_box";
 
@@ -46,8 +48,17 @@ class DataStore {
 
   Future<void> setToken(String value) => box.put(TOKEN, value);
 
-  Future<void> deleteCertificates() =>
-      box.deleteAll({TOKEN, SUBSCRIBER, FCM_TOKEN});
+  Future<void> deleteCertificates() => box.deleteAll({TOKEN, USER, FCM_TOKEN});
 
   Future<void> switchTheme() => box.put(THEME, !isDarkModeEnabled);
+
+  User get user {
+    var subscriber = box.get(USER);
+    if (subscriber == null) return null;
+    return User.fromJson(json.decode(subscriber));
+  }
+
+  Future<void> setUser(User value) {
+    return box.put(USER, json.encode(value.toJson()));
+  }
 }

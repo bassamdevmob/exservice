@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/models/response/auth_response.dart';
 import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
 import 'package:exservice/utils/localized.dart';
@@ -55,8 +56,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   account,
                   password,
                 );
-            DataStore.instance.setToken(response.data.token);
-            emit(LoginAcceptState());
+            emit(LoginAcceptState(response.data));
           } on DioError catch (ex) {
             var error = ex.error;
             if (error is ValidationException) {

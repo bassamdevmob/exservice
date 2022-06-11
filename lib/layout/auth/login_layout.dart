@@ -1,6 +1,8 @@
 import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:exservice/bloc/auth/login_bloc/login_bloc.dart';
+import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
+import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/auth/Intro_layout.dart';
 import 'package:exservice/layout/auth/forgot_password_layout.dart';
 import 'package:exservice/layout/auth/welcome_layout.dart';
@@ -26,7 +28,7 @@ class _LoginLayoutState extends State<LoginLayout> {
 
   @override
   void initState() {
-    _bloc = BlocProvider.of<LoginBloc>(context);
+    _bloc = context.read<LoginBloc>();
     super.initState();
   }
 
@@ -37,6 +39,8 @@ class _LoginLayoutState extends State<LoginLayout> {
           current is LoginAcceptState || current is LoginErrorState,
       listener: (context, state) {
         if (state is LoginAcceptState) {
+          DataStore.instance.setToken(state.model.token);
+          context.read<ProfileBloc>().model = state.model.user;
           Navigator.of(context).pushReplacement(
             CupertinoPageRoute(
               builder: (context) => WelcomeLayout(),
@@ -159,7 +163,8 @@ class _LoginLayoutState extends State<LoginLayout> {
           child: TextField(
             controller: _bloc.accountController,
             decoration: InputDecoration(
-              hintText: AppLocalization.of(context).translate("email_phone_number"),
+              hintText:
+                  AppLocalization.of(context).translate("email_phone_number"),
               errorText: _bloc.accountErrorMessage?.toString(),
             ),
           ),

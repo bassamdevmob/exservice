@@ -5,6 +5,7 @@ import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
+import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/messenger_layout.dart';
 import 'package:exservice/layout/compose/compose_media_picker_layout.dart';
@@ -49,29 +50,25 @@ class _MainLayoutState extends State<MainLayout> {
   int _index = 0;
 
   @override
-  void initState() {
-    context.read<ProfileBloc>().add(ProfileFetchEvent());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          splashRadius: 25,
-          icon: Icon(CupertinoIcons.chat_bubble_text),
-          onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => ChatsListBloc(),
-                  child: MessengerLayout(),
-                ),
+        leading: !DataStore.instance.hasToken
+            ? null
+            : IconButton(
+                splashRadius: 25,
+                icon: Icon(CupertinoIcons.chat_bubble_text),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => ChatsListBloc(),
+                        child: MessengerLayout(),
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
         centerTitle: true,
         title: Image.asset(
           "assets/images/app_icon.png",
@@ -93,54 +90,56 @@ class _MainLayoutState extends State<MainLayout> {
         ],
       ),
       body: _views[_index],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.white,
-        selectedItemColor: AppColors.blue,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined, color: AppColors.gray),
-            activeIcon: Icon(Icons.home, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline, color: AppColors.gray),
-            activeIcon: Icon(Icons.bookmark, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('marks'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add, color: AppColors.gray),
-            activeIcon: Icon(Icons.add, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('post'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outline, color: AppColors.gray),
-            activeIcon: Icon(Icons.mail, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('notifications'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline, color: AppColors.gray),
-            activeIcon: Icon(Icons.person, color: AppColors.blue),
-            label: AppLocalization.of(context).translate('account'),
-          ),
-        ],
-        currentIndex: _index,
-        onTap: (int i) {
-          if (i == 2) {
-            Navigator.of(context).push(CupertinoPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) => ComposeMediaPickerBloc(
-                  CompositionRepository(),
+      bottomNavigationBar: !DataStore.instance.hasToken
+          ? null
+          : BottomNavigationBar(
+              backgroundColor: AppColors.white,
+              selectedItemColor: AppColors.blue,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined, color: AppColors.gray),
+                  activeIcon: Icon(Icons.home, color: AppColors.blue),
+                  label: AppLocalization.of(context).translate('home'),
                 ),
-                child: ComposeMediaPickerLayout(),
-              ),
-            ));
-          } else {
-            setState(() {
-              _index = i;
-            });
-          }
-        },
-      ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.bookmark_outline, color: AppColors.gray),
+                  activeIcon: Icon(Icons.bookmark, color: AppColors.blue),
+                  label: AppLocalization.of(context).translate('marks'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add, color: AppColors.gray),
+                  activeIcon: Icon(Icons.add, color: AppColors.blue),
+                  label: AppLocalization.of(context).translate('post'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.mail_outline, color: AppColors.gray),
+                  activeIcon: Icon(Icons.mail, color: AppColors.blue),
+                  label: AppLocalization.of(context).translate('notifications'),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline, color: AppColors.gray),
+                  activeIcon: Icon(Icons.person, color: AppColors.blue),
+                  label: AppLocalization.of(context).translate('account'),
+                ),
+              ],
+              currentIndex: _index,
+              onTap: (int i) {
+                if (i == 2) {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => ComposeMediaPickerBloc(
+                        CompositionRepository(),
+                      ),
+                      child: ComposeMediaPickerLayout(),
+                    ),
+                  ));
+                } else {
+                  setState(() {
+                    _index = i;
+                  });
+                }
+              },
+            ),
     );
   }
 }

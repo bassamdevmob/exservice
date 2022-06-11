@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:exservice/controller/data_store.dart';
@@ -15,16 +13,15 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final ScrollController scrollController = ScrollController();
+  User _model;
 
-  User model;
+  User get model => _model;
 
   bool get isAuthenticated => DataStore.instance.hasToken;
 
-  @override
-  Future<void> close() {
-    scrollController.dispose();
-    return super.close();
+  set model(User value) {
+    User subscriber = value;
+    DataStore.instance.setUser(_model = subscriber);
   }
 
   ProfileBloc() : super(ProfileAwaitState()) {
@@ -43,28 +40,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileRefreshState());
       } else if (event is ProfileRefreshEvent) {
         emit(ProfileRefreshState());
-      } else if (event is ProfileUploadVideoEvent) {
-        // emit(ProfileAwaitVideoUploadState());
-        // try {
-        //   final res = await GetIt.I
-        //       .get<ApiProviderDelegate>()
-        //       .fetchUpdateUserPicture(video: event.path);
-        //   profile.user.profileVideo = res.videoPath;
-        //   emit(ProfileVideoState());
-        // } catch (e) {
-        //   emit(ProfileErrorVideoUploadState("$e"));
-        // }
-      } else if (event is ProfileChangeProfileImageEvent) {
-        // emit(ProfileAwaitImageUploadState());
-        // try {
-        //   final res = await GetIt.I
-        //       .get<ApiProviderDelegate>()
-        //       .fetchUpdateUserPicture(image: event.path);
-        //   profile.user.profilePicture = res.imagePath;
-        //   emit(ProfileImageState());
-        // } catch (e) {
-        //   emit(ProfileErrorImageUploadState("$e"));
-        // }
       } else if (event is ProfileLogoutEvent) {
         try {
           emit(ProfileLogoutAwaitState());
@@ -82,5 +57,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       }
     });
+
+    _model = DataStore.instance.user;
+    if (DataStore.instance.hasToken) {
+      add(ProfileFetchEvent());
+    }
   }
 }

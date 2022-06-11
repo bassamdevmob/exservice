@@ -117,32 +117,23 @@ class _AdCardState extends State<AdCard> {
           },
           child: AdGallery(widget.model),
         ),
-        Builder(builder: (context) {
-          if (BlocProvider.of<ProfileBloc>(context).model.id ==
-              widget.model.owner.id) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: Sizer.vs3,
+            horizontal: Sizer.vs3,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: AdDetails(widget.model),
               ),
-              child: AdDetails(widget.model),
-            );
-          }
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: Sizer.vs3,
-              horizontal: Sizer.vs3,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  child: AdDetails(widget.model),
-                ),
+              if (context.read<ProfileBloc>().isAuthenticated &&
+                  context.read<ProfileBloc>().model.id != widget.model.owner.id)
                 getBookmarkButton(),
-              ],
-            ),
-          );
-        }),
+            ],
+          ),
+        ),
         Divider(color: AppColors.deepGray),
       ],
     );

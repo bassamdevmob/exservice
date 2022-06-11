@@ -11,6 +11,7 @@ import 'package:exservice/widget/application/ad_details.dart';
 import 'package:exservice/widget/application/ad_media.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
+import 'package:exservice/widget/bottom_sheets/login_bottom_sheet.dart';
 import 'package:exservice/widget/cards/ad_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -174,13 +175,12 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                   ),
                 ),
                 BlocBuilder<PublisherCubit, PublisherState>(
-                  buildWhen: (_, current) =>
-                      current is PublisherAdsAcceptState,
+                  buildWhen: (_, current) => current is PublisherAdsAcceptState,
                   builder: (context, state) {
-                    if(state is PublisherAdsAcceptState){
+                    if (state is PublisherAdsAcceptState) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(
-                              (context, index) {
+                          (context, index) {
                             var model = _bloc.ads[index];
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,17 +358,21 @@ class _PublisherLayoutState extends State<PublisherLayout> {
             AppLocalization.of(context).translate("chat"),
           ),
           onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => ChatBloc(
-                    BlocProvider.of<ProfileBloc>(context).model,
-                    _bloc.model,
+            if (context.read<ProfileBloc>().isAuthenticated) {
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (context) => ChatBloc(
+                      BlocProvider.of<ProfileBloc>(context).model,
+                      _bloc.model,
+                    ),
+                    child: ChatLayout(),
                   ),
-                  child: ChatLayout(),
                 ),
-              ),
-            );
+              );
+            } else {
+              LoginBottomSheet.show(context);
+            }
           },
         ),
         if (_bloc.model.email != null)

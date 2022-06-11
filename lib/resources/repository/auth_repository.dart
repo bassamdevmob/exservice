@@ -28,7 +28,7 @@ class AuthRepository extends BaseClient {
 
 
   Future<SimpleResponse> logout() async {
-    final response = await client.get(Links.LOGOUT_URL);
+    final response = await client.post(Links.LOGOUT_URL);
     return SimpleResponse.fromJson(response.data);
   }
 

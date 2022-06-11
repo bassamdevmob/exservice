@@ -14,7 +14,7 @@ import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
-import 'package:exservice/widget/bottom_sheets/action_bottom_sheet.dart';
+import 'package:exservice/widget/bottom_sheets/logout_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +28,6 @@ class DrawerLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _bloc = BlocProvider.of<ProfileBloc>(context);
-    var isAuthenticated = _bloc.isAuthenticated;
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state is ProfileLogoutAwaitState) {
@@ -49,7 +47,7 @@ class DrawerLayout extends StatelessWidget {
         appBar: AppBar(),
         body: ListView(
           children: [
-            if (!isAuthenticated)
+            if (!context.read<ProfileBloc>().isAuthenticated)
               ListTile(
                 leading: Icon(
                   Icons.person_outline,
@@ -197,7 +195,7 @@ class DrawerLayout extends StatelessWidget {
                 ));
               },
             ),
-            if (isAuthenticated)
+            if (context.read<ProfileBloc>().isAuthenticated)
               ListTile(
                 leading: Icon(
                   Icons.upload_outlined,
@@ -213,7 +211,7 @@ class DrawerLayout extends StatelessWidget {
                   ));
                 },
               ),
-            if (isAuthenticated)
+            if (context.read<ProfileBloc>().isAuthenticated)
               ListTile(
                 leading: Icon(
                   Icons.settings_outlined,
@@ -243,7 +241,7 @@ class DrawerLayout extends StatelessWidget {
               trailing: getTrailing(context),
               onTap: () {},
             ),
-            if (isAuthenticated)
+            if (context.read<ProfileBloc>().isAuthenticated)
               ListTile(
                 leading: Icon(
                   Icons.logout_outlined,
@@ -253,17 +251,7 @@ class DrawerLayout extends StatelessWidget {
                   AppLocalization.of(context).translate("logout"),
                 ),
                 onTap: () {
-                  ActionBottomSheet.show(
-                    context,
-                    title: AppLocalization.of(context).translate("logout"),
-                    subtitle:
-                        AppLocalization.of(context).translate("logout_desc"),
-                    confirmText:
-                        AppLocalization.of(context).translate("logout"),
-                    onTap: () {
-                      _bloc.add(ProfileLogoutEvent());
-                    },
-                  );
+                  LogoutBottomSheet.show(context);
                 },
               ),
           ],
