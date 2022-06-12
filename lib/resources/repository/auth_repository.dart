@@ -7,11 +7,11 @@ import 'package:exservice/resources/api_client.dart';
 import 'package:exservice/resources/links.dart';
 
 class AuthRepository extends BaseClient {
-  Future<AuthResponse> login(String account, String password) async {
+  Future<AuthResponse> login(String username, String password) async {
     final response = await client.post(
       Links.LOGIN_URL,
       data: {
-        "account": account,
+        "username": username,
         "password": password,
       },
     );

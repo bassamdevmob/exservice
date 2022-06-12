@@ -161,11 +161,11 @@ class _LoginLayoutState extends State<LoginLayout> {
         return Directionality(
           textDirection: TextDirection.ltr,
           child: TextField(
-            controller: _bloc.accountController,
+            controller: _bloc.usernameController,
             decoration: InputDecoration(
               hintText:
-                  AppLocalization.of(context).translate("email_phone_number"),
-              errorText: _bloc.accountErrorMessage?.toString(),
+                  AppLocalization.of(context).translate("username"),
+              errorText: _bloc.usernameErrorMessage?.toString(),
             ),
           ),
         );

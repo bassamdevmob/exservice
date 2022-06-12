@@ -15,28 +15,28 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final accountController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool obscurePassword = true;
 
-  Localized accountErrorMessage;
+  Localized usernameErrorMessage;
   Localized passwordErrorMessage;
 
   @override
   Future<void> close() {
-    accountController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     return super.close();
   }
 
-  bool get valid => accountErrorMessage == null && passwordErrorMessage == null;
+  bool get valid => usernameErrorMessage == null && passwordErrorMessage == null;
 
   void _validate() {
-    String account = accountController.text.trim();
+    String account = usernameController.text.trim();
     String password = passwordController.text.trim();
 
-    accountErrorMessage = account.isEmpty ? Localized("field_required") : null;
+    usernameErrorMessage = account.isEmpty ? Localized("field_required") : null;
 
     passwordErrorMessage =
         password.isEmpty ? Localized("field_required") : null;
@@ -50,17 +50,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (valid) {
           emit(LoginAwaitState());
           try {
-            var account = accountController.text.trim();
+            var username = usernameController.text.trim();
             var password = passwordController.text.trim();
             var response = await GetIt.I.get<AuthRepository>().login(
-                  account,
+                  username,
                   password,
                 );
             emit(LoginAcceptState(response.data));
           } on DioError catch (ex) {
             var error = ex.error;
             if (error is ValidationException) {
-              accountErrorMessage = error.errors['account'];
+              usernameErrorMessage = error.errors['account'];
               passwordErrorMessage = error.errors['password'];
               emit(LoginValidationState());
             } else {
