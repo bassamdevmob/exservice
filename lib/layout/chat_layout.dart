@@ -25,6 +25,7 @@ class _ChatLayoutState extends State<ChatLayout> {
   @override
   void initState() {
     _bloc = BlocProvider.of<ChatBloc>(context);
+    _bloc.add(ChatInitEvent());
     super.initState();
   }
 
@@ -40,13 +41,13 @@ class _ChatLayoutState extends State<ChatLayout> {
                 height: Sizer.avatarSizeSmall,
                 width: Sizer.avatarSizeSmall,
                 fit: BoxFit.cover,
-                image: NetworkImage(_bloc.chatter.profilePicture),
+                image: NetworkImage(_bloc.peer.profilePicture),
                 progressIndicatorBuilder: (context, _) => simpleShimmer,
                 errorBuilder: (context, e, _) => Container(
                   color: AppColors.white,
                   child: Center(
                     child: Text(
-                      _bloc.chatter.username.camelCase,
+                      _bloc.peer.username.camelCase,
                       style: AppTextStyle.xxLargeBlack,
                     ),
                   ),
@@ -55,7 +56,7 @@ class _ChatLayoutState extends State<ChatLayout> {
             ),
             SizedBox(width: 10),
             Text(
-              _bloc.chatter.username,
+              _bloc.peer.username,
               maxLines: 1,
               style: Theme.of(context).primaryTextTheme.titleLarge,
             ),
@@ -65,61 +66,64 @@ class _ChatLayoutState extends State<ChatLayout> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: StreamBuilder<List<Message>>(
-              stream: _bloc.chatStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
+            child: BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                if (state is ChatErrorState) {
                   return Center(
-                    child: Text(snapshot.error.toString()),
+                    child: Text(state.error.toString()),
                   );
                 }
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CupertinoActivityIndicator(),
-                  );
-                }
-                final messages = snapshot.data;
-                return ListView.builder(
-                  reverse: true,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    BubbleNip bubbleNip;
-                    final isNotFirst = index < messages.length - 1 &&
-                        messages[index].senderId ==
-                            messages[index + 1].senderId;
-                    var owned = messages[index].senderId == _bloc.user.id;
-                    if (isNotFirst) {
-                      bubbleNip = BubbleNip.no;
-                    } else if (owned) {
-                      bubbleNip = BubbleNip.rightTop;
-                    } else {
-                      bubbleNip = BubbleNip.leftTop;
-                    }
-                    var startPadding = 10.0;
-                    return Padding(
-                      padding: EdgeInsetsDirectional.only(
-                        top: isNotFirst ? 3 : startPadding,
-                        bottom: 2,
-                        start: owned ? Sizer.hs1 : (isNotFirst ? startPadding: 0),
-                        end: owned ? (isNotFirst ? startPadding: 0) : Sizer.hs1,
-                      ),
-                      child: Align(
-                        alignment: getAlignment(messages[index].senderId),
-                        child: Bubble(
-                          nipHeight: 12,
-                          nipWidth: startPadding,
-                          radius: Radius.circular(15),
-                          color: getColor(messages[index].senderId),
-                          nip: bubbleNip,
-                          padding: BubbleEdges.symmetric(
-                            horizontal: Sizer.vs3,
-                          ),
-                          child: getMessage(messages[index]),
+                if (state is ChatAcceptState) {
+                  final messages = state.messages;
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      BubbleNip bubbleNip;
+                      final isNotFirst = index < messages.length - 1 &&
+                          messages[index].senderId ==
+                              messages[index + 1].senderId;
+                      var owned = messages[index].senderId == _bloc.me.id;
+                      if (isNotFirst) {
+                        bubbleNip = BubbleNip.no;
+                      } else if (owned) {
+                        bubbleNip = BubbleNip.rightTop;
+                      } else {
+                        bubbleNip = BubbleNip.leftTop;
+                      }
+                      var startPadding = 10.0;
+                      return Padding(
+                        padding: EdgeInsetsDirectional.only(
+                          top: isNotFirst ? 3 : startPadding,
+                          bottom: 2,
+                          start: owned
+                              ? Sizer.hs1
+                              : (isNotFirst ? startPadding : 0),
+                          end: owned
+                              ? (isNotFirst ? startPadding : 0)
+                              : Sizer.hs1,
                         ),
-                      ),
-                    );
-                  },
-                  padding: EdgeInsets.all(8),
+                        child: Align(
+                          alignment: getAlignment(messages[index].senderId),
+                          child: Bubble(
+                            nipHeight: 12,
+                            nipWidth: startPadding,
+                            radius: Radius.circular(15),
+                            color: getColor(messages[index].senderId),
+                            nip: bubbleNip,
+                            padding: BubbleEdges.symmetric(
+                              horizontal: Sizer.vs3,
+                            ),
+                            child: getMessage(messages[index]),
+                          ),
+                        ),
+                      );
+                    },
+                    padding: EdgeInsets.all(8),
+                  );
+                }
+                return Center(
+                  child: CupertinoActivityIndicator(),
                 );
               },
             ),
@@ -131,13 +135,13 @@ class _ChatLayoutState extends State<ChatLayout> {
   }
 
   Alignment getAlignment(int senderId) =>
-      senderId == _bloc.user.id ? Alignment.centerRight : Alignment.centerLeft;
+      senderId == _bloc.me.id ? Alignment.centerRight : Alignment.centerLeft;
 
   Color getColor(int senderId) =>
-      senderId == _bloc.user.id ? AppColors.blue : Colors.grey[800];
+      senderId == _bloc.me.id ? AppColors.blue : Colors.grey[800];
 
   CrossAxisAlignment getCrossAxisAlignment(int senderId) =>
-      senderId == _bloc.user.id
+      senderId == _bloc.me.id
           ? CrossAxisAlignment.start
           : CrossAxisAlignment.end;
 

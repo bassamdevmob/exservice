@@ -27,23 +27,19 @@ class ChatsResponse {
 
 class Chat {
   Chat({
-    this.id,
     this.user,
     this.message,
   });
 
-  int id;
   User user;
   Message message;
 
   factory Chat.fromJson(Map<String, dynamic> json) => Chat(
-    id: json["id"] == null ? null : json["id"],
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     message: json["message"] == null ? null : Message.fromJson(json["message"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
     "user": user == null ? null : user.toJson(),
     "message": message == null ? null : message.toJson(),
   };

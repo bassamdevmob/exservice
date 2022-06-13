@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,31 +17,49 @@ const MESSAGE_COUNT_LIMIT = 50;
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final controller = TextEditingController();
-  final User user;
-  final User chatter;
-  String _chatId;
+  final User me;
+  final User peer;
+  DocumentReference _conversationRef;
+  StreamSubscription _subscription;
 
-  ChatBloc(this.user, this.chatter) : super(ChatInitial()) {
-    _chatId = chatter.id > user.id
-        ? "${chatter.id}-${user.id}"
-        : "${user.id}-${chatter.id}";
+  ChatBloc(this.me, this.peer) : super(ChatAwaitState()) {
+    var id = "${min(peer.id, me.id)}-${max(peer.id, me.id)}";
+    _conversationRef =
+        FirebaseFirestore.instance.collection(CHAT_COLLECTION).doc(id);
 
-    on((event, emit) async {
-      if (event is ChatSendMessageEvent) {
-        var message = controller.text.trim();
-        if (message.isEmpty) return;
-        sendMessage(Message(
-          senderId: user.id,
-          content: message,
-          date: DateTime.now(),
-        ));
-        controller.clear();
+    on<ChatInitEvent>((event, emit) async {
+      try {
+        emit(ChatAwaitState());
+        var doc = await _conversationRef.get();
+        if (!doc.exists) {
+          await _conversationRef.set({
+            "peers": [peer.id, me.id]
+          });
+        }
+        on<ChatSendMessageEvent>((event, emit) async {
+          var message = controller.text.trim();
+          if (message.isEmpty) return;
+          sendMessage(Message(
+            senderId: me.id,
+            content: message,
+            date: DateTime.now(),
+          ));
+          controller.clear();
+        });
+        _subscription = chatStream.listen((event) => add(ChatSinkEvent(event)));
+      } catch (ex) {
+        emit(ChatErrorState(ex));
       }
+    });
+
+    on<ChatSinkEvent>((event, emit) async {
+      emit(ChatAcceptState(event.messages));
     });
   }
 
   @override
   Future<void> close() {
+    _subscription?.cancel();
     controller.dispose();
     return super.close();
   }
@@ -55,9 +74,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     },
   );
 
-  Stream<List<Message>> get chatStream => FirebaseFirestore.instance
-      .collection(CHAT_COLLECTION)
-      .doc(_chatId)
+  Stream<List<Message>> get chatStream => _conversationRef
       .collection(MESSAGE_COLLECTION)
       .orderBy('date', descending: true)
       .limit(MESSAGE_COUNT_LIMIT)
@@ -65,9 +82,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       .transform(_transformer);
 
   Future<DocumentReference> sendMessage(Message message) async {
-    return FirebaseFirestore.instance
-        .collection(CHAT_COLLECTION)
-        .doc(_chatId)
+    return _conversationRef
         .collection(MESSAGE_COLLECTION)
         .add(message.toFirestoreJson());
   }
