@@ -7,7 +7,7 @@ class Meta {
   });
 
   String path;
-  String perPage;
+  int perPage;
   String nextPageUrl;
   String prevPageUrl;
 

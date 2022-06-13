@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:exservice/models/request/change_password_request.dart';
 import 'package:exservice/models/request/edit_profile_request.dart';
 import 'package:exservice/models/response/ads_response.dart';

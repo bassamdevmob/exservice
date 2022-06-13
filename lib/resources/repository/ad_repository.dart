@@ -47,7 +47,7 @@ class AdRepository extends BaseClient {
 
   Future<AdsResponse> bookmarkedAds({String nextUrl}) async {
     final response = await client.get(
-      nextUrl ?? Links.AD_URL,
+      nextUrl ?? Links.BOOKMARK_AD_URL,
     );
     return AdsResponse.fromJson(response.data);
   }
@@ -74,7 +74,7 @@ class AdRepository extends BaseClient {
     return AdDetailsResponse.fromJson(response.data);
   }
 
-  Future<AdsResponse> changeAdStatus(int id, AdStatus status) async {
+  Future<SimpleResponse> changeAdStatus(int id, AdStatus status) async {
     final response = await client.put(
       Links.CHANGE_AD_URL,
       data: {
@@ -82,7 +82,7 @@ class AdRepository extends BaseClient {
         "status": status.name,
       },
     );
-    return AdsResponse.fromJson(response.data);
+    return SimpleResponse.fromJson(response.data);
   }
 
   Future<ProfileResponse> publisher(int id) async {

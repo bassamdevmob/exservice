@@ -94,7 +94,7 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
               .get<AdRepository>()
               .changeAdStatus(details.id, AdStatus.active);
           details.status = AdStatus.active.name;
-          emit(AdDetailsStatusAcceptState(response.message));
+          emit(AdDetailsStatusAcceptState(AdStatus.active, response.message));
         } on DioError catch (ex) {
           emit(AdDetailsStatusErrorState(ex.error));
         }
@@ -105,7 +105,7 @@ class AdDetailsBloc extends Bloc<AdDetailsEvent, AdDetailsState> {
               .get<AdRepository>()
               .changeAdStatus(details.id, AdStatus.paused);
           details.status = AdStatus.paused.name;
-          emit(AdDetailsStatusAcceptState(response.message));
+          emit(AdDetailsStatusAcceptState(AdStatus.paused, response.message));
         } on DioError catch (ex) {
           emit(AdDetailsStatusErrorState(ex.error));
         }

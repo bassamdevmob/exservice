@@ -168,7 +168,16 @@ class _AccountAdsLayoutState extends State<AccountAdsLayout> {
                                   model.id,
                                   locator: context.read,
                                 ),
-                                child: AdDetailsLayout(),
+                                child: BlocListener<AdDetailsBloc, AdDetailsState>(
+                                  listener: (context, state) {
+                                    if (state is AdDetailsStatusAcceptState) {
+                                      setState(() {
+                                        model.status = state.status.name;
+                                      });
+                                    }
+                                  },
+                                  child: AdDetailsLayout(),
+                                ),
                               ),
                             ),
                           );

@@ -47,8 +47,9 @@ class AdDetailsStatusAwaitState extends AdDetailsState {}
 
 class AdDetailsStatusAcceptState extends AdDetailsState {
   final String message;
+  final AdStatus status;
 
-  AdDetailsStatusAcceptState(this.message);
+  AdDetailsStatusAcceptState(this.status, this.message);
 }
 
 class AdDetailsStatusErrorState extends AdDetailsState {
