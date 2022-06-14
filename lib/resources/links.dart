@@ -21,6 +21,7 @@ class Links {
   static const PASSWORD_URL = "user/password";
   static const PHONE_NUMBER_URL = "user/phone_number";
   static const EMAIL_URL = "user/email";
+  static const FCM_URL = "user/fcm";
   static const NOTIFICATION_URL = "user/notification";
 
   ///user ads

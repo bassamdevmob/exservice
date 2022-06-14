@@ -5,6 +5,7 @@ import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/notifications_bloc/notifications_cubit.dart';
 import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/controller/firebase.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/messenger_layout.dart';
 import 'package:exservice/layout/compose/compose_media_picker_layout.dart';
@@ -29,6 +30,8 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
+  int _index = 0;
+
   final _views = [
     BlocProvider(
       create: (context) => HomeBloc(),
@@ -46,7 +49,12 @@ class _MainLayoutState extends State<MainLayout> {
     AccountLayout(),
   ];
 
-  int _index = 0;
+  @override
+  void initState() {
+    FirebaseHandler.instance.tokenMonitor();
+    FirebaseHandler.instance.messageMonitor();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

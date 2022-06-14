@@ -82,6 +82,16 @@ class UserRepository extends BaseClient {
     return SessionResponse.fromJson(response.data);
   }
 
+  Future<SimpleResponse> updateToken(String token) async {
+    final response = await client.put(
+      Links.FCM_URL,
+      data: {
+        "fcm_token": token,
+      },
+    );
+    return SimpleResponse.fromJson(response.data);
+  }
+
   Future<SessionResponse> resendVerificationCode(String session) async {
     final response = await client.post(
       Links.USER_RESEND_URL,

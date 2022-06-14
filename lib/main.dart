@@ -4,6 +4,7 @@ import 'package:exservice/bloc/application_bloc/application_cubit.dart';
 import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/upload_manger_bloc/upload_manager_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
+import 'package:exservice/controller/firebase.dart';
 import 'package:exservice/layout/main_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
@@ -26,7 +27,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   try {
     await Future.wait([
-      Firebase.initializeApp(),
+      FirebaseHandler.instance.init(),
       ApplicationCubit.init(),
       DataStore.instance.init(),
     ]);

@@ -12,7 +12,7 @@ class DataStore {
   static const LANG = "lang";
   static const TOKEN = "token";
   static const USER = "user";
-  static const FCM_TOKEN = "fcm_token";
+  // static const FCM_TOKEN = "fcm_token";
   static const DEFAULT_BOX = "kiosk_box";
 
   static final DataStore _instance = DataStore._internal();
@@ -32,7 +32,7 @@ class DataStore {
   String get token =>
       box.containsKey(TOKEN) ? "Bearer ${box.get(TOKEN)}" : null;
 
-  String get fcmToken => box.get(FCM_TOKEN);
+  // String get fcmToken => box.get(FCM_TOKEN);
 
   Future<void> init() async {
     await Hive.initFlutter();
@@ -44,11 +44,13 @@ class DataStore {
   bool get hasToken => box.containsKey(TOKEN);
 
   /// Setters
+  // Future<void> setFcmToken(String value) => box.put(FCM_TOKEN, value);
+
   Future<void> setLang(String value) => box.put(LANG, value);
 
   Future<void> setToken(String value) => box.put(TOKEN, value);
 
-  Future<void> deleteCertificates() => box.deleteAll({TOKEN, USER, FCM_TOKEN});
+  Future<void> deleteCertificates() => box.deleteAll({TOKEN, USER});
 
   Future<void> switchTheme() => box.put(THEME, !isDarkModeEnabled);
 
