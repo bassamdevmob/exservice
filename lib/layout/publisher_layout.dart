@@ -169,7 +169,9 @@ class _PublisherLayoutState extends State<PublisherLayout> {
                           ),
                         ),
                       SizedBox(height: Sizer.vs2),
-                      getContactToolbar(),
+                      if (!context.read<ProfileBloc>().isAuthenticated ||
+                          context.read<ProfileBloc>().model.id != _bloc.model.id)
+                        getContactToolbar(),
                       SizedBox(height: Sizer.vs2),
                     ]),
                   ),

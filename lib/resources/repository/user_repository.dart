@@ -103,8 +103,10 @@ class UserRepository extends BaseClient {
     return ProfileResponse.fromJson(response.data);
   }
 
-  Future<NotificationsResponse> notifications() async {
-    final response = await client.get(Links.NOTIFICATION_URL);
+  Future<NotificationsResponse> notifications({String nextUrl}) async {
+    final response = await client.get(
+      nextUrl ?? Links.NOTIFICATION_URL,
+    );
     return NotificationsResponse.fromJson(response.data);
   }
 }

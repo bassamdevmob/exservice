@@ -1,10 +1,9 @@
 import 'package:exservice/bloc/post/composition_repository.dart';
 import 'package:exservice/bloc/post/media_picker_bloc/compose_media_picker_bloc.dart';
-import 'package:exservice/bloc/profile_bloc/profile_bloc.dart';
 import 'package:exservice/bloc/view/favorites_bloc/favorites_cubit.dart';
 import 'package:exservice/bloc/view/home_bloc/home_bloc.dart';
 import 'package:exservice/bloc/view/messenger_bloc/chats_list_bloc/chats_list_bloc.dart';
-import 'package:exservice/bloc/view/messenger_bloc/notifications_list_bloc/notification_list_bloc.dart';
+import 'package:exservice/bloc/view/messenger_bloc/notifications_bloc/notifications_cubit.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/layout/drawer_layout.dart';
 import 'package:exservice/layout/messenger_layout.dart';
@@ -41,7 +40,7 @@ class _MainLayoutState extends State<MainLayout> {
     ),
     SizedBox(),
     BlocProvider(
-      create: (context) => NotificationListBloc(),
+      create: (context) => NotificationsCubit(),
       child: NotificationsLayout(),
     ),
     AccountLayout(),

@@ -73,7 +73,12 @@ class CompositionRepository {
   Map<String, dynamic> toJson() => {
     "title": title,
     "description": description,
-    "location": location.toJson(),
+    "location": Location(
+      latitude: location.latitude.toString(),
+      longitude: location.longitude.toString(),
+      city: "Berlin",
+      country: "Germany",
+    ).toJson(),
     "type": OptionData(
       text: type.option.text,
       value: type.option.value,
