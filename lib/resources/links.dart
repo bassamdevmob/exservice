@@ -1,5 +1,6 @@
 class Links {
-  static const BASE = 'https://dummy-server-xyz.herokuapp.com/app/exservice/v1/';
+  static const BASE =
+      'https://dummy-server-xyz.herokuapp.com/app/exservice/v1/';
 
   ///auth
   static const LOGIN_URL = "auth/login";
@@ -34,8 +35,11 @@ class Links {
   static const PUBLISHER_URL = "ad/publisher";
   static const PAY_URL = "ad/pay";
 
-
   static const CATEGORIES_URL = "config/categories";
   static const CONFIG_URL = "config";
   static const CONFIG_PAYMENT_URL = "config/payment";
+
+  static String getDownloadPath() {
+    return "${BASE}download";
+  }
 }

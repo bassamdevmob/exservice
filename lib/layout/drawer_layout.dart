@@ -11,6 +11,7 @@ import 'package:exservice/layout/auth/login_layout.dart';
 import 'package:exservice/layout/app/change_language_layout.dart';
 import 'package:exservice/layout/upload/upload_manager_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
+import 'package:exservice/resources/links.dart';
 import 'package:exservice/styles/app_colors.dart';
 import 'package:exservice/utils/sizer.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DrawerLayout extends StatelessWidget {
   final StackLoaderIndicator _loaderIndicator = StackLoaderIndicator();
@@ -238,7 +240,9 @@ class DrawerLayout extends StatelessWidget {
                 AppLocalization.of(context).translate("share_app"),
               ),
               trailing: getTrailing(context),
-              onTap: () {},
+              onTap: () {
+                Share.share(Links.getDownloadPath());
+              },
             ),
             if (context.read<ProfileBloc>().isAuthenticated)
               ListTile(
