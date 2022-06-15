@@ -12,6 +12,8 @@ class DataStore {
   static const LANG = "lang";
   static const TOKEN = "token";
   static const USER = "user";
+  static const FIRST_INTRO = "first_intro";
+
   // static const FCM_TOKEN = "fcm_token";
   static const DEFAULT_BOX = "kiosk_box";
 
@@ -26,6 +28,9 @@ class DataStore {
         THEME,
         defaultValue: window.platformBrightness == Brightness.dark,
       );
+
+  /// Getters
+  bool get isFirstIntro => box.get(FIRST_INTRO, defaultValue: true);
 
   String get lang => box.get(LANG, defaultValue: "en");
 
@@ -44,7 +49,7 @@ class DataStore {
   bool get hasToken => box.containsKey(TOKEN);
 
   /// Setters
-  // Future<void> setFcmToken(String value) => box.put(FCM_TOKEN, value);
+  Future<void> introEnds() => box.put(FIRST_INTRO, false);
 
   Future<void> setLang(String value) => box.put(LANG, value);
 

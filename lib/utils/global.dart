@@ -2,7 +2,6 @@ import 'package:exservice/styles/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

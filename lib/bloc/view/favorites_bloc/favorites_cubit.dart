@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:exservice/models/entity/ad_model.dart';
-import 'package:exservice/models/entity/category.dart';
 import 'package:exservice/models/entity/meta.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
-import 'package:exservice/utils/constant.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

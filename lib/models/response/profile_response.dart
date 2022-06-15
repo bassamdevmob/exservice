@@ -1,4 +1,3 @@
-import '../entity/ad_model.dart';
 import '../entity/user.dart';
 
 class ProfileResponse {

@@ -148,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  dots_indicator:
+    dependency: transitive
+    description:
+      name: dots_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   expandable:
     dependency: "direct main"
     description:
@@ -162,13 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  faker:
-    dependency: "direct dev"
-    description:
-      name: faker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   ffi:
     dependency: transitive
     description:
@@ -469,6 +469,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+  introduction_screen:
+    dependency: "direct main"
+    description:
+      name: introduction_screen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   js:
     dependency: transitive
     description:
@@ -490,13 +497,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
-  mask_text_input_formatter:
-    dependency: "direct main"
-    description:
-      name: mask_text_input_formatter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
   matcher:
     dependency: transitive
     description:
@@ -525,13 +525,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  multi_select_flutter:
-    dependency: "direct main"
-    description:
-      name: multi_select_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.2"
   nested:
     dependency: transitive
     description:
@@ -546,13 +539,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  outline_gradient_button:
-    dependency: "direct main"
-    description:
-      name: outline_gradient_button
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
   package_info_plus:
     dependency: "direct main"
     description:

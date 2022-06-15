@@ -12,7 +12,6 @@ import 'package:exservice/widget/application/ad_media.dart';
 import 'package:exservice/widget/application/global_widgets.dart';
 import 'package:exservice/widget/application/reload_indicator.dart';
 import 'package:exservice/widget/bottom_sheets/login_bottom_sheet.dart';
-import 'package:exservice/widget/cards/ad_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -6,6 +6,7 @@ import 'package:exservice/bloc/upload_manger_bloc/upload_manager_bloc.dart';
 import 'package:exservice/controller/data_store.dart';
 import 'package:exservice/controller/firebase.dart';
 import 'package:exservice/layout/main_layout.dart';
+import 'package:exservice/layout/welcome_layout.dart';
 import 'package:exservice/localization/app_localization.dart';
 import 'package:exservice/resources/repository/ad_repository.dart';
 import 'package:exservice/resources/repository/auth_repository.dart';
@@ -14,7 +15,6 @@ import 'package:exservice/resources/repository/user_repository.dart';
 import 'package:exservice/styles/themes/dark_theme.dart';
 import 'package:exservice/styles/themes/light_theme.dart';
 import 'package:exservice/utils/global.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,9 +69,12 @@ class AppMaterial extends StatelessWidget {
           key: ApplicationCubit.key,
           navigatorKey: navigatorKey,
           title: ApplicationCubit.info.appName,
-          initialRoute: MainLayout.route,
+          initialRoute: DataStore.instance.isFirstIntro
+              ? WelcomeLayout.route
+              : MainLayout.route,
           routes: {
             MainLayout.route: (context) => MainLayout(),
+            WelcomeLayout.route: (context) => WelcomeLayout(),
           },
           themeMode: DataStore.instance.isDarkModeEnabled
               ? ThemeMode.dark
